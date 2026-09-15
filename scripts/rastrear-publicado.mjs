@@ -13,10 +13,28 @@ const sitemap = await (await fetch(`${ORIGEM}/sitemap.xml`)).text();
 const paginas = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 console.log(`${paginas.length} páginas no sitemap`);
 
+/* Um 503 não é uma ligação partida.
+ *
+ * O GitHub Pages trava pedidos a mais e devolve 503 a um pedido no meio de
+ * três mil e quinhentos. Um rastreio que acusa isso como defeito passa a ser
+ * ignorado ao fim da segunda vez — e um CI que se ignora não serve para nada.
+ * Só depois de três tentativas, com espera a crescer, é que o endereço conta
+ * como partido. O 404 e o 403 não se repetem: esses são respostas a sério. */
+const TRANSITORIO = new Set([0, 408, 425, 429, 500, 502, 503, 504]);
+const dormir = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const estado = new Map();
 async function verificar(u) {
   if (estado.has(u)) return estado.get(u);
-  const p = fetch(u, { method: 'GET' }).then((r) => r.status).catch(() => 0);
+  const p = (async () => {
+    let s = 0;
+    for (let i = 0; i < 3; i++) {
+      if (i) await dormir(400 * 2 ** i);
+      s = await fetch(u).then((r) => r.status).catch(() => 0);
+      if (!TRANSITORIO.has(s)) return s;
+    }
+    return s;
+  })();
   estado.set(u, p);
   return p;
 }
@@ -24,6 +42,8 @@ async function verificar(u) {
 const problemas = [];
 let recursos = 0;
 for (const pag of paginas) {
+  const s = await verificar(pag);
+  if (s !== 200) { problemas.push(`${pag} → ${s}`); continue; }
   const r = await fetch(pag);
   if (!r.ok) { problemas.push(`${pag} → ${r.status}`); continue; }
   const html = await r.text();
