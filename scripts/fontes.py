@@ -21,12 +21,22 @@ DEST = Path(__file__).resolve().parent.parent / '_fonte' / 'tipos'
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/140.0 Safari/537.36')
 
+# Quatro famílias, uma razão cada:
+#   Fraunces   — títulos da ithos. Serifa de estilo antigo, contraste baixo,
+#                altura-x grande. Os eixos SOFT e WONK dão-lhe a irregularidade
+#                de quem desenha à mão.
+#   Marcellus  — títulos da cathelier. Capital romana inscricional: é o único
+#                género de letra DESENHADO para se compor em maiúsculas, e
+#                aguenta os 17 px onde a Poiret One (toda fio) se desfazia.
+#   Figtree    — corpo das duas marcas, com itálico a sério. A Outfit não tinha
+#                itálico e a Jost é fechada em parágrafos.
+#   Allura     — só o sobrescrito manuscrito da ithos. É o que está no portefólio
+#                impresso e nos destaques do Instagram dela: sai a marca com ele.
 FAMILIAS = {
-    'bodoni-moda': 'Bodoni+Moda:opsz,wght@6..96,400..700',
-    'outfit': 'Outfit:wght@300..700',
+    'fraunces': 'Fraunces:opsz,wght,SOFT,WONK@48,400..700,60,1',
+    'marcellus': 'Marcellus',
+    'figtree': 'Figtree:ital,wght@0,400..700;1,400..600',
     'allura': 'Allura',
-    'poiret-one': 'Poiret+One',
-    'jost': 'Jost:wght@300..600',
 }
 
 
@@ -52,7 +62,8 @@ def main():
             m = re.search(r'url\((https://[^)]+\.woff2)\)', corpo)
             if not m:
                 continue
-            alvo = DEST / f'{nome}-{rotulo}.woff2'
+            italico = 'font-style: italic' in corpo
+            alvo = DEST / f'{nome}{"-italico" if italico else ""}-{rotulo}.woff2'
             curl(m.group(1), alvo)
             guardados.append(f'{alvo.name} ({alvo.stat().st_size // 1024} KB)')
             total += alvo.stat().st_size

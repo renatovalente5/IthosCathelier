@@ -103,38 +103,34 @@
 .orcamento__par { display: grid; gap: var(--e4); grid-template-columns: 1fr; }
 @media (min-width: 34rem) { .orcamento__par { grid-template-columns: 1fr 1fr; } }
 
-/* --- montra de trabalhos -------------------------------------------------- */
+/* --- ficha de categoria: o corpo -------------------------------------------
+   A montra de «trabalhos feitos» que aqui estava era uma galeria de figuras
+   que não se podiam clicar — via-se a peça, sabia-se o nome, e não havia para
+   onde ir. Agora são os mesmos cartões do catálogo: com preço e com ligação. */
 
-.trabalhos { display: grid; gap: var(--e4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
-.trabalho { border: 1px solid var(--linha); }
-.trabalho .foto { border-radius: 0; aspect-ratio: 1; }
-.trabalho figcaption { padding: var(--e3); font-size: .85rem; color: var(--tinta-suave); }
-.trabalho figcaption b { display: block; color: var(--tinta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; font-size: .78rem; margin-bottom: var(--e0); }
-
-/* --- quando ainda não há fotografias --------------------------------------
-   Em vez de caixas cinzentas com um ícone, uma composição tipográfica com o
-   nome da peça. Fica honesto e fica bonito. */
-.sem-foto {
-  aspect-ratio: 1;
+.categoria__intro {
   display: grid;
-  place-items: center;
-  background: var(--fundo-alt);
-  padding: var(--e4);
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+.categoria__pecas { margin-top: clamp(3rem, 6vw, 5rem); }
+.categoria__pecas h2 { margin-block: var(--e5) var(--e4); font-size: 1.2rem; }
+
+.categoria__pedido {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  border: 1px solid var(--linha);
+  padding: clamp(var(--e4), 4vw, var(--e6));
   text-align: center;
 }
-.sem-foto span {
-  font-family: var(--fonte-display);
-  font-size: clamp(1.1rem, .9rem + .8vw, 1.5rem);
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--tinta) 45%, var(--fundo-alt));
-}
+.categoria__pedido h2 { font-size: 1.2rem; }
+.categoria__pedido p { max-width: 48ch; margin-inline: auto; }
+.categoria__pedido p + p { margin-top: var(--e4); }
 
 /* --- cartão de peça -------------------------------------------------------- */
 
 .peca--c .peca__foto { border-radius: 0; background: var(--fundo-alt); }
 .peca__ocasiao {
-  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
   color: var(--verde-claro);
 }
 [data-marca='cathelier'] .peca__nome {

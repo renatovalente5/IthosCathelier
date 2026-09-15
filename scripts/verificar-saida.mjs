@@ -45,12 +45,24 @@ if (!existsSync(SAIDA)) {
 function todos(pasta, ext) {
   const saida = [];
   for (const nome of readdirSync(pasta)) {
+    // Os ficheiros que começam por `_` são instrumentos de teste copiados para
+    // cá à mão depois da construção (a bateria de browser). Não são páginas do
+    // site e não vão para o ar — o `upload-pages-artifact` só leva o que a
+    // construção escreveu.
+    if (nome.startsWith('_')) continue;
     const caminho = join(pasta, nome);
     if (statSync(caminho).isDirectory()) saida.push(...todos(caminho, ext));
     else if (nome.endsWith(ext)) saida.push(caminho);
   }
   return saida;
 }
+
+/* As mesmas que o sitemap deixa de fora: são páginas do processo de compra,
+   não páginas para encontrar na Google. */
+const FORA_DO_INDICE = ['carrinho/', 'encomenda/', 'obrigado/', 'encomenda-cancelada/', '404.html'];
+
+const titulosVistos = {};
+const descricoesVistas = {};
 
 const paginas = todos(SAIDA, '.html');
 if (paginas.length < 30) erros.push(`só ${paginas.length} páginas — esperava bastantes mais`);
@@ -111,6 +123,34 @@ for (const f of paginas) {
 
   if (!/rel="canonical" href="https?:\/\/[^"]+"/.test(html)) erros.push(`${onde}: sem canónico`);
 
+  /* Título e descrição: únicos, e do tamanho que cabe no resultado.
+   *
+   * Duas páginas com o mesmo título são duas páginas a competir uma com a
+   * outra pela mesma pesquisa, e a Google escolhe uma e deita a outra fora.
+   * Isto acontece em silêncio — e acontece sempre por acidente, quando um
+   * modelo passa a servir mais páginas do que servia quando foi escrito. */
+  const titulo = /<title>([^<]*)<\/title>/.exec(html)?.[1] ?? '';
+  const descricao = /<meta name="description" content="([^"]*)"/.exec(html)?.[1] ?? '';
+  /* Quais são as páginas que contam.
+   *
+   * NÃO se pergunta ao `noindex` do HTML: em pré-visualização o site inteiro
+   * sai com `noindex`, e uma guarda que se lê a si própria assim não corria em
+   * nenhuma das construções que realmente se fazem — ficava a imprimir um ✓ até
+   * ao dia em que deixasse de haver pré-visualização. Pergunta-se ao ENDEREÇO,
+   * que é a mesma lista que decide o sitemap. */
+  const indexavel = !FORA_DO_INDICE.some((x) => onde === x || onde.startsWith(x));
+  if (!titulo) erros.push(`${onde}: sem título`);
+  if (!descricao) erros.push(`${onde}: sem descrição`);
+  if (indexavel) {
+    (titulosVistos[titulo] ??= []).push(onde);
+    (descricoesVistas[descricao] ??= []).push(onde);
+    // 65 caracteres é onde a Google corta. Cortar não é fatal — perder a marca
+    // no corte é, e a marca vai sempre no fim.
+    if (titulo.length > 65) avisos.push(`${onde}: título com ${titulo.length} caracteres — a Google corta aos 65`);
+    if (descricao.length < 70) avisos.push(`${onde}: descrição com ${descricao.length} caracteres — curta de mais para dizer alguma coisa`);
+    if (descricao.length > 165) avisos.push(`${onde}: descrição com ${descricao.length} caracteres — a Google corta aos 165`);
+  }
+
   // Marcadores por resolver seriam publicados em texto literal.
   const marcador = /\{\{[A-Z_]+\}\}/.exec(html);
   if (marcador) erros.push(`${onde}: marcador por resolver ${marcador[0]}`);
@@ -162,6 +202,13 @@ if (mortas.size) {
   }
 }
 
+for (const [t, onde] of Object.entries(titulosVistos)) {
+  if (onde.length > 1) erros.push(`título repetido em ${onde.length} páginas («${t.slice(0, 50)}…»): ${onde.slice(0, 3).join(', ')}`);
+}
+for (const [d, onde] of Object.entries(descricoesVistas)) {
+  if (onde.length > 1) erros.push(`descrição repetida em ${onde.length} páginas: ${onde.slice(0, 3).join(', ')}`);
+}
+
 /* --- cada produto publicado tem a SUA ficha -------------------------------
    Contar páginas não prova nada: um reencaminhamento também é um index.html, e
    noutro projeto a contagem deu certo com quarenta páginas a menos. Verifica-se
@@ -172,7 +219,7 @@ let publicados = 0;
 for (const f of produtos) {
   const slug = f.slice(0, -5);
   const p = JSON.parse(readFileSync(join(RAIZ, 'conteudo', 'ithos', f), 'utf8'));
-  const alvo = join(SAIDA, 'ithos', 'candeeiros', slug, 'index.html');
+  const alvo = join(SAIDA, 'candeeiros', slug, 'index.html');
   if (!p.publicado) {
     if (existsSync(alvo)) erros.push(`ithos/${slug}: está despublicado mas a página foi gerada`);
     continue;
@@ -313,3 +360,7 @@ if (erros.length) {
 
 console.log(`saída: ${paginas.length} páginas, ${publicados} candeeiros, ${pecasOk} peças, `
   + `${locs.length} endereços no sitemap — tudo resolve`);
+// Diz-se quantas foram MESMO julgadas. Uma guarda que se desliga sozinha
+// imprime um ✓ igual ao de uma guarda que passou.
+console.log(`  ${Object.values(titulosVistos).flat().length} páginas indexáveis, `
+  + `${Object.keys(titulosVistos).length} títulos e ${Object.keys(descricoesVistas).length} descrições distintos`);

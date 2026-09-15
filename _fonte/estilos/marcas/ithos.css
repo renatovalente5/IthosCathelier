@@ -97,7 +97,7 @@
 }
 @media (min-width: 56rem) {
   .ficha { grid-template-columns: 1.15fr 1fr; align-items: start; }
-  .ficha__lado { position: sticky; top: 92px; }
+  .ficha__lado { position: sticky; top: calc(var(--topo-encolhido) + var(--e3)); }
 }
 
 .galeria { display: flex; flex-direction: column; gap: var(--e2); }
@@ -136,3 +136,100 @@
 .opcoes { display: flex; flex-direction: column; gap: var(--e4); margin-block: var(--e2); }
 .ficha__lado.pilha > * + * { margin-top: var(--e4); }
 .ficha__texto { border-top: 1px solid var(--linha); padding-top: var(--e4); color: var(--tinta-suave); }
+
+/* ==========================================================================
+   A LOJA — o que a raiz passou a ser
+
+   A raiz era um portal com duas portas. Gastava a página mais visitada do sítio
+   a fazer uma pergunta («ithos ou cathelier?») que ninguém que chega do
+   Instagram quer responder: essa pessoa quer ver um candeeiro. Agora a raiz é a
+   loja, e a cathelier tem uma porta desenhada lá dentro, com a cara dela.
+   ========================================================================== */
+
+/* --- tira de confiança -----------------------------------------------------
+   Quatro factos, os quatro lidos dos dados: quem faz, quanto demora, quanto
+   custa levar, quantos anos de garantia. Sem estrelas e sem «54 opiniões» —
+   não há sistema de avaliações, e inventar uma é uma prática comercial
+   enganosa (art. 7.º do DL 57/2008). */
+
+.confianca { background: var(--fundo-alt); border-block: 1px solid var(--linha); }
+.confianca__tira {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e2) clamp(var(--e3), 4vw, var(--e6));
+  padding-block: var(--e3);
+  font-size: .88rem;
+  color: var(--tinta-suave);
+}
+.confianca__tira span { display: inline-flex; align-items: center; gap: var(--e1); }
+.confianca__tira span::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--realce);
+  flex: none;
+}
+
+/* --- o bilhete da Cathia --------------------------------------------------
+   Uma fotografia e um parágrafo assinado. É o bloco que diz que há uma pessoa
+   do outro lado — numa loja de peças feitas à mão isso vale mais do que um
+   banner. */
+
+.bilhete {
+  display: grid;
+  gap: clamp(var(--e5), 5vw, var(--e7));
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+@media (min-width: 48rem) { .bilhete { grid-template-columns: .8fr 1fr; } }
+.bilhete__foto { max-width: 24rem; width: 100%; }
+.bilhete__texto p { color: var(--tinta-suave); max-width: var(--medida); }
+.bilhete__assinatura {
+  font-family: var(--fonte-script);
+  font-size: clamp(1.8rem, 1.5rem + 1vw, 2.4rem);
+  line-height: 1;
+  color: var(--realce);
+  margin-block: var(--e3) var(--e2);
+}
+
+/* --- a porta da cathelier -------------------------------------------------
+   Veste-se DA CATHELIER (`data-marca='cathelier'` no próprio bloco), por isso
+   herda o creme frio, a Marcellus e os fios de 1 px. Vê-se o outro sítio
+   através da porta, em vez de se ler uma placa a dizer que ele existe. */
+
+.porta-cathelier {
+  background: var(--fundo);
+  color: var(--tinta);
+  border-top: 1px solid var(--linha);
+  padding-block: clamp(var(--e6), 7vw, var(--e8));
+  text-align: center;
+}
+.porta-cathelier__logo { height: 54px; width: auto; margin-inline: auto; display: block; }
+.porta-cathelier__linha {
+  max-width: 44ch;
+  margin: var(--e4) auto 0;
+  color: var(--tinta-suave);
+}
+.porta-cathelier__ocasioes {
+  list-style: none;
+  margin: var(--e5) 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--e2);
+}
+.porta-cathelier__ocasioes a {
+  display: flex;
+  align-items: baseline;
+  gap: .5em;
+  border: 1px solid var(--linha);
+  padding: .7em 1.2em;
+  min-height: 44px;
+  text-decoration: none;
+  color: var(--tinta);
+  font-size: .9rem;
+  letter-spacing: .04em;
+  transition: border-color var(--transicao), color var(--transicao);
+}
+.porta-cathelier__ocasioes a:hover { border-color: var(--realce); color: var(--realce); }
+.porta-cathelier__ocasioes span { font-size: .75rem; color: var(--tinta-suave); }

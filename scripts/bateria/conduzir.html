@@ -2,9 +2,10 @@
 <body style="font:13px/1.5 ui-monospace,monospace;padding:1rem">
 <div id=saida>a correr…</div>
 <script type=module>
-const PAGINAS = ['/','/ithos/','/ithos/candeeiros/','/ithos/candeeiros/raposa/','/cathelier/',
- '/cathelier/casamento/','/cathelier/orcamento/','/carrinho/','/encomenda/','/legal/termos/',
- '/perguntas/','/contactos/','/ithos/cuidados-e-seguranca/','/sobre/'];
+const PAGINAS = ['/','/candeeiros/','/candeeiros/raposa/','/cathelier/','/cathelier/pecas/',
+ '/cathelier/casamento/','/cathelier/quarto-de-crianca/regua-de-crescimento/','/cathelier/orcamento/',
+ '/cathelier/atelier/','/carrinho/','/encomenda/','/legal/termos/','/contactos/',
+ '/cuidados-e-seguranca/','/sobre/','/404.html'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

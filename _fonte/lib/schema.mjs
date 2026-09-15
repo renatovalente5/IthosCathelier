@@ -31,10 +31,10 @@ export function organizacao({ identidade, site, base }) {
       addressCountry: 'PT',
     },
     brand: [
-      { '@type': 'Brand', '@id': `${site}${base}/ithos/#marca`, name: 'ithos', url: abs('/ithos/'),
+      { '@type': 'Brand', '@id': `${site}${base}/#marca-ithos`, name: 'ithos', url: abs('/'),
         logo: abs('/assets/img/marca/ithos.svg'),
         description: 'Candeeiros de presença em madeira de pinho, feitos à mão em Portugal.' },
-      { '@type': 'Brand', '@id': `${site}${base}/cathelier/#marca`, name: 'cathelier', url: abs('/cathelier/'),
+      { '@type': 'Brand', '@id': `${site}${base}/#marca-cathelier`, name: 'cathelier', url: abs('/cathelier/'),
         logo: abs('/assets/img/marca/cathelier.svg'),
         description: 'Peças personalizadas cortadas e gravadas a laser: lembranças, troféus, decoração.' },
     ],
@@ -90,10 +90,10 @@ export function produto(p, { site, base, identidade, portes, loja, imagens, pers
     image: imagens.map(abs),
     url: abs(p.caminho),
     sku: p.gpsr?.tipo || p.slug,
-    brand: { '@id': `${site}${base}/${p.marca}/#marca` },
+    brand: { '@id': `${site}${base}/#marca-${p.marca}` },
     manufacturer: { '@type': 'Person', name: identidade.nome, address: { '@type': 'PostalAddress', addressCountry: 'PT' } },
     countryOfOrigin: 'PT',
-    material: 'Madeira de pinho',
+    material: p.marca === 'ithos' ? 'Madeira de pinho' : materialDaPeca(p),
     ...(p.medidas?.altura ? { height: { '@type': 'QuantitativeValue', value: p.medidas.altura, unitCode: 'CMT' } } : {}),
     ...(p.medidas?.largura ? { width: { '@type': 'QuantitativeValue', value: p.medidas.largura, unitCode: 'CMT' } } : {}),
     offers: {
@@ -137,6 +137,39 @@ export function perguntas(lista) {
       '@type': 'Question',
       name: q.pergunta,
       acceptedAnswer: { '@type': 'Answer', text: q.resposta },
+    })),
+  };
+}
+
+/* O material declarado tem de ser o material verdadeiro.
+ *
+ * A ithos é sempre pinho. As peças da cathelier saem da opção «material» que o
+ * comprador escolhe — e escrever «madeira de pinho» numa peça de acrílico é uma
+ * indicação falsa sobre a característica principal do bem (art. 7.º, n.º 1,
+ * al. b) do DL 57/2008). */
+function materialDaPeca(p) {
+  const opcao = (p.opcoes ?? []).find((o) => o.id === 'material');
+  const valores = (opcao?.valores ?? []).map((v) => v.nome ?? v);
+  return valores.length ? valores.join(', ') : 'Madeira de bétula';
+}
+
+/* Uma lista de produtos numa página de catálogo.
+ *
+ * Sem isto a Google vê 26 candeeiros e não sabe que são uma lista; com isto
+ * pode mostrar o carrossel de produtos, que é metade do espaço do resultado.
+ * Cada entrada é um `ListItem` com `url` — não um Product repetido, que
+ * duplicaria as 26 fichas que já existem. */
+export function listaDeProdutos(produtos, { site, base, nome }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: nome,
+    numberOfItems: produtos.length,
+    itemListElement: produtos.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.nome,
+      url: `${site}${base}${p.caminho}`,
     })),
   };
 }

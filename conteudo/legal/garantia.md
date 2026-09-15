@@ -20,7 +20,7 @@ entrega, se houver falta de conformidade, e receber o dinheiro de volta.
 
 - O desgaste normal do uso.
 - Danos causados por queda, água, calor excessivo ou por utilização contrária às
-  [instruções](/ithos/cuidados-e-seguranca/).
+  [instruções](/cuidados-e-seguranca/).
 - As pilhas, que são consumíveis.
 - As pequenas diferenças próprias de uma peça feita à mão: veios da madeira, tom
   da tinta, posição de um pormenor pintado. Isto não é falta de conformidade — é

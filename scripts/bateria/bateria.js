@@ -141,12 +141,41 @@ window.__bateria = function () {
   nota(!!document.querySelector('main#conteudo'), 'há um <main> com âncora');
   nota(document.documentElement.lang === 'pt-PT', 'a língua está declarada', document.documentElement.lang);
   const marca = document.documentElement.dataset.marca;
-  nota(['ithos', 'cathelier', 'casa'].includes(marca), 'a marca vem no HTML servido', marca);
+  nota(['ithos', 'cathelier'].includes(marca), 'a marca vem no HTML servido', marca);
 
   // --- tipografia carregada ------------------------------------------------
-  const esperadas = { ithos: ['Bodoni Moda', 'Outfit'], cathelier: ['Poiret One', 'Jost'], casa: ['Jost'] }[marca] ?? [];
+  const esperadas = { ithos: ['Fraunces', 'Figtree'], cathelier: ['Marcellus', 'Figtree'] }[marca] ?? [];
   const carregadas = [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family);
   for (const f of esperadas) nota(carregadas.includes(f), `tipo «${f}» carregado`, carregadas.join(', '));
+
+  // --- corpo de letra mínimo ------------------------------------------------
+  // Não há mínimo na WCAG, mas há na prática: abaixo de 12 px um texto no
+  // telemóvel deixa de se ler sem aproximar os dedos, e o iOS passa a oferecer
+  // zoom automático nos campos. Mede-se o TEXTO VISÍVEL, não a folha de
+  // estilo — o que interessa é o que chega ao ecrã depois dos `clamp()`.
+  const miudos = [];
+  for (const e of document.querySelectorAll('body *')) {
+    if (!e.firstChild || e.firstChild.nodeType !== 3 || !e.textContent.trim()) continue;
+    const r = e.getBoundingClientRect();
+    if (!r.width || !r.height) continue;
+    const px = parseFloat(getComputedStyle(e).fontSize);
+    if (px < 12) miudos.push(`${e.tagName}.${(e.className || '').toString().split(' ')[0]} ${px.toFixed(1)}px`);
+  }
+  nota(miudos.length === 0, 'nenhum texto abaixo de 12 px', miudos.slice(0, 5).join(' · '));
+
+  // --- o menu cabe no ecrã --------------------------------------------------
+  // A gaveta é `100dvh` e não rola. Se o conteúdo crescer (mais uma entrada,
+  // uma contagem mais larga), a última linha sai por baixo sem aviso — e a
+  // última linha é o telefone.
+  const gaveta = document.querySelector('.gaveta');
+  if (gaveta && getComputedStyle(gaveta).display !== 'none') {
+    const antes = gaveta.open;
+    if (!antes) gaveta.show();
+    const alturaConteudo = [...gaveta.children].reduce((t, e) => t + e.getBoundingClientRect().height, 0);
+    nota(alturaConteudo <= innerHeight + 1, 'o menu de telemóvel cabe no ecrã sem rolar',
+      `conteúdo ${Math.round(alturaConteudo)}px, ecrã ${innerHeight}px`);
+    if (!antes) gaveta.close();
+  }
 
   return { total: R.length, falhas: R.filter((x) => !x.ok), tudo: R };
 };

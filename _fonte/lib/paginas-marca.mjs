@@ -5,72 +5,26 @@ import { esc, euros, figura, paras, md, temFoto } from './util.mjs';
 import { desenhoDaPeca } from './formas.mjs';
 import { personalizacao } from './dados.mjs';
 
-/* ============================================================ o portal ==== */
+/* ============================================================== a loja ===== */
 
-export function portal(d, ctx) {
-  const { l, raiz, base } = ctx;
-  const { marcas, ithos } = d;
-  const capa = ithos.find((p) => p.publicado && p.slug === 'raposa') ?? ithos.find((p) => p.publicado);
+/* A raiz É a loja. O portal de duas portas que aqui estava gastava a página
+ * mais valiosa a fazer uma pergunta — e quem chega do Instagram não quer
+ * escolher uma marca, quer ver um candeeiro. A cathelier continua a ter casa
+ * própria; deixou é de disputar a porta de entrada. */
 
-  return `
-<section class="seccao" style="padding-block:clamp(2rem,6vw,4rem) 0">
-  <div class="envolvente centrado" style="max-width:52ch">
-    <p class="sobrescrito">Um ateliê, duas marcas</p>
-    <h1 style="font-size:clamp(1.8rem,1.2rem+2.4vw,3rem)">Feito à mão em Portugal, peça a peça</h1>
-    <p class="discreto">Escolha por onde quer entrar. São dois mundos diferentes, saídos das mesmas mãos.</p>
-  </div>
-</section>
-
-<section class="portas envolvente">
-  <a class="porta porta--ithos" href="${l('/ithos/')}" data-outra-marca>
-    <div class="porta__foto">
-      ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[0], alt: '',
-        sizes: '(min-width: 48rem) 45vw, 90vw', prioridade: true }) : ''}
-    </div>
-    <div class="porta__corpo">
-      <img class="porta__logo" src="${l('/assets/img/marca/ithos.svg')}" alt="ithos" width="120" height="129">
-      <p class="porta__linha">Candeeiros de presença em madeira, para quartos de crianças.</p>
-      <span class="porta__accao">Ver os candeeiros</span>
-    </div>
-  </a>
-
-  <a class="porta porta--cathelier" href="${l('/cathelier/')}" data-outra-marca>
-    <div class="porta__foto porta__foto--tipografica">
-      <span>casamento</span><span>batizado</span><span>nascimento</span>
-      <span>troféus</span><span>comunhão</span><span>decoração</span>
-    </div>
-    <div class="porta__corpo">
-      <img class="porta__logo" src="${l('/assets/img/marca/cathelier.svg')}" alt="cathelier" width="142" height="92">
-      <p class="porta__linha">Peças personalizadas para os dias que não se repetem.</p>
-      <span class="porta__accao">Ver as ocasiões</span>
-    </div>
-  </a>
-</section>
-
-<section class="seccao">
-  <div class="envolvente" style="display:grid;gap:var(--e5);grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))">
-    <div>
-      <p class="sobrescrito">O ateliê</p>
-      <h2 style="font-size:clamp(1.4rem,1.1rem+1.4vw,2rem)">As mesmas mãos, dois ofícios</h2>
-    </div>
-    <div class="medida">
-      ${paras(`Tudo o que aqui está sai de um ateliê pequeno em ${esc(d.identidade.localidade)}. A ithos nasceu dos candeeiros: madeira de pinho cortada, lixada, colada e pintada à mão, com LED por dentro. A cathelier nasceu do laser: madeira de bétula e acrílico, gravados com nomes e datas.\n\nSão duas marcas porque servem pessoas diferentes — mas é a mesma pessoa que faz, e é a mesma encomenda que segue.`)}
-      <p><a class="ligacao" href="${l('/sobre/')}">Conhecer o ateliê</a></p>
-    </div>
-  </div>
-</section>
-`;
-}
-
-/* ========================================================= ithos: casa ==== */
-
-export function casaIthos(d, ctx) {
+export function paginaInicial(d, ctx) {
   const { l, raiz, base } = ctx;
   const m = d.marcas.ithos;
   const publicados = d.ithos.filter((p) => p.publicado);
-  const destaques = publicados.filter((p) => p.destaque).slice(0, 6);
-  const capa = publicados.find((p) => p.slug === 'foguetao') ?? publicados[0];
-  const nZonas = d.portes.zonas.find((z) => z.id === 'pt');
+  const destaques = [
+    ...publicados.filter((p) => p.destaque),
+    ...publicados.filter((p) => !p.destaque),
+  ].slice(0, 12);
+  const capa = publicados.find((p) => p.slug === 'raposa') ?? publicados[0];
+  const zonaPt = d.portes.zonas.find((z) => z.id === 'pt');
+  const cats = d.categorias.filter((c) => c.publicado && c.pecas.length).slice(0, 4);
+
+  const perguntas = (d.perguntas ?? []).slice(0, 3);
 
   return `
 <section class="heroi">
@@ -84,66 +38,84 @@ export function casaIthos(d, ctx) {
       <h1>${esc(m.hero_titulo)}</h1>
       <p>${esc(m.hero_texto)}</p>
       <div class="heroi__accoes">
-        <a class="botao" href="${l('/ithos/candeeiros/')}">Ver os candeeiros</a>
-        <a class="botao botao--vazio" href="${l('/ithos/como-e-feito/')}">Como é feito</a>
+        <a class="botao" href="${l('/candeeiros/')}">Ver os candeeiros</a>
       </div>
     </div>
     <div class="heroi__peca">
       <div class="arco">
-        ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[0], alt: `Candeeiro ${capa.nome} aceso`,
+        ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[capa.fotos.length - 1] ?? capa.fotos[0],
+          alt: `Candeeiro ${capa.nome} aceso num quarto`,
           sizes: '(min-width: 52rem) 46vw, 92vw', prioridade: true }) : ''}
       </div>
     </div>
   </div>
 </section>
 
-<section class="seccao seccao--apertada seccao--alt">
-  <div class="envolvente argumentos">
-    ${[
-      ['Feito à mão, um a um', 'Cortado, lixado, colado e pintado no ateliê. Não há duas peças iguais.'],
-      ['Com o nome gravado', 'Um nome, uma data ou uma frase, gravados a laser na madeira.'],
-      ['Madeira de pinho e tinta de água', 'Materiais escolhidos a pensar em quem dorme ao lado.'],
-      [`Entrega em ${nZonas?.dias_min ?? 1} a ${nZonas?.dias_max ?? 5} dias`, `Envio por ${esc(d.portes.transportadora)} para todo o país.`],
-    ].map(([t, x]) => `<div class="argumento"><h3>${esc(t)}</h3><p>${esc(x)}</p></div>`).join('\n    ')}
+<!-- Quatro factos, todos lidos dos dados. Sem estrelas nem «54 opiniões»: não
+     há sistema de avaliações, e inventá-las é prática comercial desleal. -->
+<section class="confianca">
+  <div class="envolvente confianca__tira">
+    <span>Feito à mão em ${esc(d.identidade.localidade)}</span>
+    <span>Até ${d.loja.prazos.producao_dias} dias úteis de produção</span>
+    <span>Portes ${euros(zonaPt?.preco ?? 5)} para todo o país</span>
+    <span>Garantia de ${d.loja.devolucoes.garantia_anos} anos</span>
   </div>
 </section>
 
-${destaques.length ? `
-<section class="seccao">
+<section class="seccao" id="candeeiros">
   <div class="envolvente">
     <div class="cabeca-seccao">
-      <span class="sobrescrito">Os mais queridos</span>
-      <h2>Alguns dos nossos ithos</h2>
+      <span class="sobrescrito">Feitos um a um</span>
+      <h2>Os candeeiros</h2>
     </div>
     <div class="grelha grelha--3">
       ${destaques.map((p) => cartaoPeca(p, ctx)).join('\n      ')}
     </div>
-    <p style="margin-top:var(--e5)"><a class="botao botao--vazio" href="${l('/ithos/candeeiros/')}">Ver os ${publicados.length} candeeiros</a></p>
+    <p style="margin-top:var(--e5)">
+      <a class="botao botao--vazio" href="${l('/candeeiros/')}">Ver os ${publicados.length} candeeiros →</a>
+    </p>
   </div>
-</section>` : ''}
+</section>
 
 <section class="seccao seccao--alt">
-  <div class="envolvente" style="display:grid;gap:clamp(2rem,5vw,4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));align-items:center">
-    <div class="arco">
-      ${(() => { const s = publicados.find((p) => p.slug === 'ourico'); return s ? figura({ raiz, base, dir: s.dir, nome: s.fotos[0], alt: '', sizes: '(min-width: 48rem) 45vw, 92vw' }) : ''; })()}
+  <div class="envolvente bilhete">
+    <div class="arco bilhete__foto">
+      ${(() => { const s = publicados.find((x) => x.slug === 'ourico'); return s ? figura({ raiz, base, dir: s.dir, nome: s.fotos[0], alt: '', sizes: '(min-width: 48rem) 40vw, 92vw' }) : ''; })()}
     </div>
-    <div>
+    <div class="bilhete__texto">
       <span class="sobrescrito">Sobre nós</span>
       <h2>${esc(m.sobre_titulo)}</h2>
-      ${paras(m.sobre_texto)}
-      <p style="margin-top:var(--e4)"><a class="ligacao" href="${l('/ithos/como-e-feito/')}">Ver como se faz um ithos</a></p>
+      ${paras(m.sobre_texto.split('\n\n').slice(0, 2).join('\n\n'))}
+      <p class="bilhete__assinatura">Cathia</p>
+      <p><a class="ligacao" href="${l('/sobre/#como-e-feito')}">Como é feito →</a></p>
     </div>
   </div>
 </section>
 
-<section class="seccao">
-  <div class="envolvente centrado" style="max-width:46ch">
-    <span class="sobrescrito">Também fazemos</span>
-    <h2 style="font-size:clamp(1.3rem,1.1rem+1.2vw,1.9rem)">Lembranças e peças personalizadas</h2>
-    <p class="discreto">A cathelier é a nossa outra marca: lembranças de casamento e batizado, troféus, nomes para a parede do quarto. Sai do mesmo ateliê.</p>
-    <p><a class="botao botao--vazio" href="${l('/cathelier/')}" data-outra-marca>Conhecer a cathelier</a></p>
+<!-- A porta da cathelier veste-se da cathelier: vê-se o outro sítio ATRAVÉS da
+     porta, em vez de se ler uma placa a dizer que ele existe. -->
+<section class="porta-cathelier" data-marca="cathelier">
+  <div class="envolvente">
+    <img class="porta-cathelier__logo" src="${l('/assets/img/marca/cathelier.svg')}" alt="cathelier" width="117" height="54">
+    <p class="porta-cathelier__linha">Também fazemos as peças com o nome de quem as recebe —
+      casamento, batizado, nascimento, quarto de criança.</p>
+    <ul class="porta-cathelier__ocasioes">
+      ${cats.map((c) => `<li><a href="${l(c.caminho)}">${esc(c.nome)} <span>${c.pecas.length} peças</span></a></li>`).join('\n      ')}
+    </ul>
+    <p><a class="botao botao--vazio" href="${l('/cathelier/')}" data-outra-marca>Ver a cathelier →</a></p>
   </div>
 </section>
+
+${perguntas.length ? `<section class="seccao">
+  <div class="envolvente" style="max-width:44rem">
+    <div class="cabeca-seccao"><h2>Perguntas que nos fazem</h2></div>
+    ${perguntas.map((q) => `<details class="pergunta">
+      <summary>${esc(q.pergunta)}</summary>
+      <div>${paras(q.resposta)}</div>
+    </details>`).join('\n    ')}
+    <p style="margin-top:var(--e4)"><a class="ligacao" href="${l('/contactos/#perguntas')}">Todas as perguntas →</a></p>
+  </div>
+</section>` : ''}
 `;
 }
 
@@ -288,7 +260,7 @@ export function fichaIthos(p, d, ctx) {
             ${p.gpsr?.tipo ? `<br>Tipo: ${esc(p.gpsr.tipo)}` : ''}${p.gpsr?.lote ? ` · Lote: ${esc(p.gpsr.lote)}` : ''}
           </p>
         </div>
-        <p class="pequeno discreto" style="margin:0">Instruções de utilização, limpeza e substituição de pilhas em <a class="ligacao" href="${l('/ithos/cuidados-e-seguranca/')}">cuidados e segurança</a>.</p>
+        <p class="pequeno discreto" style="margin:0">Instruções de utilização, limpeza e substituição de pilhas em <a class="ligacao" href="${l('/cuidados-e-seguranca/')}">cuidados e segurança</a>.</p>
       </div>
     </details>
   </div>
@@ -389,7 +361,7 @@ export function casaCathelier(d, ctx) {
     <hr class="fio--curto" style="margin-inline:auto">
     <h2 style="font-size:clamp(1.2rem,1rem+1.2vw,1.8rem)">Também fazemos candeeiros</h2>
     <p class="discreto">A ithos é a nossa outra marca: luzes de presença em madeira, para quartos de crianças. Sai do mesmo ateliê.</p>
-    <p><a class="botao botao--vazio" href="${l('/ithos/')}" data-outra-marca>Conhecer a ithos</a></p>
+    <p><a class="botao botao--vazio" href="${l('/')}" data-outra-marca>Conhecer a ithos</a></p>
   </div>
 </section>
 `;
@@ -398,8 +370,9 @@ export function casaCathelier(d, ctx) {
 /* ================================================ cathelier: categoria ==== */
 
 export function categoriaCathelier(c, d, ctx) {
-  const { l, raiz, base } = ctx;
+  const { l } = ctx;
   const pecas = d.pecas.filter((p) => p.categoria === c.slug && p.publicado);
+  const outras = d.categorias.filter((o) => o.publicado && o.slug !== c.slug && o.pecas.length);
 
   return `
 <section class="envolvente categoria">
@@ -409,48 +382,48 @@ export function categoriaCathelier(c, d, ctx) {
     <p class="discreto">${esc(c.resumo)}</p>
   </div>
 
-  <div style="display:grid;gap:clamp(2rem,5vw,4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))">
+  <div class="categoria__intro">
     <div class="medida">${paras(c.texto)}</div>
     <div>
-      <h2 style="font-size:1rem">O que fazemos para esta ocasião</h2>
+      <h2 class="rotulo">O que fazemos para esta ocasião</h2>
       <ul class="tipos">${c.tipos.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-      <p style="margin-top:var(--e4)">
-        <a class="botao" href="${l(`/cathelier/orcamento/?ocasiao=${encodeURIComponent(c.slug)}`)}">Pedir orçamento para ${esc(c.nome.toLowerCase())}</a>
-      </p>
     </div>
   </div>
 
   ${pecas.length ? `
-  <div style="margin-top:clamp(3rem,6vw,5rem)">
+  <div class="categoria__pecas">
     <hr class="fio">
-    <h2 style="margin-top:var(--e5);font-size:1.2rem">Trabalhos feitos</h2>
-    <div class="trabalhos">
-      ${pecas.map((p) => `<figure class="trabalho">
-        ${temFoto(raiz, p.dir, (p.fotos ?? [])[0] ?? '')
-          ? `<div class="foto">${figura({ raiz, base, dir: p.dir, nome: p.fotos[0], alt: esc(p.nome), sizes: '(min-width: 48rem) 20rem, 90vw' })}</div>`
-          : `<div class="sem-foto"><span>${esc(p.nome)}</span></div>`}
-        <figcaption><b>${esc(p.nome)}</b>${p.resumo ? esc(p.resumo) : ''}</figcaption>
-      </figure>`).join('\n      ')}
+    <h2>${pecas.length === 1 ? 'A peça' : `As ${pecas.length} peças`}</h2>
+    <div class="grelha grelha--3">
+      ${pecas.map((p) => cartaoPecaCathelier(p, ctx)).join('\n      ')}
     </div>
   </div>` : ''}
+
+  <!-- O pedido de orçamento vem DEPOIS das peças, não antes.
+       Antes delas, pedia a alguém que descrevesse o que queria sem nunca ter
+       visto o que se faz — e é aí que a maior parte das pessoas desiste. -->
+  <div class="categoria__pedido">
+    <h2>Quer uma peça que não está aqui?</h2>
+    <p class="discreto">Diga-nos a ocasião, a quantidade e a data. Respondemos em dois dias úteis com uma proposta e uma maqueta.</p>
+    <p><a class="botao" href="${l(`/cathelier/orcamento/?ocasiao=${encodeURIComponent(c.slug)}`)}">Pedir orçamento para ${esc(c.nome.toLowerCase())}</a></p>
+  </div>
 </section>
 
-<section class="seccao seccao--alt">
+${outras.length ? `<section class="seccao seccao--alt">
   <div class="envolvente">
     <hr class="fio--curto">
-    <h2 style="font-size:1.2rem">Outras ocasiões</h2>
+    <h2>Outras ocasiões</h2>
     <div class="indice" style="margin-top:var(--e4)">
-      ${d.categorias.filter((o) => o.publicado && o.slug !== c.slug).slice(0, 4).map((o) => `<a class="indice__linha" href="${l(o.caminho)}">
+      ${outras.slice(0, 4).map((o) => `<a class="indice__linha" href="${l(o.caminho)}">
         <h3 class="indice__nome">${esc(o.nome)}</h3>
         <p class="indice__resumo">${esc(o.resumo)}</p>
-        <span class="indice__seta">Ver &rarr;</span>
+        <span class="indice__seta">${o.pecas.length} peças &rarr;</span>
       </a>`).join('\n      ')}
     </div>
   </div>
-</section>
+</section>` : ''}
 `;
 }
-
 
 /* ==================================================== cathelier: peças ===== */
 

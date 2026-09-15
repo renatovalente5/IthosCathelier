@@ -6,36 +6,72 @@
    diferença vem da FORMA, do RITMO e da TIPOGRAFIA — e essas coisas estão em
    variáveis, não em folhas de estilo diferentes.
 
-   `<html data-marca="ithos|cathelier|casa">` é servido no HTML, nunca posto por
+   `<html data-marca="ithos|cathelier">` é servido no HTML, nunca posto por
    JavaScript: se fosse, a página piscava na cor errada antes de trocar.
    ========================================================================== */
 
 /* --- tipos auto-alojados --------------------------------------------------
    Sem fonts.googleapis.com: o browser do visitante não contacta terceiros, e é
-   por isso que este site não precisa de aviso de cookies. */
+   por isso que este site não precisa de aviso de cookies.
+
+   Quatro famílias, uma razão cada:
+     Fraunces  — títulos da ithos. Serifa de estilo antigo, contraste baixo,
+                 altura-x grande. Os eixos vêm FIXADOS no ficheiro (opsz 48,
+                 SOFT 60, WONK 1): fecha para sempre a armadilha do
+                 `font-optical-sizing: auto`, e corta o ficheiro a metade.
+     Marcellus — títulos da cathelier. Capital romana inscricional, o único
+                 género de letra desenhado para se compor em maiúsculas.
+     Figtree   — corpo das duas marcas, com itálico verdadeiro.
+     Allura    — só o sobrescrito manuscrito da ithos, que é o que está no
+                 portefólio impresso e nos destaques do Instagram dela.
+*/
 
 @font-face {
-  font-family: 'Bodoni Moda';
-  src: url('../tipos/bodoni-moda-latin.woff2') format('woff2');
+  font-family: 'Fraunces';
+  src: url('../tipos/fraunces-latin.woff2') format('woff2');
   font-weight: 400 700; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: 'Bodoni Moda';
-  src: url('../tipos/bodoni-moda-latin-ext.woff2') format('woff2');
+  font-family: 'Fraunces';
+  src: url('../tipos/fraunces-latin-ext.woff2') format('woff2');
   font-weight: 400 700; font-style: normal; font-display: swap;
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Outfit';
-  src: url('../tipos/outfit-latin.woff2') format('woff2');
-  font-weight: 300 700; font-style: normal; font-display: swap;
+  font-family: 'Marcellus';
+  src: url('../tipos/marcellus-latin.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: 'Outfit';
-  src: url('../tipos/outfit-latin-ext.woff2') format('woff2');
-  font-weight: 300 700; font-style: normal; font-display: swap;
+  font-family: 'Marcellus';
+  src: url('../tipos/marcellus-latin-ext.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('../tipos/figtree-latin.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('../tipos/figtree-latin-ext.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('../tipos/figtree-italico-latin.woff2') format('woff2');
+  font-weight: 400 600; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Figtree';
+  src: url('../tipos/figtree-italico-latin-ext.woff2') format('woff2');
+  font-weight: 400 600; font-style: italic; font-display: swap;
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
@@ -43,30 +79,6 @@
   src: url('../tipos/allura-latin.woff2') format('woff2');
   font-weight: 400; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: 'Poiret One';
-  src: url('../tipos/poiret-one-latin.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: 'Poiret One';
-  src: url('../tipos/poiret-one-latin-ext.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Jost';
-  src: url('../tipos/jost-latin.woff2') format('woff2');
-  font-weight: 300 600; font-style: normal; font-display: swap;
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: 'Jost';
-  src: url('../tipos/jost-latin-ext.woff2') format('woff2');
-  font-weight: 300 600; font-style: normal; font-display: swap;
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 /* --- o que é comum às duas marcas ---------------------------------------- */
@@ -77,7 +89,8 @@
   /* O verde do logótipo, medido no vetor do Illustrator. Não é o #595F39 que se
      lê no JPEG: esse já passou por compressão e conversão de espaço de cor. */
   --verde: #4F5931;
-  --verde-claro: #68704E;
+  --verde-claro: #5F6746;          /* era #68704E: dava 4,48:1 sobre o fundo
+                                      alternado — falhava o mínimo por 0,02 */
 
   --e0: .25rem; --e1: .5rem;  --e2: .75rem; --e3: 1rem;
   --e4: 1.5rem; --e5: 2rem;   --e6: 3rem;   --e7: 4.5rem; --e8: 7rem;
@@ -101,9 +114,20 @@
   --brilho: #F6CEA6;               /* o âmbar do LED, medido nas fotografias */
   --linha: #E3D3C6;
 
-  --fonte-display: 'Bodoni Moda', 'Times New Roman', serif;
-  --fonte-corpo: 'Outfit', system-ui, sans-serif;
-  --fonte-script: 'Allura', 'Bodoni Moda', cursive;
+  /* Porque é que a versão anterior se lia mal, e não era a cor.
+     A Bodoni Moda que lá estava é variável com eixo óptico de 6 a 96, e o CSS
+     nunca declarava `font-optical-sizing` — cujo valor por omissão é `auto`.
+     Num título de 45 px o browser escolhia a instância de EXPOSIÇÃO, que é a de
+     traço mais fino da família: o filete do «O» ficava com dois décimos de pixel
+     e o browser, não o conseguindo desenhar, desbotava-o. Metade do desenho de
+     cada letra nunca chegava ao ecrã. Somavam-se as MAIÚSCULAS, que tiram às
+     palavras as hastes que lhes dão silhueta, e um espaçamento que separava as
+     letras antes de o olho as juntar. A cor media 6,92:1 e não tinha culpa.
+     A Fraunces vem com os eixos JÁ FIXADOS dentro do ficheiro: a armadilha não
+     se pode repetir. */
+  --fonte-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --fonte-corpo: 'Figtree', system-ui, sans-serif;
+  --fonte-script: 'Allura', cursive;
 
   --largura: 1140px;
   --medida: 62ch;
@@ -112,9 +136,10 @@
   --raio-btn: 999px;
   --sombra: 0 2px 4px rgb(90 60 40 / .05), 0 12px 32px rgb(90 60 40 / .09);
   --escala: 1.22;
-  --tracking-titulo: .06em;
-  --caixa-titulo: uppercase;
-  --peso-titulo: 500;
+  --tracking-titulo: -.008em;   /* nunca positivo sobre minúsculas */
+  --caixa-titulo: none;         /* caixa normal: as palavras voltam a ter forma */
+  --peso-titulo: 600;
+  --entrelinha-titulo: 1.12;
 }
 
 /* -------------------------------------------------------------- cathelier --
@@ -132,9 +157,14 @@
   --brilho: #EDE4D3;
   --linha: #DCD6CA;
 
-  --fonte-display: 'Poiret One', 'Jost', sans-serif;
-  --fonte-corpo: 'Jost', system-ui, sans-serif;
-  --fonte-script: 'Poiret One', cursive;
+  /* Capital romana inscricional. É o único género de letra desenhado para se
+     compor em MAIÚSCULAS — e é isso que deixa a cathelier ficar em caixa alta
+     enquanto a ithos passa a minúsculas. A separação entre as marcas deixa de
+     ser só a cor e passa a ser a CAIXA: a ithos fala em minúsculas quentes, a
+     cathelier em capitulares gravadas. */
+  --fonte-display: 'Marcellus', 'Times New Roman', serif;
+  --fonte-corpo: 'Figtree', system-ui, sans-serif;
+  --fonte-script: 'Marcellus', serif;
 
   --largura: 1080px;
   --medida: 58ch;
@@ -143,40 +173,10 @@
   --raio-btn: 0;
   --sombra: none;
   --escala: 1.36;
-  --tracking-titulo: .16em;
+  --tracking-titulo: .07em;
   --caixa-titulo: uppercase;
   --peso-titulo: 400;
-}
-
-/* ------------------------------------------------------------------ casa --
-   O portal e as páginas partilhadas. O cinzento-claro é o mesmo em que os dois
-   logótipos foram desenhados. */
-[data-marca='casa'] {
-  --fundo: #F7F7F7;
-  --fundo-alt: #ECECE9;
-  --fundo-forte: #2C2E21;
-  --tinta: #231F20;
-  --tinta-suave: #56564E;
-  --realce: var(--verde);
-  --realce-tinta: #F7F7F7;
-  --enfeite: var(--verde-claro);
-  --brilho: #E6E6E1;
-  --linha: #DBDBD5;
-
-  --fonte-display: 'Jost', system-ui, sans-serif;
-  --fonte-corpo: 'Jost', system-ui, sans-serif;
-  --fonte-script: 'Jost', sans-serif;
-
-  --largura: 1100px;
-  --medida: 60ch;
-  --raio-img: var(--e2);
-  --raio-cartao: var(--e2);
-  --raio-btn: 999px;
-  --sombra: 0 10px 30px rgb(30 30 25 / .07);
-  --escala: 1.26;
-  --tracking-titulo: .1em;
-  --caixa-titulo: none;
-  --peso-titulo: 400;
+  --entrelinha-titulo: 1.18;
 }
 
 /* --- reposição ------------------------------------------------------------ */
@@ -219,6 +219,30 @@ h1 { font-size: calc(1.5rem * var(--escala) * var(--escala)); }
 h2 { font-size: calc(1.3rem * var(--escala) * var(--escala)); }
 h3 { font-size: calc(1.05rem * var(--escala)); }
 h4 { font-size: 1rem; letter-spacing: .12em; }
+
+/* Um rótulo é uma ETIQUETA, não um título: nomeia a lista que vem a seguir e
+   não deve competir com o h1 da página. Existe como classe para poder ir num
+   `h2` quando o documento precisa desse nível na hierarquia — a semântica é
+   uma coisa, o tamanho é outra. */
+.rotulo {
+  font-family: var(--fonte-corpo);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  line-height: 1.4;
+  margin-bottom: var(--e3);
+}
+
+/* A Marcellus é uma capital romana: em maiúsculas e em tamanho grande é o que
+   dá o ar gravado à cathelier, mas num h3 ou h4 as maiúsculas espaçadas custam
+   a ler de relance. Aí passa à Figtree, que é a mesma do corpo. */
+[data-marca='cathelier'] h3,
+[data-marca='cathelier'] h4,
+[data-marca='cathelier'] .peca__nome {
+  font-family: var(--fonte-corpo); font-weight: 500; letter-spacing: .1em;
+}
 p { margin: 0 0 var(--e3); text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
@@ -237,7 +261,6 @@ p:last-child { margin-bottom: 0; }
   display: block;
 }
 [data-marca='cathelier'] .script,
-[data-marca='casa'] .script { font-size: 1em; letter-spacing: .2em; text-transform: uppercase; }
 
 /* Sobrescrito curto acima de um título. Em ithos é manuscrito; nas outras é
    maiúsculas espaçadas. */
@@ -252,7 +275,6 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: var(--e1);
 }
 [data-marca='cathelier'] .sobrescrito,
-[data-marca='casa'] .sobrescrito {
   font-family: var(--fonte-corpo);
   font-size: .72rem;
   letter-spacing: .24em;
@@ -262,7 +284,10 @@ p:last-child { margin-bottom: 0; }
 
 .medida { max-width: var(--medida); }
 .discreto { color: var(--tinta-suave); }
-.pequeno { font-size: .86rem; }
+/* PISO DE 14 PX EM TODO O SITE. Abaixo disto ninguém lê num telemóvel ao fim do
+   dia, e havia 29 declarações mais pequenas — a menor num botão de acção. Há
+   uma guarda de construção que mata a publicação se voltar a aparecer alguma. */
+.pequeno { font-size: .875rem; }
 .centrado { text-align: center; margin-inline: auto; }
 
 /* --- esqueleto ------------------------------------------------------------ */
@@ -339,13 +364,30 @@ p:last-child { margin-bottom: 0; }
 }
 .ligacao:hover { border-bottom-color: var(--realce); }
 
-/* --- cabeçalho ------------------------------------------------------------ */
+/* --- cabeçalho -------------------------------------------------------------
+   O logótipo é GRANDE no topo e encolhe ao descer. A altura vive numa variável
+   para o cabeçalho, o logótipo, os elementos colados ao topo e o salto das
+   âncoras se moverem todos juntos. */
+
+:root { --altura-topo: 88px; --topo-encolhido: 56px; }
+@media (min-width: 60rem) { :root { --altura-topo: 112px; --topo-encolhido: 64px; } }
+.topo[data-compacto='sim'] { --altura-topo: var(--topo-encolhido); }
+
+/* Quem salta para uma âncora chega com a página já rolada, logo com o cabeçalho
+   já encolhido — o recuo mede-se pela altura ENCOLHIDA e não pela grande, senão
+   o título fica 50 px abaixo do que devia. */
+html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
+
+/* A sentinela é 1 px logo a seguir ao corpo: quando sai do ecrã, o cabeçalho
+   encolhe. Um IntersectionObserver em vez de um ouvinte de `scroll`, que corre
+   a cada pixel e faz o logótipo tremer em cima do limiar. */
+.sentinela { position: absolute; top: 0; height: 1px; width: 1px; pointer-events: none; }
 
 .topo {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--fundo) 88%, transparent);
+  background: color-mix(in srgb, var(--fundo) 92%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--linha);
 }
@@ -353,142 +395,190 @@ p:last-child { margin-bottom: 0; }
   display: flex;
   align-items: center;
   gap: var(--e4);
-  min-height: 66px;
+  min-height: var(--altura-topo);
   padding-block: var(--e2);
+  transition: min-height 180ms ease-out;
 }
-/* Os dois logótipos têm proporções muito diferentes — o da ithos é quase
-   quadrado (0,93:1) e o da cathelier é largo e baixo (2,19:1). Dar-lhes a mesma
-   altura deixava a palavra «cathelier» ilegível. Cada um tem a sua. */
-.topo__marca { display: flex; align-items: center; gap: var(--e2); text-decoration: none; flex: none; }
-.topo__marca img { width: auto; }
-[data-marca='ithos'] .topo__marca img { height: 40px; }
-[data-marca='cathelier'] .topo__marca img { height: 28px; }
-[data-marca='casa'] .topo__marca .marca-ithos { height: 32px; }
-[data-marca='casa'] .topo__marca .marca-cathelier { height: 22px; }
-.topo__marca .separador { color: var(--linha); }
 
-/* O logótipo é GRANDE quando se chega ao topo e encolhe ao descer. A altura é
-   uma variável só, para o cabeçalho, o logótipo e a margem do conteúdo colado
-   ao topo se moverem juntos. */
-.topo__marca img { transition: height 260ms cubic-bezier(.22,.61,.36,1); }
-.topo__barra { transition: min-height 260ms cubic-bezier(.22,.61,.36,1); }
+/* Anima-se a ALTURA do logótipo, nunca `transform: scale()` — o `scale` deixa a
+   área de clique do tamanho antigo e cria uma zona invisível a roubar cliques
+   ao menu que está ao lado. */
+.topo__marca { display: flex; align-items: center; text-decoration: none; flex: none; }
+.topo__marca img { width: auto; transition: height 180ms ease-out; }
 
-@media (min-width: 46rem) {
-  .topo__barra { min-height: 104px; }
+[data-marca='ithos'] .topo__marca img { height: 48px; }
+[data-marca='cathelier'] .topo__marca img { height: 34px; }
+.topo[data-compacto='sim'] .topo__marca img { height: 30px; }
+[data-marca='cathelier'] .topo[data-compacto='sim'] .topo__marca img { height: 24px; }
+
+@media (min-width: 60rem) {
   [data-marca='ithos'] .topo__marca img { height: 72px; }
-  [data-marca='cathelier'] .topo__marca img { height: 52px; }
-  [data-marca='casa'] .topo__marca .marca-ithos { height: 54px; }
-  [data-marca='casa'] .topo__marca .marca-cathelier { height: 36px; }
-
-  .topo[data-encolhido='sim'] .topo__barra { min-height: 68px; }
-  [data-marca='ithos'] .topo[data-encolhido='sim'] .topo__marca img,
-  .topo[data-encolhido='sim'] [data-marca='ithos'] .topo__marca img { height: 40px; }
-  [data-marca='cathelier'] .topo[data-encolhido='sim'] .topo__marca img { height: 30px; }
-  [data-marca='casa'] .topo[data-encolhido='sim'] .topo__marca .marca-ithos { height: 32px; }
-  [data-marca='casa'] .topo[data-encolhido='sim'] .topo__marca .marca-cathelier { height: 22px; }
+  [data-marca='cathelier'] .topo__marca img { height: 50px; }
+  .topo[data-compacto='sim'] .topo__marca img { height: 40px; }
+  [data-marca='cathelier'] .topo[data-compacto='sim'] .topo__marca img { height: 30px; }
 }
 
-/* No telemóvel o cabeçalho já é pequeno: encolher mais tira legibilidade ao
-   logótipo sem devolver ecrã que se note. */
-@media (max-width: 46rem) {
-  [data-marca='ithos'] .topo__marca img { height: 46px; }
-  [data-marca='cathelier'] .topo__marca img { height: 32px; }
-  .topo__barra { min-height: 72px; }
+@media (prefers-reduced-motion: reduce) {
+  .topo__barra, .topo__marca img { transition-duration: 0s; }
 }
 
-.topo__menu { display: flex; align-items: center; gap: var(--e3) var(--e4); margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+.topo__menu { display: flex; align-items: center; gap: var(--e4); margin-left: auto; }
 .topo__menu a {
   text-decoration: none;
-  font-size: .9rem;
+  font-size: .95rem;
   color: var(--tinta-suave);
-  transition: color var(--transicao);
+  padding-block: .5rem;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transicao), border-color var(--transicao);
 }
-[data-marca='cathelier'] .topo__menu a { text-transform: uppercase; letter-spacing: .14em; font-size: .74rem; }
-.topo__menu a:hover, .topo__menu a[aria-current='page'] { color: var(--realce); }
+.topo__menu a:hover { color: var(--tinta); }
+.topo__menu a[aria-current='page'] { color: var(--realce); border-bottom-color: var(--realce); }
 
-.topo__accoes { display: flex; align-items: center; gap: var(--e2); margin-left: auto; }
-.topo__menu + .topo__accoes { margin-left: 0; }
+/* Sem `margin-left` nenhum aqui: ao largo, quem empurra é o `.topo__menu`, que
+   já leva `margin-left:auto`. Uma regra `.topo__menu + .topo__accoes` a repor
+   zero chegou a existir — e como o menu continua a ser irmão mesmo escondido,
+   a especificidade dela (0,2,0) ganhava ao `margin-left:auto` do telemóvel
+   (0,1,0) e o cesto ficava colado ao botão do menu, à esquerda. */
+.topo__accoes { display: flex; align-items: center; gap: var(--e3); }
 
-/* A outra marca vive sempre no cabeçalho, mas discreta: quem entra pela
-   pesquisa tem de perceber num segundo onde está e que há mais. */
+/* A outra marca aparece com a LETRA dela, a COR dela e uma seta para fora,
+   separada do menu por um fio. Uma etiqueta não muda de tipo de letra nem
+   aponta para fora: é assim que se lê «caminho» e não «rótulo». */
 .topo__irma {
-  display: inline-flex;
+  display: none;
   align-items: baseline;
-  gap: var(--e1);
-  white-space: nowrap;
-  font-size: .78rem;
-  color: var(--tinta-suave);
+  gap: .4em;
   text-decoration: none;
-  padding: var(--e1) var(--e2);
-  border: 1px solid var(--linha);
-  border-radius: var(--raio-btn);
-  transition: border-color var(--transicao), color var(--transicao);
+  padding: .45em .9em;
+  border-left: 1px solid var(--linha);
+  white-space: nowrap;
+  font-size: .95rem;
 }
-.topo__irma:hover { border-color: var(--realce); color: var(--realce); }
-.topo__irma > span:first-child { font-weight: 500; color: var(--tinta); }
-.topo__irma:hover > span:first-child { color: var(--realce); }
-.topo__irma-nota { display: none; }
-/* A nota só entra quando há mesmo espaço. Abaixo disso, a pastilha crescia,
-   partia-se em duas linhas e empurrava o menu. */
-@media (min-width: 78rem) { .topo__irma-nota { display: inline; opacity: .7; } }
-.topo__irma img { height: 15px; width: auto; }
+@media (min-width: 60rem) { .topo__irma { display: inline-flex; } }
+.topo__irma[data-marca-irma='cathelier'] {
+  font-family: 'Marcellus', serif; text-transform: uppercase; letter-spacing: .12em;
+  font-size: .82rem; color: #4A4A3E;
+}
+.topo__irma[data-marca-irma='ithos'] {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #3E4527;
+}
+.topo__irma:hover { color: var(--realce); }
 
-.cesto { position: relative; display: inline-flex; align-items: center; gap: var(--e1);
-         text-decoration: none; padding: var(--e1) var(--e2); font-size: .9rem; }
+.cesto {
+  position: relative; display: inline-flex; align-items: center; gap: var(--e1);
+  text-decoration: none; padding: var(--e1); min-height: 44px; min-width: 44px;
+  justify-content: center;
+}
 .cesto__conta {
   min-width: 1.35rem; height: 1.35rem; padding-inline: .3rem;
   display: grid; place-items: center;
   background: var(--realce); color: var(--realce-tinta);
-  border-radius: 999px; font-size: .74rem; font-weight: 600; line-height: 1;
+  border-radius: 999px; font-size: .75rem; font-weight: 600; line-height: 1;
 }
 .cesto__conta:empty, .cesto__conta[data-vazio='sim'] { display: none; }
 
 .abrir-menu, .fechar-menu {
   display: none; background: none; border: 0; cursor: pointer;
-  width: 44px; height: 44px; align-items: center; justify-content: center;
-  color: var(--tinta);
+  width: 48px; height: 48px; align-items: center; justify-content: center;
+  color: var(--tinta); padding: 0;
 }
-.fechar-menu { position: absolute; top: var(--e2); right: var(--gaveta); z-index: 2; }
 
-/* No telemóvel o menu ocupa o ECRÃ TODO. Um painel encostado por baixo do
-   cabeçalho deixa metade do conteúdo à vista por trás e faz-se ler como um
-   acidente; a ecrã inteiro, é claro que se entrou noutro sítio. */
-@media (max-width: 56rem) {
-  .abrir-menu { display: inline-flex; order: 3; margin-left: auto; }
-  .topo__accoes { order: 2; margin-left: auto; }
-
-  .topo__menu {
-    position: fixed; inset: 0; z-index: 60;
-    display: flex; flex-direction: column; align-items: stretch;
-    gap: 0; padding: calc(72px + var(--e4)) var(--gaveta) var(--e6);
-    background: var(--fundo);
-    overflow-y: auto; overscroll-behavior: contain;
-    opacity: 0; visibility: hidden;
-    transform: translateY(-1.5rem);
-    transition: opacity 220ms ease, transform 260ms cubic-bezier(.22,.61,.36,1), visibility 220ms;
-  }
-  .topo__menu a {
-    padding-block: var(--e4); border-bottom: 1px solid var(--linha);
-    font-size: 1.25rem; color: var(--tinta);
-  }
-  [data-marca='cathelier'] .topo__menu a { font-size: 1rem; }
-  .topo[data-aberto='sim'] .topo__menu { opacity: 1; visibility: visible; transform: none; }
-  /* Enquanto o menu está aberto, o que está por trás não rola. */
-  body:has(.topo[data-aberto='sim']) { overflow: hidden; }
-
-  .fechar-menu { display: inline-flex; }
-  .topo__irma {
-    margin-top: var(--e5); justify-content: center; padding: var(--e3);
-    font-size: .95rem;
-  }
-  .topo__irma-nota { display: inline; opacity: .7; }
+@media (max-width: 60rem) {
+  .abrir-menu { display: inline-flex; margin-inline-start: calc(var(--gaveta) * -.35); }
+  .topo__menu { display: none; }
+  .topo__barra { gap: var(--e2); }
+  /* O logótipo fica ao centro por posicionamento absoluto: assim não se
+     desloca quando o contador do cesto passa de um para dois dígitos. */
+  .topo__marca { position: absolute; left: 50%; transform: translateX(-50%); }
+  .topo__accoes { margin-left: auto; }
 }
+
+/* --- gaveta: o menu de telemóvel -------------------------------------------
+   Um <dialog> nativo com showModal(). O foco entra, fica preso e o resto da
+   página fica inerte — três coisas que o `aria-modal` promete e não cumpre
+   sozinho. */
+
+.gaveta {
+  width: 100%; max-width: none;
+  height: 100dvh; max-height: 100dvh;   /* dvh e não vh: com vh, a última linha
+                                           fica debaixo da barra do Safari */
+  margin: 0; border: 0; padding: 0;
+  background: var(--fundo); color: var(--tinta);
+  overscroll-behavior: contain;
+  display: flex; flex-direction: column;
+}
+.gaveta::backdrop { background: var(--fundo); }   /* cor sólida: um blur custa
+                                                     caro nos telemóveis antigos */
+.gaveta:not([open]) { display: none; }
+
+.gaveta__topo {
+  display: flex; align-items: center; gap: var(--e2);
+  min-height: var(--altura-topo);
+  padding-inline: var(--gaveta);
+  border-bottom: 1px solid var(--linha);
+  flex: none;
+}
+/* O ✕ fica exactamente onde estava o ☰: o polegar não se desloca entre abrir
+   e fechar. */
+.fechar-menu { display: inline-flex; margin-inline-start: calc(var(--gaveta) * -.35); }
+.gaveta__marca { height: 40px; width: auto; position: absolute; left: 50%; transform: translateX(-50%); }
+[data-marca='cathelier'] .gaveta__marca { height: 28px; }
+.gaveta__topo .cesto { margin-left: auto; }
+
+.gaveta__menu { display: flex; flex-direction: column; padding-inline: var(--gaveta); }
+.gaveta__menu a {
+  display: flex; align-items: center; gap: var(--e3);
+  min-height: 60px; text-decoration: none;
+  border-bottom: 1px solid var(--linha);
+  font-size: 1.35rem; color: var(--tinta);
+}
+[data-marca='cathelier'] .gaveta__menu a { font-size: 1.1rem; letter-spacing: .04em; }
+.gaveta__menu a > span:first-child { flex: 1; }
+.gaveta__conta { font-size: .95rem; color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
+.gaveta__seta { color: var(--tinta-suave); }
+
+.gaveta__irma { padding: var(--e5) var(--gaveta) 0; }
+.porta-irma {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: 0 var(--e3); padding: var(--e4);
+  text-decoration: none; margin-top: var(--e2);
+}
+.porta-irma[data-marca-irma='cathelier'] {
+  background: #FBFAF7; border: 1px solid #DCD6CA; border-radius: 0;
+}
+.porta-irma[data-marca-irma='ithos'] {
+  background: #FBF5EF; border: 1px solid #E3D3C6; border-radius: var(--e3);
+}
+.porta-irma__nome { font-size: 1.3rem; }
+.porta-irma[data-marca-irma='cathelier'] .porta-irma__nome {
+  font-family: 'Marcellus', serif; text-transform: uppercase; letter-spacing: .16em;
+  font-size: 1.05rem; color: #28281E;
+}
+.porta-irma[data-marca-irma='ithos'] .porta-irma__nome {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #231F20;
+}
+.porta-irma__nota { grid-column: 1; font-size: .875rem; color: #5C5C50; }
+/* A COLUNA tem de ser dita. Um item com linha definida e coluna automática é
+   colocado ANTES dos itens totalmente automáticos (CSS Grid §8.5, passo 3) —
+   ficava na coluna 1 e empurrava o nome para a direita: lia-se «↗ CATHELIER»
+   em vez de «CATHELIER ↗». */
+.porta-irma__seta { grid-column: 2; grid-row: 1 / span 2; font-size: 1.1rem; color: var(--verde); }
+
+.gaveta__contactos { margin-top: auto; padding: var(--e5) var(--gaveta) var(--e6); }
+.gaveta__telefone { font-size: 1.5rem; text-decoration: none; color: var(--realce); }
+.gaveta__redes { display: flex; gap: var(--e4); margin-top: var(--e3); }
+.gaveta__redes a {
+  display: inline-flex; align-items: center; gap: .4em;
+  text-decoration: none; color: var(--tinta-suave); font-size: .95rem; min-height: 44px;
+}
+
+@media (min-width: 60rem) { .gaveta { display: none; } }
 
 /* --- rodapé --------------------------------------------------------------- */
 
 .rodape { background: var(--fundo-alt); border-top: 1px solid var(--linha); padding-block: var(--e6) var(--e5); }
 .rodape__grelha { display: grid; gap: var(--e5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
-.rodape h4 { font-family: var(--fonte-corpo); font-size: .74rem; letter-spacing: .2em;
+.rodape h4 { font-family: var(--fonte-corpo); font-size: .8rem; letter-spacing: .2em;
              text-transform: uppercase; color: var(--tinta-suave); margin-bottom: var(--e2); }
 .rodape ul { list-style: none; margin: 0; padding: 0; }
 .rodape li + li { margin-top: var(--e1); }

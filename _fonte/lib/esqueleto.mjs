@@ -1,11 +1,15 @@
-/* O esqueleto de todas as páginas: cabeça, cabeçalho, rodapé.
+/* O esqueleto de todas as páginas: cabeça, cabeçalho, menu, rodapé.
  *
  * `data-marca` é escrito no HTML servido, nunca posto por JavaScript: se fosse,
  * a página piscava na cor errada antes de trocar. É também ele que carrega as
- * variáveis todas — cor, forma, tipografia, ritmo. Trocar de marca é trocar um
- * atributo, e é por isso que só há uma folha de estilo. */
+ * variáveis todas — cor, forma, tipografia, ritmo.
+ *
+ * Só há DUAS marcas. A identidade neutra que as páginas partilhadas usavam
+ * desapareceu: quem estava na ithos e carregava em «Contactos» aterrava num
+ * terceiro sítio, cinzento, e sentia que tinha saído da loja. Agora as páginas
+ * partilhadas vestem a marca de onde se veio. */
 
-import { esc, url } from './util.mjs';
+import { esc } from './util.mjs';
 import { icone } from './icones.mjs';
 
 /* O custo da chamada é obrigatório JUNTO A CADA número de telefone (DL 59/2021).
@@ -18,61 +22,53 @@ const LOGO = {
   cathelier: '/assets/img/marca/cathelier.svg',
 };
 
+/** O menu é CURTO de propósito: categorias primeiro, institucional depois, e
+ *  nada que não sirva para comprar ou para falar connosco. «Cuidados e
+ *  segurança» sai da barra e vive no rodapé e em cada ficha — continua público
+ *  e permanente, que é o que a lei exige. */
 const MENU = {
   ithos: [
-    ['/ithos/candeeiros/', 'Candeeiros'],
-    ['/ithos/como-e-feito/', 'Como é feito'],
-    ['/ithos/cuidados-e-seguranca/', 'Cuidados'],
-    ['/contactos/', 'Contactos'],
-  ],
-  cathelier: [
-    ['/cathelier/', 'Ocasiões'],
-    ['/cathelier/como-trabalhamos/', 'Como trabalhamos'],
-    ['/cathelier/orcamento/', 'Pedir orçamento'],
-    ['/contactos/', 'Contactos'],
-  ],
-  casa: [
-    ['/ithos/', 'ithos'],
-    ['/cathelier/', 'cathelier'],
+    ['/candeeiros/', 'Candeeiros', 'candeeiros'],
     ['/sobre/', 'O ateliê'],
     ['/contactos/', 'Contactos'],
   ],
+  cathelier: [
+    ['/cathelier/', 'Ocasiões', 'ocasioes'],
+    ['/cathelier/pecas/', 'Peças', 'pecas'],
+    ['/cathelier/orcamento/', 'Pedir orçamento'],
+    ['/cathelier/atelier/', 'O ateliê'],
+  ],
 };
 
+/** Só no menu de telemóvel: o que não cabe na barra mas alguém procura. */
+const MENU_EXTRA = [['/contactos/#perguntas', 'Perguntas frequentes']];
+
+/* A outra marca aparece sempre com a LETRA dela, a COR dela e uma seta para
+ * fora. Uma etiqueta não muda de tipo de letra nem aponta para fora — é o que
+ * distingue «isto é um caminho» de «isto é um rótulo». */
 const IRMA = {
-  ithos: ['/cathelier/', 'cathelier', 'peças personalizadas'],
-  cathelier: ['/ithos/', 'ithos', 'candeeiros de presença'],
+  ithos: { caminho: '/cathelier/', nome: 'cathelier', nota: 'peças personalizadas' },
+  cathelier: { caminho: '/', nome: 'ithos', nota: 'candeeiros de presença' },
 };
 
-
-
-/**
- * @param {object} o
- * @param {'ithos'|'cathelier'|'casa'} o.marca
- */
 export function pagina(o) {
   const {
-    marca = 'casa', titulo, descricao, caminho, conteudo,
-    site, base = '', identidade, marcas, imagem, schema = [],
+    marca = 'ithos', titulo, descricao, caminho, conteudo,
+    site, base = '', identidade, imagem, schema = [], contagens = {},
     classeCorpo = '', naoIndexar = false, migalhas = null, estilosExtra = '', previa = false,
   } = o;
 
   const abs = (p) => `${site}${base}${p}`;
   const l = (p) => `${base}${p}`;
   const canonico = abs(caminho);
-  const tema = marca === 'ithos' ? '#FBF5EF' : marca === 'cathelier' ? '#FBFAF7' : '#F7F7F7';
+  const tema = marca === 'ithos' ? '#FBF5EF' : '#FBFAF7';
   const og = imagem ? (imagem.startsWith('http') ? imagem : abs(imagem)) : abs('/assets/img/partilha.jpg');
 
-  // Só se pré-carrega a tipografia da marca ATIVA. Pré-carregar as cinco seria
-  // gastar 200 KB do orçamento de rede para mostrar duas.
-  const tipos = {
-    ithos: ['bodoni-moda-latin', 'outfit-latin'],
-    cathelier: ['poiret-one-latin', 'jost-latin'],
-    casa: ['jost-latin'],
-  }[marca];
-
-  const menu = MENU[marca] ?? MENU.casa;
-  const irma = IRMA[marca];
+  // Dois ficheiros por página: o display da marca e o corpo. A Allura entra
+  // sozinha quando é precisa — é decorativa e nunca deve atrasar nada.
+  const tipos = marca === 'ithos'
+    ? ['fraunces-latin', 'figtree-latin']
+    : ['marcellus-latin', 'figtree-latin'];
 
   const ld = schema.length
     ? `<script type="application/ld+json">${JSON.stringify(schema.length === 1 ? schema[0] : schema)}</script>`
@@ -106,43 +102,25 @@ ${ld}
 </head>
 <body class="${esc(classeCorpo)}">
 <a class="saltar" href="#conteudo">Saltar para o conteúdo</a>
-${previa ? `<p class="tarja-previa" role="status">Pré-visualização — o site ainda não abriu. Não é possível comprar, e alguns dados estão por preencher.</p>` : ''}
+${previa ? '<p class="tarja-previa" role="status">Pré-visualização — o site ainda não abriu. Não é possível comprar, e alguns dados estão por preencher.</p>' : ''}
 
-<header class="topo" id="topo">
-  <div class="envolvente topo__barra">
-    <a class="topo__marca" href="${l(marca === 'casa' ? '/' : `/${marca}/`)}" aria-label="${marca === 'casa' ? 'ithos · cathelier — página inicial' : `${marca} — página inicial`}">
-      ${marca === 'casa'
-        ? `<img class="marca-ithos" src="${l('/assets/img/marca/ithos-simbolo.svg')}" alt="ithos" width="138" height="128">
-           <span class="separador" aria-hidden="true">·</span>
-           <img class="marca-cathelier" src="${l(LOGO.cathelier)}" alt="cathelier" width="117" height="54">`
-        : marca === 'ithos'
-          ? `<img src="${l(LOGO.ithos)}" alt="ithos — handmade in Portugal" width="130" height="140">`
-          : `<img src="${l(LOGO.cathelier)}" alt="cathelier" width="117" height="54">`}
-    </a>
-    <button class="abrir-menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir o menu">${icone('menu', 26)}</button>
-    <nav class="topo__menu" id="menu" aria-label="Menu principal">
-      <button class="fechar-menu" type="button" aria-label="Fechar o menu">${icone('fechar', 24)}</button>
-      ${menu.map(([h, t]) => `<a href="${l(h)}"${caminho === h ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('\n      ')}
-      ${irma ? `<a class="topo__irma" href="${l(irma[0])}" data-outra-marca><span>${esc(irma[1])}</span><span class="topo__irma-nota">${esc(irma[2])}</span></a>` : ''}
-    </nav>
-    <div class="topo__accoes">
-      <a class="cesto" href="${l('/carrinho/')}" aria-label="Carrinho de compras">
-        ${icone('carrinho', 22)}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
-      </a>
-    </div>
-  </div>
-</header>
+<!-- Sentinela de 1 px. O cabeçalho encolhe quando ela sai do ecrã, com um
+     IntersectionObserver — não com um ouvinte de scroll, que corre a cada
+     pixel e faz o logótipo tremer sobre o limiar. -->
+<div class="sentinela" aria-hidden="true"></div>
 
+${cabecalho({ marca, l, caminho })}
 ${migalhas ? migalhasHtml(migalhas, l) : ''}
 
 <main id="conteudo">
 ${conteudo}
 </main>
 
-${rodape({ marca, identidade, l, base })}
+${menuTelemovel({ marca, l, identidade, contagens })}
+${rodape({ marca, identidade, l })}
 
-<!-- O aviso só aparece a quem ainda não respondeu. Fica no HTML para não
-     depender de JavaScript para existir; o JavaScript só o esconde. -->
+<!-- O aviso só aparece a quem ainda não respondeu. Fica no HTML para existir
+     sem depender de JavaScript; o JavaScript só o esconde. -->
 <aside class="cookies" data-cookies hidden>
   <p><strong>Este site não usa cookies de análise nem de publicidade.</strong>
      O único conteúdo de terceiros é o mapa da Google na página de contactos, e
@@ -160,6 +138,94 @@ ${rodape({ marca, identidade, l, base })}
 `;
 }
 
+/* ------------------------------------------------------------ cabeçalho --- */
+
+function cabecalho({ marca, l, caminho }) {
+  const menu = MENU[marca] ?? MENU.ithos;
+  const irma = IRMA[marca];
+  const casa = marca === 'cathelier' ? '/cathelier/' : '/';
+
+  return `<header class="topo" data-compacto="nao">
+  <div class="envolvente topo__barra">
+    <button class="abrir-menu" type="button" aria-expanded="false" aria-controls="menu"
+            aria-label="Abrir o menu">${icone('menu', 26)}</button>
+
+    <a class="topo__marca" href="${l(casa)}" aria-label="${esc(marca)} — página inicial">
+      ${marca === 'ithos'
+        ? `<img src="${l(LOGO.ithos)}" alt="ithos — handmade in Portugal" width="130" height="140">`
+        : `<img src="${l(LOGO.cathelier)}" alt="cathelier" width="117" height="54">`}
+    </a>
+
+    <nav class="topo__menu" aria-label="Menu principal">
+      ${menu.map(([h, t]) => `<a href="${l(h)}"${caminho === h ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('\n      ')}
+    </nav>
+
+    <div class="topo__accoes">
+      ${irma ? `<a class="topo__irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca
+           aria-label="Ir para a ${esc(irma.nome)}, ${esc(irma.nota)}">
+        <span class="topo__irma-nome">${esc(irma.nome)}</span>
+        <span aria-hidden="true">↗</span>
+      </a>` : ''}
+      <a class="cesto" href="${l('/carrinho/')}" aria-label="Carrinho de compras">
+        ${icone('carrinho', 22)}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
+      </a>
+    </div>
+  </div>
+</header>`;
+}
+
+/* ------------------------------------------------------- menu de telemóvel -
+   Um <dialog> aberto com showModal(). Dá de graça as três coisas que o
+   `aria-modal` promete e não cumpre sozinho: o foco entra, fica preso, e o
+   resto da página fica inerte.
+
+   As contagens («Candeeiros 26») vêm dos dados: dizem ao visitante o tamanho
+   do que vai encontrar antes de carregar. */
+
+function menuTelemovel({ marca, l, identidade, contagens }) {
+  const menu = MENU[marca] ?? MENU.ithos;
+  const irma = IRMA[marca];
+  const conta = (chave) => (contagens[chave] ? `<span class="gaveta__conta">${contagens[chave]}</span>` : '');
+  const instagram = marca === 'cathelier' ? identidade.instagram_cathelier : identidade.instagram_ithos;
+
+  return `<dialog class="gaveta" id="menu" aria-label="Menu">
+  <div class="gaveta__topo">
+    <button class="fechar-menu" type="button" aria-label="Fechar o menu">${icone('fechar', 26)}</button>
+    <img class="gaveta__marca" src="${l(LOGO[marca])}" alt="${esc(marca)}"
+         ${marca === 'ithos' ? 'width="130" height="140"' : 'width="117" height="54"'}>
+    <a class="cesto" href="${l('/carrinho/')}" aria-label="Carrinho de compras">
+      ${icone('carrinho', 22)}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
+    </a>
+  </div>
+
+  <nav class="gaveta__menu" aria-label="Menu principal">
+    ${[...menu, ...MENU_EXTRA].map(([h, t, chave]) => `<a href="${l(h)}">
+      <span>${esc(t)}</span>${conta(chave)}<span class="gaveta__seta" aria-hidden="true">→</span>
+    </a>`).join('\n    ')}
+  </nav>
+
+  ${irma ? `<div class="gaveta__irma">
+    <p class="rotulo">A outra marca do mesmo ateliê</p>
+    <a class="porta-irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca>
+      <span class="porta-irma__nome">${esc(irma.nome)}</span>
+      <span class="porta-irma__nota">${esc(irma.nota)}</span>
+      <span class="porta-irma__seta" aria-hidden="true">↗</span>
+    </a>
+  </div>` : ''}
+
+  <div class="gaveta__contactos">
+    <a class="gaveta__telefone" href="tel:${esc(identidade.telefone)}">${esc(identidade.telefone_texto)}</a>
+    <p class="pequeno discreto">${esc(CUSTO_CHAMADA)}</p>
+    <p class="gaveta__redes">
+      <a href="https://wa.me/${esc(identidade.whatsapp)}" rel="noopener">${icone('whatsapp', 18)} WhatsApp</a>
+      <a href="${esc(instagram)}" rel="noopener">${icone('instagram', 18)} Instagram</a>
+    </p>
+  </div>
+</dialog>`;
+}
+
+/* ------------------------------------------------------------- migalhas --- */
+
 function migalhasHtml(itens, l) {
   return `<nav class="migalhas envolvente" aria-label="Onde está">
   <ol>${itens.map((it, i) => (i === itens.length - 1
@@ -168,36 +234,34 @@ function migalhasHtml(itens, l) {
 </nav>`;
 }
 
-function rodape({ marca, identidade, l, base }) {
+/* --------------------------------------------------------------- rodapé --- */
+
+function rodape({ marca, identidade, l }) {
   const i = identidade;
   const morada = [i.morada, [i.codigo_postal, i.localidade].filter(Boolean).join(' '), i.pais]
     .filter(Boolean).join(' · ');
 
-  // As redes da marca em que se está primeiro; as outras a seguir. Quem está na
-  // cathelier não quer o Facebook dos candeeiros à frente do Instagram das peças.
   const redes = marca === 'cathelier'
-    ? [[i.instagram_cathelier, 'Instagram', 'instagram'], [i.instagram_ithos, 'Instagram ithos', 'instagram']]
+    ? [[i.instagram_cathelier, 'Instagram', 'instagram'], [i.instagram_ithos, 'Instagram da ithos', 'instagram']]
     : [[i.instagram_ithos, 'Instagram', 'instagram'], [i.facebook_ithos, 'Facebook', 'facebook'],
-       [i.instagram_cathelier, 'Instagram cathelier', 'instagram']];
+       [i.instagram_cathelier, 'Instagram da cathelier', 'instagram']];
 
   return `<footer class="rodape">
   <div class="envolvente">
     <div class="rodape__grelha">
       <div class="rodape__coluna">
-        <h4>ithos</h4>
+        <h4>Candeeiros</h4>
         <ul>
-          <li><a href="${l('/ithos/')}">A marca</a></li>
-          <li><a href="${l('/ithos/candeeiros/')}">Candeeiros</a></li>
-          <li><a href="${l('/ithos/como-e-feito/')}">Como é feito</a></li>
-          <li><a href="${l('/ithos/cuidados-e-seguranca/')}">Cuidados e segurança</a></li>
+          <li><a href="${l('/candeeiros/')}">Todos os candeeiros</a></li>
+          <li><a href="${l('/sobre/#como-e-feito')}">Como é feito</a></li>
+          <li><a href="${l('/cuidados-e-seguranca/')}">Cuidados e segurança</a></li>
         </ul>
       </div>
       <div class="rodape__coluna">
         <h4>cathelier</h4>
         <ul>
-          <li><a href="${l('/cathelier/')}">A marca</a></li>
+          <li><a href="${l('/cathelier/')}">Ocasiões</a></li>
           <li><a href="${l('/cathelier/pecas/')}">Todas as peças</a></li>
-          <li><a href="${l('/cathelier/como-trabalhamos/')}">Como trabalhamos</a></li>
           <li><a href="${l('/cathelier/orcamento/')}">Pedir orçamento</a></li>
         </ul>
       </div>
@@ -206,9 +270,10 @@ function rodape({ marca, identidade, l, base }) {
         <ul>
           <li><a href="${l('/sobre/')}">O ateliê</a></li>
           <li><a href="${l('/contactos/')}">Contactos</a></li>
-          <li><a href="${l('/perguntas/')}">Perguntas frequentes</a></li>
+          <li><a href="${l('/contactos/#perguntas')}">Perguntas frequentes</a></li>
           <li><a href="${l('/legal/envios-e-devolucoes/')}">Envios e devoluções</a></li>
           <li><a href="${l('/legal/garantia/')}">Garantia de 3 anos</a></li>
+          <li><a href="${l('/legal/livre-resolucao/')}">Livre resolução</a></li>
         </ul>
       </div>
       <div class="rodape__coluna">
@@ -234,12 +299,12 @@ function rodape({ marca, identidade, l, base }) {
         <a href="${l('/legal/identificacao/')}">Identificação</a>
         <a href="${l('/legal/termos/')}">Termos e condições</a>
         <a href="${l('/legal/privacidade/')}">Privacidade</a>
-        <a href="${l('/legal/livre-resolucao/')}">Livre resolução</a>
         <a href="${l('/legal/reclamacoes/')}">Reclamações</a>
         <a class="rodape__livro" href="${esc(i.livro_reclamacoes)}" rel="noopener">
           ${icone('livro', 15)}Livro de Reclamações</a>
-        <a class="rodape__gestao" href="${esc(i.backoffice || 'https://renatovalente5.github.io/IthosCathelier-Backoffice/')}" rel="noopener nofollow">Gestão</a>
+        <a class="rodape__gestao" href="${esc(i.backoffice || '#')}" rel="noopener nofollow">Gestão</a>
       </nav>
+      <p class="rodape__familia">ithos e cathelier são duas marcas do mesmo ateliê, em ${esc(i.localidade)}.</p>
     </div>
   </div>
 </footer>`;

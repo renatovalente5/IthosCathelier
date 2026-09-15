@@ -99,9 +99,36 @@ def cartao_partilha():
     print(f'  + {alvo.relative_to(RAIZ)}')
 
 
+def cartao_cathelier():
+    """A cathelier tem casa própria e por isso tem cartão próprio.
+
+    Quando alguém partilha /cathelier/, o cartão das DUAS marcas diz a coisa
+    errada — quem recebe o link vem ver lembranças personalizadas, não uma loja
+    de candeeiros. O desenho é o da marca: fundo claro, fio, maiúsculas."""
+    alvo = IMG / 'partilha-cathelier.jpg'
+    tela = Image.new('RGB', (1200, 630), (251, 250, 247))
+    d = ImageDraw.Draw(tela)
+
+    cath = rasterizar(IMG / 'marca' / 'cathelier.svg', 640)
+    if cath is None:
+        print('  · partilha-cathelier.jpg: sem rasterizador, mantém-se o que está')
+        return
+    r = 420 / cath.width
+    cath = cath.resize((420, max(1, round(cath.height * r))), Image.LANCZOS)
+    tela.paste(cath, ((1200 - cath.width) // 2, 300 - cath.height // 2), cath)
+
+    # Dois fios finos, a moldura da marca. Não há mais nada: a cathelier é
+    # tipografia e espaço, e um cartão cheio deixaria de ser dela.
+    d.rectangle([160, 120, 1040, 121], fill=(214, 209, 198))
+    d.rectangle([160, 512, 1040, 513], fill=(214, 209, 198))
+    d.rectangle([564, 446, 636, 448], fill=VERDE)
+    tela.save(alvo, 'JPEG', quality=88, optimize=True)
+    print(f'  + {alvo.relative_to(RAIZ)}')
+
+
 if __name__ == '__main__':
     print('ícones:')
     icone_toque('ithos', VERDE)
     icone_toque('cathelier', (40, 40, 30))
-    icone_toque('casa', VERDE)
     cartao_partilha()
+    cartao_cathelier()

@@ -4,3 +4,4 @@ publico/
 _cache-imagens/
 .env
 *.local
+_indice-teste.json

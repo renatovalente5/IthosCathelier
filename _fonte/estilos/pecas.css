@@ -73,7 +73,7 @@
 .carrinho { display: grid; gap: clamp(var(--e4), 3vw, var(--e5)); grid-template-columns: 1fr; margin-top: var(--e5); }
 @media (min-width: 52rem) {
   .carrinho { grid-template-columns: 1fr 20rem; align-items: start; }
-  .carrinho__resumo { position: sticky; top: 92px; }
+  .carrinho__resumo { position: sticky; top: calc(var(--topo-encolhido) + var(--e3)); }
 }
 
 .grupo-marca { margin-bottom: var(--e5); }
@@ -222,7 +222,9 @@ body:has(.tarja-previa) [data-ir-encomenda] {
 .rodape__livro { display: inline-flex; align-items: center; gap: .35em; }
 /* A gestão é para uma pessoa só, e não é conteúdo do site: fica discreta, e
    fora do que os motores de busca seguem. */
-.rodape__gestao { color: var(--tinta-suave); opacity: .55; font-size: .74rem !important; }
+/* Discreto é a cor, não o tamanho: a 11,8 px deixava de se ler e de se
+   acertar com o dedo. Fica no corpo do resto do rodapé, esbatido. */
+.rodape__gestao { color: var(--tinta-suave); opacity: .6; font-size: .8rem !important; }
 .rodape__gestao:hover { opacity: 1; }
 
 /* --- aviso de cookies ------------------------------------------------------
@@ -241,11 +243,17 @@ body:has(.tarja-previa) [data-ir-encomenda] {
 .cookies p { margin: 0; font-size: .9rem; }
 .cookies__botoes { display: flex; flex-wrap: wrap; gap: var(--e2); }
 .cookies__botoes .botao { flex: 1 1 10rem; }
+/* Ao largo, encosta-se a um canto: um aviso que tapa o meio da página lê-se
+   como uma janela modal, e esta não é — dá para continuar a ler o site sem
+   lhe responder. Ao estreito, ocupa a largura toda em baixo, que é onde o
+   polegar chega. */
+@media (min-width: 46rem) { .cookies { margin-inline: 0 auto; } }
 @media (max-width: 30rem) { .cookies { inset: auto 0 0; border-radius: var(--raio-cartao) var(--raio-cartao) 0 0; max-width: none; } }
 
 /* --- mapa ------------------------------------------------------------------ */
 
 .mapa { display: grid; gap: var(--e3); }
+.mapa > h2 { font-size: calc(1.15rem * var(--escala)); }
 .mapa__caixa {
   aspect-ratio: 16 / 10; background: var(--fundo-alt);
   border: 1px solid var(--linha); border-radius: var(--raio-cartao);
@@ -273,3 +281,24 @@ body:has(.tarja-previa) [data-ir-encomenda] {
 
 .linha__forma { display: grid; place-items: center; width: 100%; height: 100%; color: var(--realce); }
 .linha__forma svg { width: 60%; height: 60%; }
+
+/* --- páginas de texto ------------------------------------------------------
+   Uma medida só, e o mesmo ritmo em todas: sobre, contactos, cuidados, ateliê.
+   Estavam com o padding escrito no atributo `style` de cada uma — e bastava
+   uma delas ser esquecida para o sítio ter duas larguras de leitura. */
+
+.pagina-texto {
+  padding-block: clamp(var(--e5), 5vw, var(--e6)) clamp(var(--e6), 8vw, var(--e8));
+  max-width: 46rem;
+}
+.pagina-texto > h1 { margin-bottom: var(--e5); }
+
+/* Uma secção que é alvo de âncora («#como-e-feito», «#perguntas»). O fio
+   separa-a do que vem antes, para quem lá chega a rolar perceber que começou
+   outra coisa. */
+.ancora, .perguntas, .mapa {
+  border-top: 1px solid var(--linha);
+  margin-top: clamp(var(--e6), 6vw, var(--e7));
+  padding-top: clamp(var(--e5), 4vw, var(--e6));
+}
+.perguntas > h2, .mapa > h2 { margin-bottom: var(--e4); }

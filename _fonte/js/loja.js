@@ -146,57 +146,48 @@
 
   /* ------------------------------------------------------------- menu ----- */
 
-  const topo = $('.topo');
-  const botaoMenu = $('.abrir-menu');
-  if (topo && botaoMenu) {
-    const fecharMenu = (devolverFoco = true) => {
-      topo.dataset.aberto = 'nao';
-      botaoMenu.setAttribute('aria-expanded', 'false');
-      if (devolverFoco) botaoMenu.focus();
-    };
-    botaoMenu.addEventListener('click', () => {
-      const aberto = topo.dataset.aberto === 'sim';
-      topo.dataset.aberto = aberto ? 'nao' : 'sim';
-      botaoMenu.setAttribute('aria-expanded', String(!aberto));
-      // A ecrã inteiro, o primeiro item tem de receber o foco — senão quem
-      // navega por teclado abre o menu e continua algures atrás dele.
-      if (!aberto) $('.topo__menu a')?.focus();
-    });
-    $('.fechar-menu')?.addEventListener('click', () => fecharMenu());
-    // Seguir uma ligação fecha o menu: sem isto, voltar atrás no browser
-    // devolve a página com o menu ainda por cima.
-    for (const a of $$('.topo__menu a')) a.addEventListener('click', () => fecharMenu(false));
-    // Fechar com Escape devolve o foco ao botão: senão o foco fica num menu que
-    // já não está no ecrã e a tabulação parece partida.
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && topo.dataset.aberto === 'sim') fecharMenu();
-    });
+  {
+    const gaveta = $('#menu');
+    const abrir = $('.abrir-menu');
+    if (gaveta && abrir) {
+      const fechar = () => { if (gaveta.open) gaveta.close(); };
+      abrir.addEventListener('click', () => {
+        // `showModal` trata do foco, da armadilha de tabulação e de tornar o
+        // resto da página inerte. Escrever isso à mão são três promessas que
+        // quase ninguém cumpre até ao fim.
+        gaveta.showModal();
+        abrir.setAttribute('aria-expanded', 'true');
+        $('.gaveta__menu a', gaveta)?.focus();
+      });
+      $('.fechar-menu', gaveta)?.addEventListener('click', fechar);
+      // Seguir uma ligação fecha a gaveta: sem isto, voltar atrás no browser
+      // devolve a página com o menu ainda por cima.
+      for (const a of $$('.gaveta a', gaveta)) a.addEventListener('click', fechar);
+      gaveta.addEventListener('close', () => {
+        abrir.setAttribute('aria-expanded', 'false');
+        abrir.focus();
+      });
+      // O <dialog> já fecha com Esc sozinho; isto é só para o caso de o
+      // browser não o fazer.
+      gaveta.addEventListener('cancel', () => abrir.setAttribute('aria-expanded', 'false'));
+    }
   }
 
-  /* ------------------------------------------------ cabeçalho a encolher --
-     O logótipo é grande no topo e encolhe quando se desce, para não roubar
-     ecrã ao conteúdo; volta a crescer quando se sobe. A classe é posta no
-     `<header>` e o tamanho vive no CSS — assim respeita
-     `prefers-reduced-motion` sem código extra.
+  /* -------------------------------------------- cabeçalho a encolher ------
+     O cabeçalho encolhe quando a sentinela de 1 px sai do ecrã. Um
+     IntersectionObserver em vez de um ouvinte de `scroll`: o ouvinte corre a
+     cada pixel e, com um limiar só, faz o logótipo tremer entre dois tamanhos
+     quando alguém pára a rolagem mesmo em cima dele.
 
-     Duas margens diferentes de propósito (120 px para encolher, 60 px para
-     crescer): com um só limiar, uma rolagem parada mesmo em cima dele fazia o
-     logótipo tremer entre os dois tamanhos. */
-  if (topo) {
-    let encolhido = false;
-    let agendado = false;
-    const avaliar = () => {
-      agendado = false;
-      const y = window.scrollY;
-      if (!encolhido && y > 120) { encolhido = true; topo.dataset.encolhido = 'sim'; }
-      else if (encolhido && y < 60) { encolhido = false; topo.dataset.encolhido = 'nao'; }
-    };
-    addEventListener('scroll', () => {
-      if (agendado) return;
-      agendado = true;
-      requestAnimationFrame(avaliar);
-    }, { passive: true });
-    avaliar();
+     Se o JavaScript falhar, fica a barra grande — que é o estado pedido. */
+  {
+    const topo = $('.topo');
+    const sentinela = $('.sentinela');
+    if (topo && sentinela && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => {
+        topo.dataset.compacto = e.isIntersecting ? 'nao' : 'sim';
+      }, { threshold: 0 }).observe(sentinela);
+    }
   }
 
   /* ------------------------------------------ transição entre as marcas --- */

@@ -21,7 +21,7 @@ export function carrinho(d, ctx) {
   <div data-carrinho-vazio hidden class="painel centrado" style="margin-top:var(--e5)">
     <p>Ainda não tem nada no carrinho.</p>
     <p style="margin-top:var(--e3)">
-      <a class="botao" href="${l('/ithos/candeeiros/')}">Ver os candeeiros</a>
+      <a class="botao" href="${l('/candeeiros/')}">Ver os candeeiros</a>
       <a class="botao botao--vazio" href="${l('/cathelier/')}" data-outra-marca>Ver a cathelier</a>
     </p>
   </div>
@@ -73,7 +73,7 @@ export function encomenda(d, ctx) {
 
   <div data-encomenda-vazia hidden class="painel centrado" style="margin-top:var(--e5)">
     <p>O carrinho está vazio.</p>
-    <p style="margin-top:var(--e3)"><a class="botao" href="${l('/ithos/candeeiros/')}">Ver os candeeiros</a></p>
+    <p style="margin-top:var(--e3)"><a class="botao" href="${l('/candeeiros/')}">Ver os candeeiros</a></p>
   </div>
 
   <div data-encomenda-cheia hidden style="margin-top:var(--e5)">

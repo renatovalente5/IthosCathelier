@@ -38,7 +38,7 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
     p.slug = slug;
     p.marca = 'ithos';
     p.dir = `ithos/${slug}`;
-    p.caminho = `/ithos/candeeiros/${slug}/`;
+    p.caminho = `/candeeiros/${slug}/`;
 
     if (!p.publicado) { ithos.push(p); continue; }
 
@@ -105,6 +105,15 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
     }
   }
 
+  // --- perguntas frequentes ------------------------------------------------
+  // Vivem num JSON e não num markdown porque a marcação FAQPage precisa de
+  // pergunta e resposta separadas, e porque a página inicial mostra as três
+  // primeiras sem as reescrever.
+  const perguntas = ler(join(C, 'paginas', 'perguntas.json'));
+  for (const [i, q] of perguntas.entries()) {
+    if (!q.pergunta || !q.resposta) erros.push(`perguntas.json: a pergunta n.º ${i + 1} está incompleta`);
+  }
+
   // --- páginas de texto ----------------------------------------------------
   const paginas = {};
   const dirPag = join(C, 'paginas');
@@ -140,7 +149,7 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
   pecas.sort((a, b) => (a.ordem ?? 999) - (b.ordem ?? 999));
   for (const c of categorias) c.pecas = pecas.filter((p) => p.categoria === c.slug && p.publicado);
 
-  return { identidade, fiscal, portes, loja, marcas, ithos, categorias, pecas, paginas, legais, erros };
+  return { identidade, fiscal, portes, loja, marcas, ithos, categorias, pecas, perguntas, paginas, legais, erros };
 }
 
 /** O preço de partida de um produto (o mais baixo, contando suplementos). */
