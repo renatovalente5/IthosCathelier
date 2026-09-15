@@ -59,10 +59,18 @@ if (paginas.length < 30) erros.push(`só ${paginas.length} páginas — esperava
  *  sai codificado no HTML e no disco chama-se outra coisa. Sem descodificar, a
  *  guarda acusa ficheiros que existem — e como tudo depende dela, nada vai ao ar. */
 function existeNoSite(endereco) {
-  let u = decodeURIComponent(endereco.split('#')[0].split('?')[0]);
-  if (!u.startsWith('/')) return true;                 // relativo: não se usa aqui
-  if (BASE && u.startsWith(BASE)) u = u.slice(BASE.length);
-  const rel = u.replace(/^\//, '');
+  const u0 = decodeURIComponent(endereco.split('#')[0].split('?')[0]);
+  if (!u0.startsWith('/')) return true;                // relativo: não se usa aqui
+
+  // O PREFIXO É OBRIGATÓRIO quando existe. Esta guarda começou por o ignorar —
+  // tirava-o se lá estivesse e seguia se não estivesse — e por isso deixou
+  // passar TODAS as fotografias do site: eram escritas sem prefixo, existiam no
+  // disco, e só davam 404 depois de publicadas. Um endereço absoluto sem o
+  // prefixo não é um endereço deste site.
+  if (BASE) {
+    if (!u0.startsWith(`${BASE}/`) && u0 !== BASE) return false;
+  }
+  const rel = (BASE ? u0.slice(BASE.length) : u0).replace(/^\//, '');
   if (rel === '' || rel.endsWith('/')) return existsSync(join(SAIDA, rel, 'index.html'));
   return existsSync(join(SAIDA, rel)) || existsSync(join(SAIDA, rel, 'index.html'));
 }

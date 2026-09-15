@@ -238,7 +238,7 @@ for (const [caminho, marca, chave, titulo, descricao] of paginasTexto) {
     descricao,
     conteudo: `<article class="envolvente" style="padding-block:var(--e5) var(--e7);max-width:44rem">
   <h1>${esc(titulo)}</h1>
-  <div class="prosa">${md(textoPagina(chave))}</div>
+  <div class="prosa">${md(textoPagina(chave), BASE)}</div>
 </article>`,
     migalhas,
     schema: [mig(migalhas)],
@@ -289,7 +289,7 @@ for (const [chave, titulo] of LEGAIS) {
     descricao: `${titulo} da loja ithos · cathelier.`,
     conteudo: `<article class="envolvente" style="padding-block:var(--e5) var(--e7);max-width:42rem">
   <h1>${esc(titulo)}</h1>
-  <div class="prosa">${md(aplicar(d.legais[chave] ?? '', d, `conteudo/legal/${chave}.md`))}</div>
+  <div class="prosa">${md(aplicar(d.legais[chave] ?? '', d, `conteudo/legal/${chave}.md`), BASE)}</div>
   <p class="pequeno discreto" style="margin-top:var(--e6)">Última atualização: ${esc(ultimaAlteracao(`conteudo/legal/${chave}.md`) ?? catalogo.gerado)}.</p>
 </article>`,
     migalhas,

@@ -7,7 +7,7 @@ import { personalizacao } from './dados.mjs';
 /* ============================================================ o portal ==== */
 
 export function portal(d, ctx) {
-  const { l, raiz } = ctx;
+  const { l, raiz, base } = ctx;
   const { marcas, ithos } = d;
   const capa = ithos.find((p) => p.publicado && p.slug === 'raposa') ?? ithos.find((p) => p.publicado);
 
@@ -23,7 +23,7 @@ export function portal(d, ctx) {
 <section class="portas envolvente">
   <a class="porta porta--ithos" href="${l('/ithos/')}" data-outra-marca>
     <div class="porta__foto">
-      ${capa ? figura({ raiz, dir: capa.dir, base: capa.fotos[0], alt: '',
+      ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[0], alt: '',
         sizes: '(min-width: 48rem) 45vw, 90vw', prioridade: true }) : ''}
     </div>
     <div class="porta__corpo">
@@ -64,7 +64,7 @@ export function portal(d, ctx) {
 /* ========================================================= ithos: casa ==== */
 
 export function casaIthos(d, ctx) {
-  const { l, raiz } = ctx;
+  const { l, raiz, base } = ctx;
   const m = d.marcas.ithos;
   const publicados = d.ithos.filter((p) => p.publicado);
   const destaques = publicados.filter((p) => p.destaque).slice(0, 6);
@@ -89,7 +89,7 @@ export function casaIthos(d, ctx) {
     </div>
     <div class="heroi__peca">
       <div class="arco">
-        ${capa ? figura({ raiz, dir: capa.dir, base: capa.fotos[0], alt: `Candeeiro ${capa.nome} aceso`,
+        ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[0], alt: `Candeeiro ${capa.nome} aceso`,
           sizes: '(min-width: 52rem) 46vw, 92vw', prioridade: true }) : ''}
       </div>
     </div>
@@ -124,7 +124,7 @@ ${destaques.length ? `
 <section class="seccao seccao--alt">
   <div class="envolvente" style="display:grid;gap:clamp(2rem,5vw,4rem);grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));align-items:center">
     <div class="arco">
-      ${(() => { const s = publicados.find((p) => p.slug === 'ourico'); return s ? figura({ raiz, dir: s.dir, base: s.fotos[0], alt: '', sizes: '(min-width: 48rem) 45vw, 92vw' }) : ''; })()}
+      ${(() => { const s = publicados.find((p) => p.slug === 'ourico'); return s ? figura({ raiz, base, dir: s.dir, nome: s.fotos[0], alt: '', sizes: '(min-width: 48rem) 45vw, 92vw' }) : ''; })()}
     </div>
     <div>
       <span class="sobrescrito">Sobre nós</span>
@@ -192,9 +192,9 @@ function familia(slug) {
 }
 
 export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
-  const { l, raiz } = ctx;
+  const { l, raiz, base } = ctx;
   const foto = figura({
-    raiz, dir: p.dir, base: p.fotos[0], alt: `Candeeiro ${p.nome}`,
+    raiz, base, dir: p.dir, nome: p.fotos[0], alt: `Candeeiro ${p.nome}`,
     sizes: '(min-width: 60rem) 22rem, (min-width: 40rem) 45vw, 90vw',
   });
   const etiqueta = p.estado === 'esgotado'
@@ -213,7 +213,7 @@ export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
 /* ======================================================= ithos: ficha ===== */
 
 export function fichaIthos(p, d, ctx) {
-  const { l, raiz } = ctx;
+  const { l, raiz, base } = ctx;
   const pers = personalizacao(p);
   const prazo = p.estado === 'em_stock' ? d.loja.prazos.texto_em_stock
     : p.estado === 'esgotado' ? d.loja.prazos.texto_esgotado
@@ -230,12 +230,12 @@ export function fichaIthos(p, d, ctx) {
   <div class="ficha__galeria">
     <div class="galeria">
       <div class="galeria__principal arco" data-galeria-principal>
-        ${figura({ raiz, dir: p.dir, base: p.fotos[0], alt: `Candeeiro ${p.nome}`,
+        ${figura({ raiz, base, dir: p.dir, nome: p.fotos[0], alt: `Candeeiro ${p.nome}`,
           sizes: '(min-width: 56rem) 52vw, 92vw', prioridade: true })}
       </div>
       ${p.fotos.length > 1 ? `<div class="galeria__tiras" role="group" aria-label="Fotografias de ${esc(p.nome)}">
         ${p.fotos.map((f, i) => `<button class="galeria__tira" type="button" data-foto="${esc(f)}" aria-current="${i === 0}" aria-label="Fotografia ${i + 1}">
-          ${figura({ raiz, dir: p.dir, base: f, alt: '', sizes: '72px' })}
+          ${figura({ raiz, base, dir: p.dir, nome: f, alt: '', sizes: '72px' })}
         </button>`).join('\n        ')}
       </div>` : ''}
     </div>
@@ -397,7 +397,7 @@ export function casaCathelier(d, ctx) {
 /* ================================================ cathelier: categoria ==== */
 
 export function categoriaCathelier(c, d, ctx) {
-  const { l, raiz } = ctx;
+  const { l, raiz, base } = ctx;
   const pecas = d.pecas.filter((p) => p.categoria === c.slug && p.publicado);
 
   return `
@@ -426,7 +426,7 @@ export function categoriaCathelier(c, d, ctx) {
     <div class="trabalhos">
       ${pecas.map((p) => `<figure class="trabalho">
         ${temFoto(raiz, p.dir, (p.fotos ?? [])[0] ?? '')
-          ? `<div class="foto">${figura({ raiz, dir: p.dir, base: p.fotos[0], alt: esc(p.nome), sizes: '(min-width: 48rem) 20rem, 90vw' })}</div>`
+          ? `<div class="foto">${figura({ raiz, base, dir: p.dir, nome: p.fotos[0], alt: esc(p.nome), sizes: '(min-width: 48rem) 20rem, 90vw' })}</div>`
           : `<div class="sem-foto"><span>${esc(p.nome)}</span></div>`}
         <figcaption><b>${esc(p.nome)}</b>${p.resumo ? esc(p.resumo) : ''}</figcaption>
       </figure>`).join('\n      ')}

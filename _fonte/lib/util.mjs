@@ -26,13 +26,20 @@ export const euros = (n) =>
 /** Markdown minúsculo: parágrafos, **negrito**, *itálico*, [ligações](url),
  *  listas com «- » e títulos com «## ». Chega para textos legais e de página, e
  *  não traz uma dependência que envelhece. */
-export function md(texto) {
+/** @param {string} base  prefixo dos endereços internos. Sem ele, um
+ *  `[garantia](/legal/garantia/)` escrito num texto sai literal e dá 404
+ *  assim que o site é publicado debaixo do nome do repositório — coisa que em
+ *  local nunca se vê, porque em local o prefixo é vazio. */
+export function md(texto, base = '') {
   if (!texto) return '';
   const linha = (t) => esc(t)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[\s(])\*([^*]+)\*/g, '$1<em>$2</em>')
-    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, t2, h) =>
-      `<a href="${esc(h)}"${h.startsWith('http') ? ' rel="noopener"' : ''}>${t2}</a>`);
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, t2, h) => {
+      const externo = /^(https?:|mailto:|tel:|#)/.test(h);
+      const alvo = externo || h.startsWith('//') ? h : `${base}${h}`;
+      return `<a href="${esc(alvo)}"${externo && h.startsWith('http') ? ' rel="noopener"' : ''}>${t2}</a>`;
+    });
 
   const saida = [];
   let lista = null;
@@ -95,17 +102,17 @@ const LARGURAS = [400, 800, 1200, 1600];
  * dá um pedido falhado por cada cartão da montra, sem erro visível em lado
  * nenhum a não ser na conta de dados de quem está no telemóvel.
  */
-export function figura({ raiz, base, dir, alt, sizes, classe = '', prioridade = false, proporcao = '' }) {
+export function figura({ raiz, base = '', nome, dir, alt, sizes, classe = '', prioridade = false, proporcao = '' }) {
   const pasta = join(raiz, 'media', dir);
   if (!existsSync(pasta)) return '';
   const presentes = new Set(readdirSync(pasta));
-  const tem = (w, ext) => presentes.has(`${base}-${w}.${ext}`);
+  const tem = (w, ext) => presentes.has(`${nome}-${w}.${ext}`);
   const largurasWebp = LARGURAS.filter((w) => tem(w, 'webp'));
   if (!largurasWebp.length) return '';
   const largurasAvif = LARGURAS.filter((w) => tem(w, 'avif'));
 
   const conj = (ws, ext) => ws
-    .map((w) => `${url(`/media/${dir}/${base}-${w}.${ext}`)} ${w}w`).join(', ');
+    .map((w) => `${base}${url(`/media/${dir}/${nome}-${w}.${ext}`)} ${w}w`).join(', ');
 
   const maior = largurasWebp[largurasWebp.length - 1];
   const carga = prioridade
@@ -115,7 +122,7 @@ export function figura({ raiz, base, dir, alt, sizes, classe = '', prioridade = 
   return `<picture>${
     largurasAvif.length ? `<source type="image/avif" srcset="${conj(largurasAvif, 'avif')}" sizes="${esc(sizes)}">` : ''
   }<source type="image/webp" srcset="${conj(largurasWebp, 'webp')}" sizes="${esc(sizes)}">` +
-    `<img src="${url(`/media/${dir}/${base}-${maior}.webp`)}" alt="${esc(alt)}"` +
+    `<img src="${base}${url(`/media/${dir}/${nome}-${maior}.webp`)}" alt="${esc(alt)}"` +
     `${classe ? ` class="${esc(classe)}"` : ''}${proporcao ? ` width="${proporcao.split('x')[0]}" height="${proporcao.split('x')[1]}"` : ''}${carga}></picture>`;
 }
 
