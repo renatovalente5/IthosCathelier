@@ -631,3 +631,19 @@ html[data-troca-marca='sim']::view-transition-new(root) { animation: cortina-ent
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
 }
+
+/* --- alvos de toque -------------------------------------------------------
+   Medido, não presumido: as ligações do menu e do rodapé ficavam com 18 a 21 px
+   de altura. A norma WCAG 2.5.8 pede 24×24 px, e num telemóvel isso é a
+   diferença entre acertar e falhar. Ganha-se altura com `padding` vertical, que
+   não mexe no ritmo do texto — ao contrário do `line-height`. */
+
+.topo__menu a { padding-block: .4rem; }
+.rodape a { display: inline-block; padding-block: .25rem; }
+.rodape__legal a { padding-block: .3rem; }
+.migalhas a { display: inline-block; padding-block: .25rem; }
+.cesto { min-height: 44px; }
+
+/* Uma ligação no meio de uma frase está isenta da norma (a excepção da
+   «inline»), mas nas que vivem sozinhas num parágrafo vale a pena. */
+p > .ligacao:only-child { display: inline-block; padding-block: .25rem; }

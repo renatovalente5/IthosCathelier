@@ -1,0 +1,31 @@
+<!doctype html><meta charset=utf-8><title>bateria</title>
+<body style="font:13px/1.5 ui-monospace,monospace;padding:1rem">
+<div id=saida>a correr…</div>
+<script type=module>
+const PAGINAS = ['/','/ithos/','/ithos/candeeiros/','/ithos/candeeiros/raposa/','/cathelier/',
+ '/cathelier/casamento/','/cathelier/orcamento/','/carrinho/','/encomenda/','/legal/termos/',
+ '/perguntas/','/contactos/','/ithos/cuidados-e-seguranca/','/sobre/'];
+window.__resultados = {};
+const saida = document.getElementById('saida');
+const L = Number(new URLSearchParams(location.search).get('w') || 1280);
+for (const pag of PAGINAS) {
+  const f = document.createElement('iframe');
+  f.style.cssText = `width:${L}px;height:900px;border:0;position:absolute;left:-9999px`;
+  f.src = pag;
+  document.body.appendChild(f);
+  await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
+  await new Promise(r => setTimeout(r, 900));
+  try {
+    const w = f.contentWindow;
+    const s = w.document.createElement('script');
+    s.src = '/_bateria.js?v=' + L + Math.floor(performance.now());
+    w.document.head.appendChild(s);
+    await new Promise(r => { s.onload = r; setTimeout(r, 2500); });
+    window.__resultados[pag] = w.__bateria();
+  } catch (e) { window.__resultados[pag] = { erro: String(e) }; }
+  f.remove();
+  saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;
+}
+window.__pronto = true;
+saida.textContent = 'pronto: ' + Object.keys(window.__resultados).length + ' páginas';
+</script>

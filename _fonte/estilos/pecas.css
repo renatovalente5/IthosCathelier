@@ -38,7 +38,7 @@
   font-family: 'Poiret One', sans-serif;
   font-size: clamp(1rem, .8rem + 1.1vw, 1.7rem);
   letter-spacing: .12em; text-transform: uppercase;
-  color: #6E6E5E;
+  color: #666656;   /* 5,0:1 sobre #F1EDE5 — o #6E6E5E anterior dava 4,44 */
 }
 .porta__foto--tipografica span:nth-child(3n) { color: var(--verde); }
 
@@ -177,7 +177,7 @@
 .aceitar:has(input:checked) { border-color: var(--realce); background: color-mix(in srgb, var(--realce) 7%, var(--fundo)); }
 .aceitar:has(input:focus-visible) { outline: 2px solid var(--realce); outline-offset: 3px; }
 .aceitar input[type='checkbox'] {
-  width: 1.25rem; height: 1.25rem; margin: .12rem 0 0;
+  width: 1.4rem; height: 1.4rem; margin: .06rem 0 0;
   accent-color: var(--realce);
   flex: none; cursor: pointer;
 }
