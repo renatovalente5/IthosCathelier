@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+publico/
+_cache-imagens/
+.env
+*.local
