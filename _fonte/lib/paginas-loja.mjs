@@ -215,6 +215,13 @@ export function orcamento(d, ctx) {
       <label for="o-quantidade">Quantidade aproximada</label>
       <input type="text" id="o-quantidade" name="quantidade" placeholder="Por exemplo: 80 lembranças">
     </div>
+    <!-- Isco de robô: um campo que só um programa preenche. Fica escondido do
+         ecrã E dos leitores de ecrã, e o Worker descarta em silêncio o que
+         chegar com ele preenchido. -->
+    <div hidden aria-hidden="true">
+      <label for="o-empresa">Empresa</label>
+      <input type="text" id="o-empresa" name="empresa" tabindex="-1" autocomplete="off">
+    </div>
     <div class="campo">
       <label for="o-mensagem">O que precisa</label>
       <textarea id="o-mensagem" name="mensagem" required
