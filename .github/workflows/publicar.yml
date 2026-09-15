@@ -111,6 +111,29 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+    outputs:
+      # Sem barra final: o rastreio junta os caminhos, e duas barras seguidas
+      # dão 404 no GitHub Pages.
+      url: ${{ steps.limpar.outputs.url }}
     steps:
       - id: deploy
         uses: actions/deploy-pages@v4
+      - id: limpar
+        run: echo "url=${URL%/}" >> "$GITHUB_OUTPUT"
+        env:
+          URL: ${{ steps.deploy.outputs.page_url }}
+
+  # Depois de publicar, segue o sítio NO SERVIDOR. É a única verificação que
+  # apanha um prefixo em falta: a construção local corre com BASE vazio, e uma
+  # ligação sem prefixo resolve à mesma. Já custou as fotografias todas a dar
+  # 404 durante uma publicação inteira, sem um único erro visível.
+  rastrear:
+    needs: publicar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Seguir o sítio publicado
+        run: node scripts/rastrear-publicado.mjs "${{ needs.publicar.outputs.url }}"
