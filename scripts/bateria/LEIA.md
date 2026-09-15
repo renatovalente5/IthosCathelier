@@ -38,3 +38,11 @@ outra vez a seguir a cada construção. Não entram no site publicado.
 E, depois de calibrada, apanhou o que era mesmo verdade: as ligações do menu e
 do rodapé com 18 a 21 px de altura, e as palavras do portal a 4,44:1 — seis
 centésimas abaixo do mínimo, coisa que não se vê a olho.
+
+- **Um carrinho vazio dá duas páginas por boas.** `/carrinho/` e `/encomenda/`
+  passaram três larguras seguidas por não terem nada lá dentro: com o cesto
+  vazio são uma frase cada. Um teste manual deixou dois artigos no
+  `localStorage` e a corrida seguinte acusou logo ligações de 19 px, abaixo dos
+  24 px da norma. Desde então o condutor **semeia o cesto** (uma peça de cada
+  marca) e repõe o que lá estava ao sair. A regra generaliza-se: uma página que
+  depende de estado tem de ser medida COM esse estado.

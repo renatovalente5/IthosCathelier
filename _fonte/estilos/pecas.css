@@ -97,7 +97,9 @@
 .linha__foto { border-radius: var(--e1); overflow: hidden; aspect-ratio: 1; background: var(--fundo-alt); }
 .linha__foto img { width: 100%; height: 100%; object-fit: cover; }
 .linha__nome { font-weight: 500; margin: 0 0 var(--e0); }
-.linha__nome a { text-decoration: none; }
+/* O nome é a ÚNICA maneira de voltar à ficha a partir do carrinho — a 19 px de
+   altura falhava a norma dos 24 px (WCAG 2.5.8) e falhava o polegar. */
+.linha__nome a { text-decoration: none; display: inline-block; padding-block: .25rem; }
 .linha__nome a:hover { text-decoration: underline; }
 .linha__opcoes { font-size: .85rem; color: var(--tinta-suave); margin: 0; }
 .linha__fim { display: flex; align-items: center; gap: var(--e3); margin-top: var(--e2); }
@@ -219,7 +221,10 @@ body:has(.tarja-previa) [data-ir-encomenda] {
 .rodape__identificacao { font-size: .8rem; }
 .rodape__legal { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3); align-items: center; }
 .rodape__legal a { font-size: .8rem; }
-.rodape__livro { display: inline-flex; align-items: center; gap: .35em; }
+/* `.rodape a` (0,1,1) declara `inline-block` para dar altura de toque, e ganha
+   a um `.rodape__livro` (0,1,0). O resultado era o ícone numa linha e «Livro de
+   Reclamações» na de baixo. A classe tem de ser pelo menos tão específica. */
+.rodape .rodape__livro { display: inline-flex; align-items: center; gap: .35em; white-space: nowrap; }
 /* A gestão é para uma pessoa só, e não é conteúdo do site: fica discreta, e
    fora do que os motores de busca seguem. */
 /* Discreto é a cor, não o tamanho: a 11,8 px deixava de se ler e de se

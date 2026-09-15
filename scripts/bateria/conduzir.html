@@ -9,6 +9,29 @@ const PAGINAS = ['/','/candeeiros/','/candeeiros/raposa/','/cathelier/','/cathel
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);
+
+/* O carrinho é SEMEADO antes de começar.
+ *
+ * Com o carrinho vazio, `/carrinho/` e `/encomenda/` são duas páginas com uma
+ * frase cada, e a bateria dava-as por boas durante três larguras seguidas. Só
+ * quando um teste manual deixou dois artigos no `localStorage` é que
+ * apareceram as ligações de 19 px que faltavam à norma dos alvos de toque.
+ * Uma peça de cada marca, para o agrupamento por marca também ser pintado. */
+const CESTO = 'ic-carrinho-v1';
+const guardado = localStorage.getItem(CESTO);
+localStorage.setItem(CESTO, JSON.stringify({
+  pais: 'PT',
+  linhas: [
+    { id: 'raposa', qtd: 1, opcoes: { alimentacao: 'pilhas' } },
+    { id: 'c-save-the-date', qtd: 2, opcoes: { material: 'betula', gravacao: 'Ana e João · 12.09.2027' } },
+  ],
+}));
+// E respondido o aviso de cookies: senão tapa o fundo de todas as páginas e
+// as medidas de contraste e de alvos leem-no a ele em vez do conteúdo.
+localStorage.setItem('ic-cookies-v1', 'essencial');
+addEventListener('beforeunload', () => {
+  if (guardado) localStorage.setItem(CESTO, guardado); else localStorage.removeItem(CESTO);
+});
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
   f.style.cssText = `width:${L}px;height:900px;border:0;position:absolute;left:-9999px`;
