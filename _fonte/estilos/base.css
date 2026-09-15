@@ -367,12 +367,33 @@ p:last-child { margin-bottom: 0; }
 [data-marca='casa'] .topo__marca .marca-cathelier { height: 22px; }
 .topo__marca .separador { color: var(--linha); }
 
+/* O logótipo é GRANDE quando se chega ao topo e encolhe ao descer. A altura é
+   uma variável só, para o cabeçalho, o logótipo e a margem do conteúdo colado
+   ao topo se moverem juntos. */
+.topo__marca img { transition: height 260ms cubic-bezier(.22,.61,.36,1); }
+.topo__barra { transition: min-height 260ms cubic-bezier(.22,.61,.36,1); }
+
 @media (min-width: 46rem) {
-  .topo__barra { min-height: 82px; }
-  [data-marca='ithos'] .topo__marca img { height: 52px; }
-  [data-marca='cathelier'] .topo__marca img { height: 40px; }
-  [data-marca='casa'] .topo__marca .marca-ithos { height: 40px; }
-  [data-marca='casa'] .topo__marca .marca-cathelier { height: 28px; }
+  .topo__barra { min-height: 104px; }
+  [data-marca='ithos'] .topo__marca img { height: 72px; }
+  [data-marca='cathelier'] .topo__marca img { height: 52px; }
+  [data-marca='casa'] .topo__marca .marca-ithos { height: 54px; }
+  [data-marca='casa'] .topo__marca .marca-cathelier { height: 36px; }
+
+  .topo[data-encolhido='sim'] .topo__barra { min-height: 68px; }
+  [data-marca='ithos'] .topo[data-encolhido='sim'] .topo__marca img,
+  .topo[data-encolhido='sim'] [data-marca='ithos'] .topo__marca img { height: 40px; }
+  [data-marca='cathelier'] .topo[data-encolhido='sim'] .topo__marca img { height: 30px; }
+  [data-marca='casa'] .topo[data-encolhido='sim'] .topo__marca .marca-ithos { height: 32px; }
+  [data-marca='casa'] .topo[data-encolhido='sim'] .topo__marca .marca-cathelier { height: 22px; }
+}
+
+/* No telemóvel o cabeçalho já é pequeno: encolher mais tira legibilidade ao
+   logótipo sem devolver ecrã que se note. */
+@media (max-width: 46rem) {
+  [data-marca='ithos'] .topo__marca img { height: 46px; }
+  [data-marca='cathelier'] .topo__marca img { height: 32px; }
+  .topo__barra { min-height: 72px; }
 }
 
 .topo__menu { display: flex; align-items: center; gap: var(--e3) var(--e4); margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
@@ -422,22 +443,45 @@ p:last-child { margin-bottom: 0; }
 }
 .cesto__conta:empty, .cesto__conta[data-vazio='sim'] { display: none; }
 
-.abrir-menu { display: none; background: none; border: 0; padding: var(--e1); cursor: pointer; }
+.abrir-menu, .fechar-menu {
+  display: none; background: none; border: 0; cursor: pointer;
+  width: 44px; height: 44px; align-items: center; justify-content: center;
+  color: var(--tinta);
+}
+.fechar-menu { position: absolute; top: var(--e2); right: var(--gaveta); z-index: 2; }
 
+/* No telemóvel o menu ocupa o ECRÃ TODO. Um painel encostado por baixo do
+   cabeçalho deixa metade do conteúdo à vista por trás e faz-se ler como um
+   acidente; a ecrã inteiro, é claro que se entrou noutro sítio. */
 @media (max-width: 56rem) {
-  .abrir-menu { display: inline-flex; }
+  .abrir-menu { display: inline-flex; order: 3; margin-left: auto; }
+  .topo__accoes { order: 2; margin-left: auto; }
+
   .topo__menu {
-    position: fixed; inset: 68px 0 auto;
-    flex-direction: column; align-items: stretch;
-    gap: 0; padding: var(--e3) var(--gaveta) var(--e5);
+    position: fixed; inset: 0; z-index: 60;
+    display: flex; flex-direction: column; align-items: stretch;
+    gap: 0; padding: calc(72px + var(--e4)) var(--gaveta) var(--e6);
     background: var(--fundo);
-    border-bottom: 1px solid var(--linha);
-    transform: translateY(-8px); opacity: 0; pointer-events: none;
-    transition: opacity var(--transicao), transform var(--transicao);
+    overflow-y: auto; overscroll-behavior: contain;
+    opacity: 0; visibility: hidden;
+    transform: translateY(-1.5rem);
+    transition: opacity 220ms ease, transform 260ms cubic-bezier(.22,.61,.36,1), visibility 220ms;
   }
-  .topo__menu a { padding-block: var(--e3); border-bottom: 1px solid var(--linha); font-size: 1rem; }
-  .topo[data-aberto='sim'] .topo__menu { transform: none; opacity: 1; pointer-events: auto; }
-  .topo__irma { margin-top: var(--e3); justify-content: center; }
+  .topo__menu a {
+    padding-block: var(--e4); border-bottom: 1px solid var(--linha);
+    font-size: 1.25rem; color: var(--tinta);
+  }
+  [data-marca='cathelier'] .topo__menu a { font-size: 1rem; }
+  .topo[data-aberto='sim'] .topo__menu { opacity: 1; visibility: visible; transform: none; }
+  /* Enquanto o menu está aberto, o que está por trás não rola. */
+  body:has(.topo[data-aberto='sim']) { overflow: hidden; }
+
+  .fechar-menu { display: inline-flex; }
+  .topo__irma {
+    margin-top: var(--e5); justify-content: center; padding: var(--e3);
+    font-size: .95rem;
+  }
+  .topo__irma-nota { display: inline; opacity: .7; }
 }
 
 /* --- rodapé --------------------------------------------------------------- */

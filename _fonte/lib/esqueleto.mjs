@@ -6,6 +6,12 @@
  * atributo, e é por isso que só há uma folha de estilo. */
 
 import { esc, url } from './util.mjs';
+import { icone } from './icones.mjs';
+
+/* O custo da chamada é obrigatório JUNTO A CADA número de telefone (DL 59/2021).
+ * Vive aqui, numa constante só: escrito à mão em cada sítio, mais tarde ou mais
+ * cedo um deles fica diferente dos outros e ninguém dá por isso. */
+export const CUSTO_CHAMADA = '(Chamada para a rede móvel nacional)';
 
 const LOGO = {
   ithos: '/assets/img/marca/ithos.svg',
@@ -38,8 +44,7 @@ const IRMA = {
   cathelier: ['/ithos/', 'ithos', 'candeeiros de presença'],
 };
 
-const svgCesto = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="20" height="20" aria-hidden="true"><path d="M4 7h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg>`;
-const svgMenu = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="24" height="24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`;
+
 
 /**
  * @param {object} o
@@ -114,14 +119,15 @@ ${previa ? `<p class="tarja-previa" role="status">Pré-visualização — o site
           ? `<img src="${l(LOGO.ithos)}" alt="ithos — handmade in Portugal" width="130" height="140">`
           : `<img src="${l(LOGO.cathelier)}" alt="cathelier" width="117" height="54">`}
     </a>
-    <button class="abrir-menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir o menu">${svgMenu}</button>
+    <button class="abrir-menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir o menu">${icone('menu', 26)}</button>
     <nav class="topo__menu" id="menu" aria-label="Menu principal">
+      <button class="fechar-menu" type="button" aria-label="Fechar o menu">${icone('fechar', 24)}</button>
       ${menu.map(([h, t]) => `<a href="${l(h)}"${caminho === h ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('\n      ')}
       ${irma ? `<a class="topo__irma" href="${l(irma[0])}" data-outra-marca><span>${esc(irma[1])}</span><span class="topo__irma-nota">${esc(irma[2])}</span></a>` : ''}
     </nav>
     <div class="topo__accoes">
       <a class="cesto" href="${l('/carrinho/')}" aria-label="Carrinho de compras">
-        ${svgCesto}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
+        ${icone('carrinho', 22)}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
       </a>
     </div>
   </div>
@@ -133,7 +139,20 @@ ${migalhas ? migalhasHtml(migalhas, l) : ''}
 ${conteudo}
 </main>
 
-${rodape({ marca, identidade, marcas, l })}
+${rodape({ marca, identidade, l, base })}
+
+<!-- O aviso só aparece a quem ainda não respondeu. Fica no HTML para não
+     depender de JavaScript para existir; o JavaScript só o esconde. -->
+<aside class="cookies" data-cookies hidden>
+  <p><strong>Este site não usa cookies de análise nem de publicidade.</strong>
+     O único conteúdo de terceiros é o mapa da Google na página de contactos, e
+     esse só carrega se disser que sim.</p>
+  <div class="cookies__botoes">
+    <button class="botao" type="button" data-cookies-sim>Aceitar</button>
+    <button class="botao botao--vazio" type="button" data-cookies-nao>Só o essencial</button>
+  </div>
+  <p class="pequeno"><a class="ligacao" href="${l('/legal/privacidade/')}">Como tratamos os seus dados</a></p>
+</aside>
 
 <script src="${l('/assets/js/loja.js')}" defer></script>
 </body>
@@ -149,19 +168,22 @@ function migalhasHtml(itens, l) {
 </nav>`;
 }
 
-function rodape({ marca, identidade, marcas, l }) {
+function rodape({ marca, identidade, l, base }) {
   const i = identidade;
   const morada = [i.morada, [i.codigo_postal, i.localidade].filter(Boolean).join(' '), i.pais]
     .filter(Boolean).join(' · ');
 
+  // As redes da marca em que se está primeiro; as outras a seguir. Quem está na
+  // cathelier não quer o Facebook dos candeeiros à frente do Instagram das peças.
   const redes = marca === 'cathelier'
-    ? [[i.instagram_cathelier, 'Instagram']]
-    : [[i.instagram_ithos, 'Instagram'], [i.facebook_ithos, 'Facebook']];
+    ? [[i.instagram_cathelier, 'Instagram', 'instagram'], [i.instagram_ithos, 'Instagram ithos', 'instagram']]
+    : [[i.instagram_ithos, 'Instagram', 'instagram'], [i.facebook_ithos, 'Facebook', 'facebook'],
+       [i.instagram_cathelier, 'Instagram cathelier', 'instagram']];
 
   return `<footer class="rodape">
   <div class="envolvente">
     <div class="rodape__grelha">
-      <div>
+      <div class="rodape__coluna">
         <h4>ithos</h4>
         <ul>
           <li><a href="${l('/ithos/')}">A marca</a></li>
@@ -170,48 +192,54 @@ function rodape({ marca, identidade, marcas, l }) {
           <li><a href="${l('/ithos/cuidados-e-seguranca/')}">Cuidados e segurança</a></li>
         </ul>
       </div>
-      <div>
+      <div class="rodape__coluna">
         <h4>cathelier</h4>
         <ul>
-          <li><a href="${l('/cathelier/')}">Ocasiões</a></li>
+          <li><a href="${l('/cathelier/')}">A marca</a></li>
+          <li><a href="${l('/cathelier/pecas/')}">Todas as peças</a></li>
           <li><a href="${l('/cathelier/como-trabalhamos/')}">Como trabalhamos</a></li>
           <li><a href="${l('/cathelier/orcamento/')}">Pedir orçamento</a></li>
         </ul>
       </div>
-      <div>
+      <div class="rodape__coluna">
         <h4>A loja</h4>
         <ul>
           <li><a href="${l('/sobre/')}">O ateliê</a></li>
           <li><a href="${l('/contactos/')}">Contactos</a></li>
-          <li><a href="${l('/legal/envios-e-devolucoes/')}">Envios e devoluções</a></li>
-          <li><a href="${l('/legal/garantia/')}">Garantia</a></li>
           <li><a href="${l('/perguntas/')}">Perguntas frequentes</a></li>
+          <li><a href="${l('/legal/envios-e-devolucoes/')}">Envios e devoluções</a></li>
+          <li><a href="${l('/legal/garantia/')}">Garantia de 3 anos</a></li>
         </ul>
       </div>
-      <div>
+      <div class="rodape__coluna">
         <h4>Falar connosco</h4>
-        <ul>
-          <li><a href="mailto:${esc(i.email)}">${esc(i.email)}</a></li>
-          <li><a href="tel:${esc(i.telefone)}">${esc(i.telefone_texto)}</a><br>
-              <span class="pequeno discreto">(chamada para a rede móvel nacional)</span></li>
-          ${redes.map(([h, t]) => `<li><a href="${esc(h)}" rel="noopener">${esc(t)}</a></li>`).join('\n          ')}
+        <ul class="rodape__contactos">
+          <li>${icone('email')}<a href="mailto:${esc(i.email)}">${esc(i.email)}</a></li>
+          <li>${icone('telefone')}<span><a href="tel:${esc(i.telefone)}">${esc(i.telefone_texto)}</a>
+            <small>${esc(CUSTO_CHAMADA)}</small></span></li>
+          <li>${icone('whatsapp')}<a href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">WhatsApp</a></li>
+          <li>${icone('local')}<span>${esc(i.localidade)}, ${esc(i.pais)}<br>
+            <small>Sem loja aberta ao público</small></span></li>
         </ul>
+        <div class="rodape__redes">
+          ${redes.filter(([h]) => h).map(([h, t, ic]) =>
+            `<a href="${esc(h)}" rel="noopener" aria-label="${esc(t)}" title="${esc(t)}">${icone(ic, 20)}</a>`).join('\n          ')}
+        </div>
       </div>
     </div>
 
     <div class="rodape__fim">
-      <p>${esc(i.nome)} · NIF ${esc(i.nif)}${morada ? ` · ${esc(morada)}` : ''}</p>
-      <a class="livro" href="${esc(i.livro_reclamacoes)}" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="16" height="16" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>
-        Livro de Reclamações
-      </a>
-      <div class="rodape__legal">
+      <p class="rodape__identificacao">${esc(i.nome)} · NIF ${esc(i.nif)}${morada ? ` · ${esc(morada)}` : ''}</p>
+      <nav class="rodape__legal" aria-label="Informação legal">
         <a href="${l('/legal/identificacao/')}">Identificação</a>
         <a href="${l('/legal/termos/')}">Termos e condições</a>
         <a href="${l('/legal/privacidade/')}">Privacidade</a>
         <a href="${l('/legal/livre-resolucao/')}">Livre resolução</a>
-        <a href="${l('/legal/reclamacoes/')}">Reclamações e litígios</a>
-      </div>
+        <a href="${l('/legal/reclamacoes/')}">Reclamações</a>
+        <a class="rodape__livro" href="${esc(i.livro_reclamacoes)}" rel="noopener">
+          ${icone('livro', 15)}Livro de Reclamações</a>
+        <a class="rodape__gestao" href="${esc(i.backoffice || 'https://renatovalente5.github.io/IthosCathelier-Backoffice/')}" rel="noopener nofollow">Gestão</a>
+      </nav>
     </div>
   </div>
 </footer>`;

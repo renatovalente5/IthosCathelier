@@ -1,0 +1,65 @@
+{
+  "nome": "Árvore genealógica",
+  "categoria": "quarto-de-crianca",
+  "preco": 68.0,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 260,
+  "estado": "por_encomenda",
+  "resumo": "A família toda numa peça só.",
+  "texto": "Uma árvore recortada a laser, com corações soltos para escrever cada nome, e o nome da família gravado na base.\n\nFazemos de seis a trinta ramos. Diga-nos quantos são.",
+  "forma": "arvore",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-ARV",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

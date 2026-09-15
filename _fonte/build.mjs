@@ -105,8 +105,8 @@ const catalogo = {
   portes: { ativos: d.portes.ativos, zonas: d.portes.zonas, campanha: d.portes.campanha },
   prazos: d.loja.prazos,
   previa: PREVIA,
-  produtos: Object.fromEntries(
-    d.ithos.filter((p) => p.publicado).map((p) => [p.slug, {
+  produtos: Object.fromEntries([
+    ...d.ithos.filter((p) => p.publicado).map((p) => [p.slug, {
       nome: p.nome, marca: 'ithos', preco: p.preco, estado: p.estado,
       caminho: `${BASE}${p.caminho}`,
       capa: `${BASE}/media/${p.dir}/${p.fotos[0]}-400.webp`,
@@ -119,7 +119,23 @@ const catalogo = {
         })),
       })),
     }]),
-  ),
+    // As peças da cathelier vendem-se no mesmo carrinho. A capa pode não
+    // existir ainda: o carrinho mostra um desenho quando vier vazia.
+    ...d.pecas.filter((p) => p.publicado).map((p) => [`c-${p.slug}`, {
+      nome: p.nome, marca: 'cathelier', preco: p.preco, estado: p.estado ?? 'por_encomenda',
+      caminho: `${BASE}${p.caminho}`,
+      capa: (p.fotos ?? []).length ? `${BASE}/media/${p.dir}/${p.fotos[0]}-400.webp` : '',
+      forma: p.forma ?? 'placa',
+      personalizacao: personalizacao(p),
+      opcoes: (p.opcoes ?? []).map((o) => ({
+        id: o.id, nome: o.nome, tipo: o.tipo, obrigatoria: !!o.obrigatoria,
+        personaliza: !!o.personaliza, max: o.max ?? null, suplemento: o.suplemento ?? 0,
+        valores: (o.valores ?? []).map((v) => ({
+          id: v.id ?? v, nome: v.nome ?? v, suplemento: v.suplemento ?? 0,
+        })),
+      })),
+    }]),
+  ]),
 };
 catalogo.gerado = ultimaAlteracao('conteudo') ?? '1970-01-01';
 const catalogoTexto = JSON.stringify(catalogo);
@@ -127,6 +143,9 @@ const hash = createHash('sha256').update(catalogoTexto).digest('hex').slice(0, 1
 mkdirSync(join(SAIDA, 'dados'), { recursive: true });
 writeFileSync(join(SAIDA, 'dados', `catalogo.${hash}.json`), catalogoTexto);
 writeFileSync(join(SAIDA, 'dados', 'catalogo-atual.txt'), hash);
+// O prefixo com que este site foi construído, para quem o verificar não ter de
+// o adivinhar.
+writeFileSync(join(SAIDA, 'dados', 'base.txt'), BASE);
 
 /* ------------------------------------------------------------- páginas ---- */
 
@@ -209,6 +228,41 @@ for (const c of d.categorias.filter((x) => x.publicado)) {
   }));
 }
 
+escrever('/cathelier/pecas/', montar({
+  marca: 'cathelier', caminho: '/cathelier/pecas/',
+  titulo: 'Todas as peças personalizadas | cathelier',
+  descricao: `${d.pecas.filter((p) => p.publicado).length} peças personalizadas cortadas e gravadas a laser em Portugal: lembranças, troféus, nomes, réguas de crescimento e mais.`,
+  conteudo: M.catalogoCathelier(d, ctx),
+  migalhas: [{ nome: 'Início', caminho: '/' }, { nome: 'cathelier', caminho: '/cathelier/' }, { nome: 'Peças', caminho: '/cathelier/pecas/' }],
+  schema: [mig([{ nome: 'Início', caminho: '/' }, { nome: 'cathelier', caminho: '/cathelier/' }, { nome: 'Peças', caminho: '/cathelier/pecas/' }])],
+}));
+
+for (const p of d.pecas.filter((x) => x.publicado)) {
+  const migalhas = [
+    { nome: 'Início', caminho: '/' },
+    { nome: 'cathelier', caminho: '/cathelier/' },
+    { nome: p.categoriaNome, caminho: `/cathelier/${p.categoria}/` },
+    { nome: p.nome, caminho: p.caminho },
+  ];
+  const temFotografia = (p.fotos ?? []).length > 0;
+  escrever(p.caminho, montar({
+    marca: 'cathelier', caminho: p.caminho,
+    titulo: p.seo?.titulo || `${p.nome} personalizado | cathelier`,
+    descricao: p.seo?.descricao || `${p.resumo} Cortado e gravado a laser em Portugal, com os nomes e as datas que escolher.`,
+    conteudo: M.fichaCathelier(p, d, ctx),
+    migalhas,
+    imagem: temFotografia ? `/media/${p.dir}/og.jpg` : undefined,
+    schema: [
+      S.produto(p, {
+        site: SITE, base: BASE, identidade: d.identidade, portes: d.portes, loja: d.loja,
+        imagens: temFotografia ? p.fotos.slice(0, 3).map((f) => `/media/${p.dir}/${f}-1200.webp`) : [],
+        personalizacao: personalizacao(p),
+      }),
+      mig(migalhas),
+    ],
+  }));
+}
+
 escrever('/cathelier/orcamento/', montar({
   marca: 'cathelier', caminho: '/cathelier/orcamento/',
   titulo: 'Pedir orçamento | cathelier',
@@ -220,6 +274,29 @@ escrever('/cathelier/orcamento/', montar({
 /* ------------------------------------------------ páginas de texto -------- */
 
 const textoPagina = (chave) => aplicar(d.paginas[chave] ?? '', d, `conteudo/paginas/${chave}.md`);
+
+/* O mapa da Google é um TERCEIRO: o browser do visitante contacta o servidor
+   dela e recebe cookies. Por isso não vai no HTML — vai uma caixa com um botão,
+   e o mapa só entra depois de alguém dizer que sim. Enquanto a morada completa
+   não existir, aponta para a localidade. */
+function caixaDoMapa() {
+  if (!d.loja.mapa?.mostrar) return '';
+  const consulta = d.loja.mapa.consulta
+    || [d.identidade.morada, d.identidade.codigo_postal, d.identidade.localidade, d.identidade.pais]
+      .filter(Boolean).join(', ');
+  const externo = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}`;
+  return `
+<div class="mapa" style="margin-top:var(--e5)">
+  <h2 style="font-size:1.1rem">No mapa</h2>
+  <div class="mapa__caixa" data-mapa="${esc(consulta)}" data-zoom="${esc(String(d.loja.mapa.zoom ?? 13))}">
+    <p class="mapa__aviso">O mapa é da Google e só carrega se aceitar. Enquanto não aceitar, este
+      sítio não contacta servidores de terceiros.</p>
+    <button class="botao" type="button" data-mapa-carregar>Ver o mapa</button>
+    <p class="pequeno"><a class="ligacao" href="${esc(externo)}" rel="noopener">Abrir no Google Maps</a>
+      — abre noutro separador, sem carregar nada aqui.</p>
+  </div>
+</div>`;
+}
 
 const paginasTexto = [
   ['/sobre/', 'casa', 'sobre', 'O ateliê', 'Um ateliê pequeno onde nascem as duas marcas: candeeiros ithos e peças personalizadas cathelier.'],
@@ -239,6 +316,7 @@ for (const [caminho, marca, chave, titulo, descricao] of paginasTexto) {
     conteudo: `<article class="envolvente" style="padding-block:var(--e5) var(--e7);max-width:44rem">
   <h1>${esc(titulo)}</h1>
   <div class="prosa">${md(textoPagina(chave), BASE)}</div>
+  ${chave === 'contactos' ? caixaDoMapa() : ''}
 </article>`,
     migalhas,
     schema: [mig(migalhas)],
@@ -379,7 +457,8 @@ writeFileSync(join(SAIDA, '.nojekyll'), '');
 console.log(`\n${escrito.length} páginas em publico/`);
 if (PREVIA) console.log('  MODO DE PRÉ-VISUALIZAÇÃO: fora do índice, com tarja, sem checkout');
 console.log(`  BASE=${BASE || '(raiz)'}  SITE=${SITE}`);
-console.log(`  catálogo: dados/catalogo.${hash}.json (${d.ithos.filter((p) => p.publicado).length} produtos)`);
+console.log(`  catálogo: dados/catalogo.${hash}.json (${Object.keys(catalogo.produtos).length} produtos: `
+  + `${d.ithos.filter((p) => p.publicado).length} ithos, ${d.pecas.filter((p) => p.publicado).length} cathelier)`);
 if (d.erros.length) {
   console.log(`\n  ${d.erros.length} aviso(s) — a construção foi autorizada por PERMITIR_INCOMPLETO:`);
   for (const e of d.erros) console.log('   ·', e);

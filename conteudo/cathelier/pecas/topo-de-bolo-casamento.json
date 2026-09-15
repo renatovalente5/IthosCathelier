@@ -1,0 +1,65 @@
+{
+  "nome": "Topo de bolo",
+  "categoria": "casamento",
+  "preco": 26.0,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 40,
+  "estado": "por_encomenda",
+  "resumo": "Os vossos nomes ou a frase que quiserem, recortados a laser.",
+  "texto": "Recortado em acrílico espelhado dourado, transparente ou em madeira. Os nomes ou a frase, na letra corrida que escolher.\n\nVai com pés para espetar no bolo, e chega embrulhado para não riscar.",
+  "forma": "corte",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-TOP",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

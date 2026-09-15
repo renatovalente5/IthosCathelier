@@ -1,0 +1,65 @@
+{
+  "nome": "Livro de assinaturas em madeira",
+  "categoria": "casamento",
+  "preco": 45.0,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 70,
+  "estado": "por_encomenda",
+  "resumo": "Uma árvore, corações ou um mapa, para os convidados assinarem.",
+  "texto": "Uma peça grande em madeira, recortada a laser, com espaço para cada convidado deixar o nome. Vai com as peças soltas para eles colarem.\n\nDepois pendura-se na parede. É um convidado a menos para esquecer.",
+  "forma": "arvore",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-LIV",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

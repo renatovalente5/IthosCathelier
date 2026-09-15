@@ -1,0 +1,65 @@
+{
+  "nome": "Convite a padrinhos",
+  "categoria": "casamento",
+  "preco": 12.0,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 20,
+  "estado": "por_encomenda",
+  "resumo": "«Querem ser meus padrinhos?» — gravado, com o nome de quem convida.",
+  "texto": "Um disco grande em madeira, gravado com a pergunta, o nome de quem convida e um desenho de flores à volta. Leva fio dourado para pendurar.\n\nFazemos também a versão para madrinhas e para o padrinho de baptismo.",
+  "forma": "disco",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-CON",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

@@ -4,7 +4,7 @@ Esta loja é explorada por **{{NOME}}**, {{FORMA_JURIDICA}}, com o número de
 identificação fiscal **{{NIF}}** e sede em {{MORADA}}.
 
 - **Email:** [{{EMAIL}}](mailto:{{EMAIL}})
-- **Telefone:** [{{TELEFONE}}](tel:{{TELEFONE_LINK}}) *(chamada para a rede móvel nacional)*
+- **Telefone:** [{{TELEFONE}}](tel:{{TELEFONE_LINK}}) *{{CUSTO_CHAMADA}}*
 - **Marcas exploradas:** ithos e cathelier
 - **Atividade:** fabrico e venda de candeeiros decorativos em madeira e de artigos personalizados
 

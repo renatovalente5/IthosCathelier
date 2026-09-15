@@ -83,6 +83,24 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
         continue;
       }
       p.caminho = `/cathelier/${p.categoria}/${slug}/`;
+      p.categoriaNome = cat.nome;
+
+      if (p.publicado) {
+        if (typeof p.preco !== 'number' || !(p.preco > 0)) {
+          erros.push(`cathelier/${slug}: está publicada mas não tem preço`);
+        }
+        if (!p.resumo) erros.push(`cathelier/${slug}: publicada sem resumo`);
+        if (!p.texto) erros.push(`cathelier/${slug}: publicada sem descrição`);
+        if (!p.forma && !(p.fotos ?? []).length) {
+          erros.push(`cathelier/${slug}: sem fotografia e sem desenho — não há nada para mostrar`);
+        }
+        for (const o of p.opcoes ?? []) {
+          if (!o.id || !o.nome) erros.push(`cathelier/${slug}: opção sem id ou sem nome`);
+          if (o.tipo === 'escolha' && !(o.valores ?? []).length) {
+            erros.push(`cathelier/${slug}: a opção «${o.nome}» é de escolha e não tem valores`);
+          }
+        }
+      }
       pecas.push(p);
     }
   }
@@ -118,6 +136,9 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
     console.error('');
     process.exit(1);
   }
+
+  pecas.sort((a, b) => (a.ordem ?? 999) - (b.ordem ?? 999));
+  for (const c of categorias) c.pecas = pecas.filter((p) => p.categoria === c.slug && p.publicado);
 
   return { identidade, fiscal, portes, loja, marcas, ithos, categorias, pecas, paginas, legais, erros };
 }

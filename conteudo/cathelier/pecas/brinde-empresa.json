@@ -1,0 +1,65 @@
+{
+  "nome": "Brinde personalizado",
+  "categoria": "trofeus",
+  "preco": 8.5,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 290,
+  "estado": "por_encomenda",
+  "resumo": "Para feiras, congressos e ofertas de fim de ano.",
+  "texto": "Peças pequenas com o símbolo da empresa gravado — porta-chaves, marcadores, ímanes, suportes de telemóvel.\n\nQuantidade mínima: 50 unidades. Peça orçamento.",
+  "forma": "circulo",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-BRI",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

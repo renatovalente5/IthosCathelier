@@ -117,25 +117,86 @@
     return { linhas, artigosCent, portesCent, zona, campanha, totalCent: artigosCent + portesCent };
   }
 
+  /* --------------------------------------------------- aviso de cookies --- */
+
+  /* Uma resposta só, guardada localmente. «sim» é o único estado que autoriza
+     carregar o mapa da Google — o resto do site não usa terceiros nenhuns, por
+     isso não há nada mais a autorizar. */
+  const CHAVE_COOKIES = 'ic-cookies-v1';
+  const respostaCookies = () => {
+    try { return localStorage.getItem(CHAVE_COOKIES); } catch { return null; }
+  };
+  const responderCookies = (v) => {
+    try { localStorage.setItem(CHAVE_COOKIES, v); } catch { /* segue sem guardar */ }
+    document.documentElement.dataset.cookies = v;
+    document.dispatchEvent(new CustomEvent('cookies-respondidas', { detail: v }));
+  };
+
+  {
+    const caixa = $('[data-cookies]');
+    const ja = respostaCookies();
+    if (ja) document.documentElement.dataset.cookies = ja;
+    if (caixa && !ja) {
+      caixa.hidden = false;
+      const fechar = (v) => { responderCookies(v); caixa.hidden = true; };
+      $('[data-cookies-sim]', caixa)?.addEventListener('click', () => fechar('sim'));
+      $('[data-cookies-nao]', caixa)?.addEventListener('click', () => fechar('nao'));
+    }
+  }
+
   /* ------------------------------------------------------------- menu ----- */
 
   const topo = $('.topo');
   const botaoMenu = $('.abrir-menu');
   if (topo && botaoMenu) {
+    const fecharMenu = (devolverFoco = true) => {
+      topo.dataset.aberto = 'nao';
+      botaoMenu.setAttribute('aria-expanded', 'false');
+      if (devolverFoco) botaoMenu.focus();
+    };
     botaoMenu.addEventListener('click', () => {
       const aberto = topo.dataset.aberto === 'sim';
       topo.dataset.aberto = aberto ? 'nao' : 'sim';
       botaoMenu.setAttribute('aria-expanded', String(!aberto));
+      // A ecrã inteiro, o primeiro item tem de receber o foco — senão quem
+      // navega por teclado abre o menu e continua algures atrás dele.
+      if (!aberto) $('.topo__menu a')?.focus();
     });
+    $('.fechar-menu')?.addEventListener('click', () => fecharMenu());
+    // Seguir uma ligação fecha o menu: sem isto, voltar atrás no browser
+    // devolve a página com o menu ainda por cima.
+    for (const a of $$('.topo__menu a')) a.addEventListener('click', () => fecharMenu(false));
     // Fechar com Escape devolve o foco ao botão: senão o foco fica num menu que
     // já não está no ecrã e a tabulação parece partida.
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && topo.dataset.aberto === 'sim') {
-        topo.dataset.aberto = 'nao';
-        botaoMenu.setAttribute('aria-expanded', 'false');
-        botaoMenu.focus();
-      }
+      if (e.key === 'Escape' && topo.dataset.aberto === 'sim') fecharMenu();
     });
+  }
+
+  /* ------------------------------------------------ cabeçalho a encolher --
+     O logótipo é grande no topo e encolhe quando se desce, para não roubar
+     ecrã ao conteúdo; volta a crescer quando se sobe. A classe é posta no
+     `<header>` e o tamanho vive no CSS — assim respeita
+     `prefers-reduced-motion` sem código extra.
+
+     Duas margens diferentes de propósito (120 px para encolher, 60 px para
+     crescer): com um só limiar, uma rolagem parada mesmo em cima dele fazia o
+     logótipo tremer entre os dois tamanhos. */
+  if (topo) {
+    let encolhido = false;
+    let agendado = false;
+    const avaliar = () => {
+      agendado = false;
+      const y = window.scrollY;
+      if (!encolhido && y > 120) { encolhido = true; topo.dataset.encolhido = 'sim'; }
+      else if (encolhido && y < 60) { encolhido = false; topo.dataset.encolhido = 'nao'; }
+    };
+    addEventListener('scroll', () => {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(avaliar);
+    }, { passive: true });
+    avaliar();
   }
 
   /* ------------------------------------------ transição entre as marcas --- */
@@ -348,8 +409,13 @@
           : `«${v}»`;
         return `${o.nome}: ${nome}`;
       }).filter(Boolean).join(' · ');
+      // As peças da cathelier ainda podem não ter fotografia. Em vez de um
+      // quadrado partido, o mesmo desenho de linha que a ficha mostra.
+      const miniatura = l.prod.capa
+        ? `<img src="${escapar(l.prod.capa)}" alt="" loading="lazy">`
+        : `<span class="linha__forma" aria-hidden="true">${formaSvg(l.prod.forma)}</span>`;
       return `<div class="linha" data-linha="${escapar(idLinha(l))}">
-  <div class="linha__foto"><img src="${escapar(l.prod.capa)}" alt="" loading="lazy"></div>
+  <div class="linha__foto">${miniatura}</div>
   <div>
     <p class="linha__nome"><a href="${escapar(l.prod.caminho)}">${escapar(l.prod.nome)}</a></p>
     ${opcoes ? `<p class="linha__opcoes">${escapar(opcoes)}</p>` : ''}
@@ -516,6 +582,28 @@
     }
   }
 
+  /* ---------------------------------------------------------------- mapa -- */
+
+  const caixaMapa = $('[data-mapa]');
+  if (caixaMapa) {
+    const endereco = caixaMapa.dataset.mapa;
+    const zoom = caixaMapa.dataset.zoom || '13';
+    const carregar = () => {
+      if (caixaMapa.querySelector('iframe')) return;
+      const f = document.createElement('iframe');
+      f.src = `https://www.google.com/maps?q=${encodeURIComponent(endereco)}&z=${zoom}&output=embed`;
+      f.loading = 'lazy';
+      f.title = `Mapa de ${endereco}`;
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      caixaMapa.innerHTML = '';
+      caixaMapa.classList.add('mapa__caixa--carregado');
+      caixaMapa.appendChild(f);
+    };
+    if (respostaCookies() === 'sim') carregar();
+    document.addEventListener('cookies-respondidas', (e) => { if (e.detail === 'sim') carregar(); });
+    $('[data-mapa-carregar]')?.addEventListener('click', () => { responderCookies('sim'); carregar(); });
+  }
+
   /* -------------------------------------------------------- orçamento ---- */
 
   const formOrc = $('[data-form-orcamento]');
@@ -557,6 +645,35 @@
         botao.textContent = antes;
       }
     });
+  }
+
+  /* Um desenho muito simples por forma — o suficiente para a miniatura do
+     carrinho não ser um buraco. O desenho completo vive no gerador. */
+  const FORMAS = {
+    disco: '<circle cx="12" cy="12" r="8"/>',
+    circulo: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/>',
+    coracao: '<path d="M12 19c-5-4-7-6-7-8a3.5 3.5 0 0 1 7-1 3.5 3.5 0 0 1 7 1c0 2-2 4-7 8Z"/>',
+    etiqueta: '<path d="M7 4h10v13l-5 3-5-3Z"/>',
+    caixa: '<path d="M4 9h16v11H4z"/><path d="m4 9 2-4h12l2 4"/>',
+    placa: '<rect x="3" y="6" width="18" height="12" rx="1"/>',
+    moldura: '<rect x="5" y="4" width="14" height="14"/><path d="M12 18v3"/>',
+    arvore: '<path d="M12 20v-7"/><circle cx="12" cy="9" r="5"/><path d="M7 20h10"/>',
+    letras: '<path d="M5 19V5l4 8 4-8v14"/><path d="M16 19V5h3a3 3 0 0 1 0 7h-3"/>',
+    regua: '<rect x="9" y="3" width="6" height="18"/><path d="M9 7h3M9 12h3M9 17h3"/>',
+    nuvem: '<path d="M7 16a3 3 0 0 1 .4-6 4.5 4.5 0 0 1 8.3-1A3 3 0 0 1 17 16Z"/>',
+    estrela: '<path d="m12 4 2.4 5.2 5.6.7-4.2 3.8 1.1 5.5L12 16.4 7.1 19.2l1.1-5.5L4 9.9l5.6-.7Z"/>',
+    cruz: '<path d="M10 4h4v5h5v4h-5v7h-4v-7H5V9h5Z"/>',
+    vela: '<rect x="8" y="9" width="8" height="11"/><path d="M12 9V6"/>',
+    corte: '<rect x="4" y="5" width="16" height="8" rx="2"/><path d="M9 13v6M15 13v6"/>',
+    trofeu: '<path d="M8 4h8v5a4 4 0 0 1-8 0Z"/><path d="M12 13v3M9 19h6"/>',
+    escudo: '<path d="M12 4 6 6v5c0 4 3 6 6 7 3-1 6-3 6-7V6Z"/>',
+    coelho: '<ellipse cx="12" cy="15" rx="5" ry="4.5"/><path d="M10 11c-1-4-1-6 0-7 1 0 1.5 3 1.5 6M14 11c1-4 1-6 0-7-1 0-1.5 3-1.5 6"/>',
+    painel: '<rect x="3" y="5" width="18" height="11"/><path d="M3 16l2 3M21 16l-2 3"/>',
+  };
+  function formaSvg(forma) {
+    const d = FORMAS[forma] || FORMAS.placa;
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" `
+      + `stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
   }
 
   function escapar(s) {

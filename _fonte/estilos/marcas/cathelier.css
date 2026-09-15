@@ -129,3 +129,27 @@
   text-transform: uppercase;
   color: color-mix(in srgb, var(--tinta) 45%, var(--fundo-alt));
 }
+
+/* --- cartão de peça -------------------------------------------------------- */
+
+.peca--c .peca__foto { border-radius: 0; background: var(--fundo-alt); }
+.peca__ocasiao {
+  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--verde-claro);
+}
+[data-marca='cathelier'] .peca__nome {
+  font-family: var(--fonte-display); font-size: 1.15rem; letter-spacing: .1em;
+}
+[data-marca='cathelier'] .peca:hover .corte { background: #EAE4D8; }
+.corte { transition: background var(--transicao); }
+
+/* --- ficha ----------------------------------------------------------------- */
+
+.ficha--c { padding-block: var(--e5) var(--e7); }
+.ficha--c .galeria__principal { border-radius: 0; aspect-ratio: 1; }
+.ficha--c .preco {
+  font-family: var(--fonte-display); font-size: 1.9rem; letter-spacing: .06em;
+}
+.ficha--c .opcoes { display: flex; flex-direction: column; gap: var(--e4); margin-block: var(--e2); }
+.ficha--c .ficha__texto { border-top: 1px solid var(--linha); padding-top: var(--e4); color: var(--tinta-suave); }
+.ficha--c .ficha__lado.pilha > * + * { margin-top: var(--e4); }

@@ -22,5 +22,6 @@
     "telefone": "+351 213 847 484",
     "morada": "Faculdade de Direito da Universidade Nova de Lisboa, Campus de Campolide, 1099-032 Lisboa"
   },
-  "livro_reclamacoes": "https://www.livroreclamacoes.pt/inicio"
+  "livro_reclamacoes": "https://www.livroreclamacoes.pt/inicio",
+  "backoffice": "https://renatovalente5.github.io/IthosCathelier-Backoffice/"
 }

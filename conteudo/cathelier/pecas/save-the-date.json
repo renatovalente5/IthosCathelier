@@ -1,0 +1,65 @@
+{
+  "nome": "Save the date em madeira",
+  "categoria": "casamento",
+  "preco": 3.5,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 10,
+  "estado": "por_encomenda",
+  "resumo": "Disco ou retângulo gravado com os nomes e a data, para anunciar o dia.",
+  "texto": "Em bétula clara, gravado a laser com os vossos nomes e a data. Vai com fita de cetim ou cordel, à escolha.\n\nÉ a primeira peça do casamento e costuma ser a que dá o tom ao resto: quem a recebe já percebe como vai ser o dia.\n\nQuantidade mínima: 20 unidades.",
+  "forma": "disco",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-SAV",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

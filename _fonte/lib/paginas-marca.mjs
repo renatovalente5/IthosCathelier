@@ -2,6 +2,7 @@
  * da ithos, a ficha de candeeiro, o índice de ocasiões da cathelier. */
 
 import { esc, euros, figura, paras, md, temFoto } from './util.mjs';
+import { desenhoDaPeca } from './formas.mjs';
 import { personalizacao } from './dados.mjs';
 
 /* ============================================================ o portal ==== */
@@ -447,5 +448,136 @@ export function categoriaCathelier(c, d, ctx) {
     </div>
   </div>
 </section>
+`;
+}
+
+
+/* ==================================================== cathelier: peças ===== */
+
+/** A imagem de uma peça: a fotografia, se existir; senão, o desenho da linha
+ *  de corte. Nunca uma caixa vazia. */
+export function imagemDaPeca(p, ctx, { sizes = '(min-width: 48rem) 20rem, 90vw', prioridade = false } = {}) {
+  const { raiz, base } = ctx;
+  const primeira = (p.fotos ?? [])[0];
+  if (primeira && temFoto(raiz, p.dir, primeira)) {
+    return figura({ raiz, base, dir: p.dir, nome: primeira, alt: p.nome, sizes, prioridade });
+  }
+  return desenhoDaPeca(p.forma, p.nome);
+}
+
+export function cartaoPecaCathelier(p, ctx) {
+  const { l } = ctx;
+  return `<a class="peca peca--c" href="${l(p.caminho)}">
+  <div class="peca__foto">${imagemDaPeca(p, ctx)}</div>
+  <div class="peca__corpo">
+    <span class="peca__ocasiao">${esc(p.categoriaNome ?? '')}</span>
+    <h3 class="peca__nome">${esc(p.nome)}</h3>
+    <p class="peca__resumo">${esc(p.resumo)}</p>
+    <p class="peca__preco">${p.preco ? `desde ${euros(p.preco)}` : 'Sob consulta'}</p>
+  </div>
+</a>`;
+}
+
+export function catalogoCathelier(d, ctx) {
+  const { l } = ctx;
+  const pecas = d.pecas.filter((p) => p.publicado);
+  const cats = d.categorias.filter((c) => c.publicado && c.pecas.length);
+  const precos = pecas.map((p) => p.preco).filter(Boolean);
+
+  return `
+<section class="seccao seccao--apertada">
+  <div class="envolvente">
+    <hr class="fio--curto">
+    <h1>Todas as peças</h1>
+    <p class="discreto medida">${pecas.length} peças, todas feitas por encomenda.
+      ${precos.length ? `Desde ${euros(Math.min(...precos))}.` : ''}
+      Cada uma leva os nomes, as datas ou a frase que escolher — e mandamos sempre uma
+      maqueta para aprovar antes de cortar.</p>
+  </div>
+</section>
+
+<section class="envolvente" style="padding-bottom:var(--e7)">
+  <div class="filtros" data-filtros>
+    <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todas</button>
+    ${cats.map((c) => `<button class="filtro" type="button" data-filtro="${esc(c.slug)}" aria-pressed="false">${esc(c.nome)}</button>`).join('\n    ')}
+  </div>
+  <div class="grelha grelha--3" data-lista-produtos style="margin-top:var(--e5)">
+    ${pecas.map((p) => cartaoPecaCathelier(p, { ...ctx }).replace('class="peca peca--c"', `class="peca peca--c" data-familia="${esc(p.categoria)}"`)).join('\n    ')}
+  </div>
+  <p class="discreto" data-sem-resultados hidden style="margin-top:var(--e5)">Não há peças nesta ocasião.</p>
+</section>
+`;
+}
+
+export function fichaCathelier(p, d, ctx) {
+  const { l, raiz, base } = ctx;
+  const pers = personalizacao(p);
+  const outras = d.pecas
+    .filter((o) => o.publicado && o.slug !== p.slug && o.categoria === p.categoria)
+    .slice(0, 3);
+  const fotos = (p.fotos ?? []).filter((f) => temFoto(raiz, p.dir, f));
+
+  return `
+<article class="envolvente ficha ficha--c" data-produto="c-${esc(p.slug)}" data-preco="${p.preco ?? ''}">
+  <div class="ficha__galeria">
+    <div class="galeria__principal" data-galeria-principal>
+      ${imagemDaPeca(p, ctx, { sizes: '(min-width: 56rem) 52vw, 92vw', prioridade: true })}
+    </div>
+    ${fotos.length > 1 ? `<div class="galeria__tiras" role="group" aria-label="Fotografias de ${esc(p.nome)}">
+      ${fotos.map((f, i) => `<button class="galeria__tira" type="button" data-foto="${esc(f)}" aria-current="${i === 0}" aria-label="Fotografia ${i + 1}">
+        ${figura({ raiz, base, dir: p.dir, nome: f, alt: '', sizes: '72px' })}
+      </button>`).join('\n      ')}
+    </div>` : ''}
+    ${!fotos.length ? `<p class="pequeno discreto" style="text-align:center">
+      Desenho da peça. A fotografia do trabalho real entra em breve.</p>` : ''}
+  </div>
+
+  <div class="ficha__lado pilha">
+    <div>
+      <p class="sobrescrito" style="margin-bottom:var(--e1)">${esc(p.categoriaNome ?? '')}</p>
+      <h1 style="margin-bottom:var(--e2)">${esc(p.nome)}</h1>
+      <p class="discreto" style="margin:0">${esc(p.resumo)}</p>
+    </div>
+
+    <p class="preco" data-preco-mostrado>${p.preco ? euros(p.preco) : 'Sob consulta'}
+      <small>${d.fiscal.regime === 'isento_art53' ? 'Preço final. Sem IVA — regime de isenção, artigo 53.º do CIVA.' : 'Preço final, com IVA incluído.'} Portes à parte.</small>
+    </p>
+
+    <p class="estado" data-estado="${esc(p.estado ?? 'por_encomenda')}">${esc(d.loja.prazos.texto_por_encomenda)}</p>
+
+    <form class="opcoes" data-form-produto>
+      ${(p.opcoes ?? []).map((o) => campoOpcao(o, p)).join('\n      ')}
+      <button class="botao botao--largo" type="submit" data-juntar>Juntar ao carrinho</button>
+    </form>
+
+    ${pers !== 'nunca' ? `<div class="nota" data-aviso-personalizacao${pers === 'depende' ? ' hidden' : ''}>
+      <strong>Peça personalizada.</strong> Feita com as suas indicações: não há direito de livre
+      resolução de ${d.loja.devolucoes.dias_livre_resolucao} dias (artigo 17.º n.º 1 alínea c) do
+      Decreto-Lei 24/2014). A garantia de ${d.loja.devolucoes.garantia_anos} anos mantém-se.
+    </div>` : ''}
+    ${pers !== 'sempre' ? `<p class="pequeno discreto" data-aviso-devolucao>Sem gravação, tem
+      ${d.loja.devolucoes.dias_livre_resolucao} dias para devolver sem dar explicações.
+      <a class="ligacao" href="${l('/legal/livre-resolucao/')}">Como se faz</a>.</p>` : ''}
+
+    <div class="ficha__texto">${paras(p.texto)}</div>
+
+    <div class="painel pilha" style="font-size:.92rem">
+      <p style="margin:0"><strong>Antes de cortar, mandamos uma maqueta.</strong> É aí que se
+      apanham os erros de ortografia nos nomes — e apanham-se sempre.</p>
+      <p style="margin:0" class="discreto">Precisa de muitas unidades? O preço por peça desce.
+      <a class="ligacao" href="${l('/cathelier/orcamento/')}">Peça um orçamento</a>.</p>
+    </div>
+  </div>
+</article>
+
+${outras.length ? `<section class="seccao seccao--alt">
+  <div class="envolvente">
+    <hr class="fio--curto">
+    <h2 style="font-size:1.2rem">Mais para ${esc((p.categoriaNome ?? '').toLowerCase())}</h2>
+    <div class="grelha grelha--3" style="margin-top:var(--e4)">
+      ${outras.map((o) => cartaoPecaCathelier(o, ctx)).join('\n      ')}
+    </div>
+  </div>
+</section>` : ''}
 `;
 }

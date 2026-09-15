@@ -2,7 +2,7 @@
 
 {{NOME}}, {{FORMA_JURIDICA}}, NIF {{NIF}}, com sede em {{MORADA}}.
 Contactos: [{{EMAIL}}](mailto:{{EMAIL}}) e [{{TELEFONE}}](tel:{{TELEFONE_LINK}})
-*(chamada para a rede móvel nacional)*.
+*{{CUSTO_CHAMADA}}*.
 
 Estas condições aplicam-se a todas as compras feitas neste sítio, nas marcas
 **ithos** e **cathelier**. Ao encomendar, aceita-as.

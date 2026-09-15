@@ -197,3 +197,79 @@ body:has(.tarja-previa) [data-pagar],
 body:has(.tarja-previa) [data-ir-encomenda] {
   pointer-events: none; opacity: .45;
 }
+
+/* --- ícones ---------------------------------------------------------------- */
+
+.icone { flex: none; vertical-align: -.22em; }
+
+/* --- rodapé ---------------------------------------------------------------- */
+
+.rodape__coluna h4 { margin-bottom: var(--e2); }
+.rodape__contactos li { display: flex; align-items: flex-start; gap: var(--e2); }
+.rodape__contactos .icone { margin-top: .22em; color: var(--realce); }
+.rodape__contactos small { display: block; font-size: .76rem; color: var(--tinta-suave); line-height: 1.4; }
+.rodape__redes { display: flex; gap: var(--e2); margin-top: var(--e3); }
+.rodape__redes a {
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border: 1px solid var(--linha); border-radius: var(--raio-btn);
+  color: var(--tinta-suave); transition: border-color var(--transicao), color var(--transicao);
+}
+.rodape__redes a:hover { border-color: var(--realce); color: var(--realce); }
+
+.rodape__identificacao { font-size: .8rem; }
+.rodape__legal { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3); align-items: center; }
+.rodape__legal a { font-size: .8rem; }
+.rodape__livro { display: inline-flex; align-items: center; gap: .35em; }
+/* A gestão é para uma pessoa só, e não é conteúdo do site: fica discreta, e
+   fora do que os motores de busca seguem. */
+.rodape__gestao { color: var(--tinta-suave); opacity: .55; font-size: .74rem !important; }
+.rodape__gestao:hover { opacity: 1; }
+
+/* --- aviso de cookies ------------------------------------------------------
+   O site não usa cookies de análise nem de publicidade. O único terceiro é o
+   mapa da Google, na página de contactos — e é por isso que este aviso existe:
+   o mapa só carrega depois de alguém dizer que sim. */
+
+.cookies {
+  position: fixed; inset: auto var(--e3) var(--e3);
+  z-index: 80; max-width: 32rem; margin-inline: auto;
+  background: var(--fundo); color: var(--tinta);
+  border: 1px solid var(--linha); border-radius: var(--raio-cartao);
+  box-shadow: 0 14px 40px rgb(35 30 25 / .18);
+  padding: var(--e4); display: grid; gap: var(--e3);
+}
+.cookies p { margin: 0; font-size: .9rem; }
+.cookies__botoes { display: flex; flex-wrap: wrap; gap: var(--e2); }
+.cookies__botoes .botao { flex: 1 1 10rem; }
+@media (max-width: 30rem) { .cookies { inset: auto 0 0; border-radius: var(--raio-cartao) var(--raio-cartao) 0 0; max-width: none; } }
+
+/* --- mapa ------------------------------------------------------------------ */
+
+.mapa { display: grid; gap: var(--e3); }
+.mapa__caixa {
+  aspect-ratio: 16 / 10; background: var(--fundo-alt);
+  border: 1px solid var(--linha); border-radius: var(--raio-cartao);
+  display: grid; place-items: center; gap: var(--e3); padding: var(--e4);
+  text-align: center; overflow: hidden;
+}
+.mapa__caixa iframe { width: 100%; height: 100%; border: 0; display: block; }
+.mapa__caixa--carregado { padding: 0; place-items: stretch; }
+.mapa__aviso { max-width: 34ch; font-size: .9rem; color: var(--tinta-suave); margin: 0; }
+
+/* --- desenhos de corte da cathelier ---------------------------------------- */
+
+.corte {
+  aspect-ratio: 1; background: var(--fundo-alt);
+  display: grid; place-items: center; align-content: center; gap: var(--e2);
+  padding: var(--e4); color: var(--realce);
+}
+.corte svg { width: 58%; height: auto; max-width: 180px; }
+.corte__nome {
+  font-family: var(--fonte-display); font-size: .78rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--tinta-suave); text-align: center;
+}
+
+/* --- miniatura desenhada no carrinho --------------------------------------- */
+
+.linha__forma { display: grid; place-items: center; width: 100%; height: 100%; color: var(--realce); }
+.linha__forma svg { width: 60%; height: 60%; }

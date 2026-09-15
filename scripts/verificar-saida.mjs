@@ -16,15 +16,16 @@ import { fileURLToPath } from 'node:url';
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
 const SAIDA = join(RAIZ, 'publico');
 
-// O BASE deriva DA MESMA FONTE que o gerador usa — o CNAME — e não de uma
-// variável própria. Uma guarda que lê uma segunda versão da verdade envelhece
-// sozinha e passa a acusar ficheiros que existem: aconteceu na primeira versão
-// deste ficheiro, que declarou 113 problemas inexistentes porque o BASE que ela
-// tinha não era o BASE com que o site tinha sido construído.
-const cname = existsSync(join(RAIZ, 'CNAME'))
-  ? readFileSync(join(RAIZ, 'CNAME'), 'utf8').trim()
-  : '';
-const BASE = process.env.BASE ?? (cname ? '' : '/IthosCathelier');
+// O BASE é LIDO do que a construção registou, não adivinhado. Uma guarda que
+// deriva a sua própria versão da verdade envelhece sozinha: a primeira versão
+// disto declarou 113 problemas inexistentes, e a segunda acusou as 26 capas do
+// catálogo só porque a construção tinha corrido com outro prefixo.
+const ficheiroBase = join(SAIDA, 'dados', 'base.txt');
+if (!existsSync(ficheiroBase)) {
+  console.error('não há publico/dados/base.txt — esta saída foi construída por uma versão antiga do gerador');
+  process.exit(1);
+}
+const BASE = readFileSync(ficheiroBase, 'utf8').trim();
 
 // Em pré-visualização, um «por preencher» numa página legal é esperado — é o
 // que estamos à espera que a cliente dê. Continua a ser contado e mostrado, mas
@@ -139,8 +140,15 @@ for (const f of paginas) {
   // «permanentemente acessível», e é o rodapé que o cumpre.
   if (!html.includes('NIF ')) erros.push(`${onde}: o rodapé não mostra o NIF`);
   if (!html.includes('livroreclamacoes.pt')) erros.push(`${onde}: sem o Livro de Reclamações`);
-  if (!/\(chamada para a rede móvel nacional\)/.test(html)) {
-    erros.push(`${onde}: o número de telefone aparece sem o custo da chamada (DL 59/2021)`);
+  // A menção é obrigatória JUNTO A CADA número (DL 59/2021), e tem de ser igual
+  // em todo o lado — por isso verifica-se o texto exacto, maiúscula incluída.
+  if (!html.includes('(Chamada para a rede móvel nacional)')) {
+    erros.push(`${onde}: falta «(Chamada para a rede móvel nacional)» junto ao número (DL 59/2021)`);
+  }
+  const telefones = (html.match(/href="tel:[^"]+"/g) ?? []).length;
+  const mencoes = (html.match(/\(Chamada para a rede móvel nacional\)/g) ?? []).length;
+  if (telefones > mencoes) {
+    erros.push(`${onde}: ${telefones} números de telefone e só ${mencoes} menção(ões) do custo da chamada`);
   }
   if (/ec\.europa\.eu\/consumers\/odr/.test(html)) {
     erros.push(`${onde}: menciona a plataforma ODR, desligada em 20/07/2025`);
@@ -188,6 +196,34 @@ for (const f of produtos) {
   const og = /property="og:image" content="([^"]+)"/.exec(html)?.[1] ?? '';
   if (!og.includes(`/media/ithos/${slug}/`)) {
     erros.push(`ithos/${slug}: o cartão de partilha não é desta peça (${og})`);
+  }
+}
+
+/* --- cada peça da cathelier publicada tem a SUA ficha --------------------- */
+
+const dirPecas = join(RAIZ, 'conteudo', 'cathelier', 'pecas');
+let pecasOk = 0;
+if (existsSync(dirPecas)) {
+  for (const f of readdirSync(dirPecas).filter((x) => x.endsWith('.json'))) {
+    const slug = f.slice(0, -5);
+    const p = JSON.parse(readFileSync(join(dirPecas, f), 'utf8'));
+    const alvo = join(SAIDA, 'cathelier', p.categoria, slug, 'index.html');
+    if (!p.publicado) {
+      if (existsSync(alvo)) erros.push(`cathelier/${slug}: despublicada mas a página foi gerada`);
+      continue;
+    }
+    pecasOk++;
+    if (!existsSync(alvo)) { erros.push(`cathelier/${slug}: publicada mas sem página`); continue; }
+    const html = readFileSync(alvo, 'utf8');
+    if (!html.includes('data-preco-mostrado')) erros.push(`cathelier/${slug}: a ficha não mostra preço`);
+    // A peça sem fotografia tem de mostrar o desenho — nunca um buraco.
+    if (!(p.fotos ?? []).length && !html.includes('class="corte"')) {
+      erros.push(`cathelier/${slug}: sem fotografia e sem desenho — a ficha fica com um buraco`);
+    }
+    // O identificador do carrinho tem de ser a chave do catálogo.
+    if (!html.includes(`data-produto="c-${slug}"`)) {
+      erros.push(`cathelier/${slug}: o identificador do carrinho não bate com o do catálogo`);
+    }
   }
 }
 
@@ -246,9 +282,17 @@ if (!existsSync(join(SAIDA, 'dados', `catalogo.${ponteiro}.json`))) {
   erros.push('o ponteiro do catálogo aponta para um ficheiro que não existe');
 } else {
   const cat = JSON.parse(readFileSync(join(SAIDA, 'dados', `catalogo.${ponteiro}.json`), 'utf8'));
+  // O catálogo tem as DUAS marcas. Contar só os candeeiros dava sempre errado
+  // desde que a cathelier passou a vender.
+  const pecasPublicadas = readdirSync(join(RAIZ, 'conteudo', 'cathelier', 'pecas'))
+    .filter((f) => f.endsWith('.json'))
+    .filter((f) => JSON.parse(readFileSync(join(RAIZ, 'conteudo', 'cathelier', 'pecas', f), 'utf8')).publicado)
+    .length;
+  const esperados = publicados + pecasPublicadas;
   const quantos = Object.keys(cat.produtos).length;
-  if (quantos !== publicados) {
-    erros.push(`o catálogo tem ${quantos} produtos e há ${publicados} publicados`);
+  if (quantos !== esperados) {
+    erros.push(`o catálogo tem ${quantos} produtos e estão publicados ${esperados} `
+      + `(${publicados} ithos + ${pecasPublicadas} cathelier)`);
   }
   for (const [slug, p] of Object.entries(cat.produtos)) {
     if (!(p.preco > 0)) erros.push(`catálogo: ${slug} sem preço`);
@@ -267,5 +311,5 @@ if (erros.length) {
   process.exit(1);
 }
 
-console.log(`saída: ${paginas.length} páginas, ${publicados} fichas de produto, `
+console.log(`saída: ${paginas.length} páginas, ${publicados} candeeiros, ${pecasOk} peças, `
   + `${locs.length} endereços no sitemap — tudo resolve`);

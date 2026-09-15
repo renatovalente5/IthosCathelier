@@ -1,0 +1,65 @@
+{
+  "nome": "Régua de crescimento",
+  "categoria": "quarto-de-crianca",
+  "preco": 48.0,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 240,
+  "estado": "por_encomenda",
+  "resumo": "Para medir a infância toda, e depois levar na mudança.",
+  "texto": "Uma régua em madeira de dois metros, gravada com os centímetros e com o nome. Vai com marcadores para assinalar cada medição.\n\nAo contrário da marca a lápis na ombreira da porta, esta vai consigo quando mudarem de casa.",
+  "forma": "regua",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-REG",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

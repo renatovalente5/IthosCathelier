@@ -4,7 +4,7 @@ Quem responde é quem faz as peças. Respondemos em dois dias úteis, de segunda
 sexta.
 
 - **Email:** [{{EMAIL}}](mailto:{{EMAIL}})
-- **Telefone e WhatsApp:** [{{TELEFONE}}](tel:{{TELEFONE_LINK}}) *(chamada para a rede móvel nacional)*
+- **Telefone e WhatsApp:** [{{TELEFONE}}](tel:{{TELEFONE_LINK}}) *{{CUSTO_CHAMADA}}*
 
 ## Onde estamos
 

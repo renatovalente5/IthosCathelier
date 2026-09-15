@@ -44,23 +44,41 @@ export function md(texto, base = '') {
   const saida = [];
   let lista = null;
   let tabela = null;
+  let paragrafo = [];
+
+  // UM PARÁGRAFO É UM BLOCO, não uma linha. Os textos são escritos com mudança
+  // de linha aos 80 caracteres, como qualquer texto legível num editor — e a
+  // primeira versão disto fazia de cada uma dessas linhas um parágrafo. No ecrã
+  // lia-se «Respondemos em dois dias úteis, de segunda a» e, num parágrafo à
+  // parte, «sexta.»
+  const fecharParagrafo = () => {
+    if (!paragrafo.length) return;
+    saida.push(`<p>${linha(paragrafo.join(' '))}</p>`);
+    paragrafo = [];
+  };
+  const fecharLista = () => {
+    if (!lista) return;
+    saida.push(`<${lista.tipo}>${lista.itens.join('')}</${lista.tipo}>`);
+    lista = null;
+  };
   const fecharTabela = () => {
     if (!tabela) return;
     const [cab, ...corpo] = tabela;
-    saida.push('<div class="tabela-envolve"><table><thead><tr>' +
-      cab.map((c) => `<th>${linha(c)}</th>`).join('') + '</tr></thead><tbody>' +
-      corpo.map((r) => `<tr>${r.map((c) => `<td>${linha(c)}</td>`).join('')}</tr>`).join('') +
-      '</tbody></table></div>');
+    saida.push('<div class="tabela-envolve"><table><thead><tr>'
+      + cab.map((c) => `<th>${linha(c)}</th>`).join('') + '</tr></thead><tbody>'
+      + corpo.map((r) => `<tr>${r.map((c) => `<td>${linha(c)}</td>`).join('')}</tr>`).join('')
+      + '</tbody></table></div>');
     tabela = null;
   };
+  const fecharTudo = () => { fecharParagrafo(); fecharLista(); fecharTabela(); };
+
   for (const bruto of String(texto).split('\n')) {
     const l = bruto.trim();
-    if (!l) {
-      if (lista) { saida.push(`<${lista.tipo}>${lista.itens.join('')}</${lista.tipo}>`); lista = null; }
-      fecharTabela();
-      continue;
-    }
+
+    if (!l) { fecharTudo(); continue; }
+
     if (l.startsWith('|') && l.endsWith('|')) {
+      fecharParagrafo(); fecharLista();
       const celulas = l.slice(1, -1).split('|').map((c) => c.trim());
       // A linha de traços que separa o cabeçalho não é conteúdo.
       if (celulas.every((c) => /^:?-{2,}:?$/.test(c))) continue;
@@ -68,22 +86,39 @@ export function md(texto, base = '') {
       continue;
     }
     fecharTabela();
+
+    if (/^---+$/.test(l)) { fecharTudo(); saida.push('<hr>'); continue; }
+
     const t = /^(#{2,4})\s+(.*)$/.exec(l);
     if (t) {
-      if (lista) { saida.push(`<${lista.tipo}>${lista.itens.join('')}</${lista.tipo}>`); lista = null; }
-      const n = t[1].length;
-      saida.push(`<h${n} id="${slugify(t[2])}">${linha(t[2])}</h${n}>`);
+      fecharTudo();
+      saida.push(`<h${t[1].length} id="${slugify(t[2])}">${linha(t[2])}</h${t[1].length}>`);
       continue;
     }
+
     const li = /^[-*]\s+(.*)$/.exec(l);
-    if (li) { lista ??= { tipo: 'ul', itens: [] }; lista.itens.push(`<li>${linha(li[1])}</li>`); continue; }
+    if (li) {
+      fecharParagrafo();
+      lista ??= { tipo: 'ul', itens: [] };
+      lista.itens.push(`<li>${linha(li[1])}</li>`);
+      continue;
+    }
+
     const on = /^\d+[.)]\s+(.*)$/.exec(l);
-    if (on) { lista ??= { tipo: 'ol', itens: [] }; lista.itens.push(`<li>${linha(on[1])}</li>`); continue; }
-    if (lista) { saida.push(`<${lista.tipo}>${lista.itens.join('')}</${lista.tipo}>`); lista = null; }
-    saida.push(`<p>${linha(l)}</p>`);
+    if (on) {
+      fecharParagrafo();
+      lista ??= { tipo: 'ol', itens: [] };
+      lista.itens.push(`<li>${linha(on[1])}</li>`);
+      continue;
+    }
+
+    // Uma linha solta a seguir a uma lista continua a lista se estiver indentada;
+    // aqui, sem indentação, começa um parágrafo.
+    fecharLista();
+    paragrafo.push(l);
   }
-  if (lista) saida.push(`<${lista.tipo}>${lista.itens.join('')}</${lista.tipo}>`);
-  fecharTabela();
+
+  fecharTudo();
   return saida.join('\n');
 }
 

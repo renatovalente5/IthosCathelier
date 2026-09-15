@@ -6,6 +6,8 @@
  * contacto escrito nas páginas: há marcadores, e um marcador que o gerador não
  * conheça MATA a construção — em vez de sair para o ar como texto literal. */
 
+import { CUSTO_CHAMADA } from './esqueleto.mjs';
+
 const MARCADORES = (d) => {
   const i = d.identidade;
   // A morada é tudo ou nada. Juntar só as partes que existem daria «Castelo
@@ -25,6 +27,7 @@ const MARCADORES = (d) => {
     NIF: i.nif,
     EMAIL: i.email,
     TELEFONE: i.telefone_texto,
+    CUSTO_CHAMADA: CUSTO_CHAMADA,
     TELEFONE_LINK: i.telefone,
     MORADA: morada,
     LOCALIDADE: i.localidade,

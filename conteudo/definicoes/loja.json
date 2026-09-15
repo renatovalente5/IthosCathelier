@@ -6,7 +6,10 @@
     "texto_por_encomenda": "Feito por encomenda. Até 20 dias úteis de produção.",
     "texto_esgotado": "De momento esgotado."
   },
-  "aviso": { "ativo": false, "texto": "" },
+  "aviso": {
+    "ativo": false,
+    "texto": ""
+  },
   "devolucoes": {
     "dias_livre_resolucao": 14,
     "garantia_anos": 3,
@@ -19,5 +22,11 @@
     "As pilhas devem ser colocadas e substituídas por um adulto.",
     "Não mergulhar em água nem limpar com o candeeiro ligado.",
     "Não cobrir o candeeiro enquanto estiver aceso."
-  ]
+  ],
+  "mapa": {
+    "_nota": "O mapa da Google é um terceiro: só carrega depois de o visitante aceitar. Sem morada completa, aponta para a localidade.",
+    "mostrar": true,
+    "consulta": "",
+    "zoom": 13
+  }
 }

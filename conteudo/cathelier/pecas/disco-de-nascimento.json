@@ -1,0 +1,65 @@
+{
+  "nome": "Disco de nascimento",
+  "categoria": "nascimento",
+  "preco": 24.0,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 150,
+  "estado": "por_encomenda",
+  "resumo": "O nome, a data, a hora, o peso e a altura. Tudo gravado.",
+  "texto": "O disco que se pendura no quarto e que conta tudo: o nome, o dia, a hora a que nasceu, quanto pesava e quanto media.\n\nEm bétula clara, gravado a laser, com fio de algodão para pendurar. É o presente que mais nos pedem para dar na maternidade.",
+  "forma": "disco",
+  "opcoes": [
+    {
+      "id": "material",
+      "nome": "Material",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "A madeira de bétula é clara e quente; o acrílico espelhado brilha e nota-se nas fotografias.",
+      "valores": [
+        {
+          "id": "betula",
+          "nome": "Madeira de bétula",
+          "suplemento": 0
+        },
+        {
+          "id": "acrilico",
+          "nome": "Acrílico transparente",
+          "suplemento": 0
+        },
+        {
+          "id": "espelhado",
+          "nome": "Acrílico espelhado dourado",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "O que gravar",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 60,
+      "suplemento": 0,
+      "ajuda": "Nomes, data, uma frase. Mandamos uma maqueta para aprovar antes de cortar."
+    }
+  ],
+  "fotos": [],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "CAT-DIS",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}
