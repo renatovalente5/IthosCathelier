@@ -1,0 +1,64 @@
+{
+  "nome": "Carro 3",
+  "preco": 130,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 190,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 20,
+    "comprimento": 44.5
+  },
+  "resumo": "O irmão do carro 2, em madeira natural.",
+  "texto": "A mesma forma do carro de corrida, mas com a madeira à vista e o número 3. As rodas e os faróis acendem.\n\nPara quem prefere a madeira crua ao pintado — ou para quem quer os dois na mesma prateleira.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-CAR",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

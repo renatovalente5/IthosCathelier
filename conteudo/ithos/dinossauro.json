@@ -1,0 +1,82 @@
+{
+  "nome": "Dinossauro",
+  "preco": 135,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 240,
+  "estado": "por_encomenda",
+  "medidas": {},
+  "resumo": "Grande, comprido e cheio de estrelas nas costas.",
+  "texto": "Os dinossauros são as peças maiores do catálogo — até 71 cm de comprimento. Há o de pescoço comprido, azul-escuro, salpicado de luz, e o de placas nas costas, em verde.\n\nSão grandes de propósito: ficam no chão, encostados à parede, e fazem de luz de presença para o quarto todo.",
+  "opcoes": [
+    {
+      "id": "variante",
+      "nome": "Modelo",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "valores": [
+        {
+          "id": "1",
+          "nome": "30×65 cm",
+          "suplemento": 0
+        },
+        {
+          "id": "2",
+          "nome": "41×71 cm",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-DIN",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

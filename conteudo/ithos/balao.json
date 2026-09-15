@@ -1,0 +1,62 @@
+{
+  "nome": "Balão de ar quente",
+  "preco": null,
+  "publicado": false,
+  "destaque": false,
+  "ordem": 330,
+  "estado": "por_encomenda",
+  "medidas": {},
+  "resumo": "Um balão de ar quente, com nuvens pintadas.",
+  "texto": "O balão de ar quente tem o corpo em gomos de madeira, com nuvens brancas pintadas, e um cesto pequeno por baixo. A luz sai pelas nuvens e pela cintura do balão.\n\nPode ficar pousado ou pendurado na parede — dá muito jeito por cima de uma cómoda de muda de fralda.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-BAL",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

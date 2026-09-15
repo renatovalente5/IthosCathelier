@@ -1,0 +1,8 @@
+{
+  "_nota": "Só a contabilista decide isto. O gerador e o Worker leem daqui: mudar de regime a meio do ano é mudar um campo, não refazer trezentas páginas.",
+  "regime": "isento_art53",
+  "mencao_fatura": "IVA — regime de isenção, artigo 53.º do CIVA",
+  "iva_taxa": 0,
+  "precos_incluem_iva": true,
+  "moeda": "EUR"
+}

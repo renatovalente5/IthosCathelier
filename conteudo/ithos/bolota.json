@@ -1,0 +1,87 @@
+{
+  "nome": "Bolota",
+  "preco": 78,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 210,
+  "estado": "por_encomenda",
+  "medidas": {},
+  "resumo": "Pequena, redonda, com a carapuça às quadrículas.",
+  "texto": "A bolota tem o corpo em madeira clara e a carapuça escura, gravada às quadrículas. É pequena — cabe na palma da mão — e dá uma luz baixa e suave.\n\nExiste em dois tamanhos, e o conjunto das duas fica mais em conta. Muita gente leva as duas para pôr lado a lado.",
+  "opcoes": [
+    {
+      "id": "variante",
+      "nome": "Modelo",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "valores": [
+        {
+          "id": "1",
+          "nome": "Grande (25×22 cm)",
+          "suplemento": 11
+        },
+        {
+          "id": "2",
+          "nome": "Pequena (18×16 cm)",
+          "suplemento": 0
+        },
+        {
+          "id": "3",
+          "nome": "Conjunto das duas",
+          "suplemento": 72
+        }
+      ]
+    },
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-BOL",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

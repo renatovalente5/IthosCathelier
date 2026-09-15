@@ -1,0 +1,22 @@
+{
+  "ithos": {
+    "nome": "ithos",
+    "assinatura": "handmade in Portugal",
+    "reclamo": "Candeeiros de presença feitos à mão, um a um",
+    "hero_titulo": "Uma luz pequena para uma noite grande",
+    "hero_texto": "Candeeiros de presença em madeira de pinho, cortados, lixados e pintados à mão em Portugal. Cada um é único. Cada um pode levar um nome.",
+    "sobre_titulo": "Os ithos são um sonho que se tornou real",
+    "sobre_texto": "Os ithos nasceram para concretizar os desejos dos mais pequenos — e porque tudo o que é feito à mão vem do coração. São peças únicas, cada uma com as características que lhe dão charme.\n\nPara além de luzes de presença, são peças decorativas que transformam o quarto num sítio quente e acolhedor. Ajudam os pais na muda da fralda à noite e dão aos mais pequenos uma companhia especial na hora de adormecer.\n\nSão feitos em Portugal, num pequeno ateliê onde todo o processo é manual: cortar a madeira de pinho, lixar, colar, pintar, colocar os LED. Um a um.",
+    "cor_tema": "#F4E7DC"
+  },
+  "cathelier": {
+    "nome": "cathelier",
+    "assinatura": "peças personalizadas",
+    "reclamo": "Para os dias que não se repetem",
+    "hero_titulo": "O que fica depois do dia",
+    "hero_texto": "Lembranças de casamento, batizado, comunhão e nascimento. Troféus, sinalética, decoração. Cortadas e gravadas a laser, com o nome de quem as recebe.",
+    "sobre_titulo": "Peças que eternizam momentos únicos",
+    "sobre_texto": "Criamos peças exclusivas e personalizadas, que eternizam momentos únicos — onde o carinho se transforma em lembranças delicadas, com significado em cada detalhe.\n\nBatizados, nascimentos, casamentos, agradecimentos, brindes, troféus, cenários e decoração. Desenhamos consigo, cortamos e gravamos a laser em madeira de bétula e em acrílico. Não há catálogo fechado: há a sua ocasião, e a peça que ela pede.\n\nComo na ithos, tudo passa pelas mesmas mãos e pelo mesmo ateliê.",
+    "cor_tema": "#FBFAF7"
+  }
+}

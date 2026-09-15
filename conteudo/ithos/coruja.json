@@ -1,0 +1,64 @@
+{
+  "nome": "Coruja",
+  "preco": 130,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 140,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 37,
+    "largura": 25
+  },
+  "resumo": "Olhos fechados, penas em camadas, muito quietinha.",
+  "texto": "A coruja está pousada, com os olhos fechados e as penas recortadas em camadas de madeira. É redonda, sem pontas, e a luz sai pelo peito.\n\nUma peça sossegada — das que ficam bem num quarto de bebé e depois continuam a ficar bem aos dez anos.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-COR",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

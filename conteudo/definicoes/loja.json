@@ -1,0 +1,23 @@
+{
+  "prazos": {
+    "expedicao_em_stock_dias": 3,
+    "producao_dias": 20,
+    "texto_em_stock": "Em stock. Sai do ateliê em até 3 dias úteis.",
+    "texto_por_encomenda": "Feito por encomenda. Até 20 dias úteis de produção.",
+    "texto_esgotado": "De momento esgotado."
+  },
+  "aviso": { "ativo": false, "texto": "" },
+  "devolucoes": {
+    "dias_livre_resolucao": 14,
+    "garantia_anos": 3,
+    "morada_devolucao": ""
+  },
+  "avisos_seguranca_ithos": [
+    "Não é um brinquedo. É um candeeiro decorativo de presença.",
+    "Utilização sob vigilância de um adulto.",
+    "Contém peças pequenas e pilhas: manter fora do alcance de crianças com menos de 3 anos.",
+    "As pilhas devem ser colocadas e substituídas por um adulto.",
+    "Não mergulhar em água nem limpar com o candeeiro ligado.",
+    "Não cobrir o candeeiro enquanto estiver aceso."
+  ]
+}

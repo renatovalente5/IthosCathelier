@@ -1,0 +1,67 @@
+{
+  "nome": "Foguetão",
+  "preco": 130,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 150,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 39,
+    "largura": 20
+  },
+  "resumo": "Pronto a descolar, com uma janela para o espaço.",
+  "texto": "O foguetão tem três janelas redondas: a maior mostra o espaço pintado à mão — estrelas, planetas — e as outras duas ficam cheias de luz. As asas são escuras e assentam no chão.\n\nUma das peças mais altas e das mais pedidas para quartos de meninos e meninas que gostam de estrelas.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-FOG",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

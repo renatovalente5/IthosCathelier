@@ -1,0 +1,62 @@
+{
+  "nome": "Gato",
+  "preco": null,
+  "publicado": false,
+  "destaque": false,
+  "ordem": 290,
+  "estado": "por_encomenda",
+  "medidas": {},
+  "resumo": "Sentado, de cauda enrolada, com riscas pintadas.",
+  "texto": "O gato está sentado, com a cauda enrolada à frente das patas e as riscas pintadas à mão. Os olhos estão fechados e as orelhas levantadas.\n\nComo no cão, podemos ajustar as cores e as manchas ao gato lá de casa.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-GAT",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

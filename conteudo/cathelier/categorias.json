@@ -1,0 +1,83 @@
+[
+  {
+    "slug": "casamento",
+    "nome": "Casamento",
+    "resumo": "Lembranças para os convidados, sinalética para o dia e o topo do bolo.",
+    "texto": "Do convite ao agradecimento. Fazemos as peças que ficam nas mãos de quem esteve lá: lembranças com o nome de cada convidado, o plano de mesas, as placas que indicam o caminho, o topo do bolo com os vossos nomes e a data.\n\nTudo desenhado convosco e cortado a laser em madeira de bétula ou em acrílico — transparente, branco ou espelhado dourado.",
+    "tipos": ["Lembranças para convidados", "Topos de bolo", "Plano de mesas", "Marcadores de lugar", "Sinalética do espaço", "Caixas de alianças", "Grinaldas e cenários", "Livro de assinaturas", "Bodas de ouro e de prata"],
+    "ordem": 10,
+    "publicado": true
+  },
+  {
+    "slug": "batizado",
+    "nome": "Batizado",
+    "resumo": "Lembranças delicadas para o dia em que se dá um nome.",
+    "texto": "Peças pequenas, em madeira clara, com o nome e a data gravados. Para dar aos convidados, para os padrinhos, para ficar no quarto depois.\n\nFazemos também os convites aos padrinhos e as caixas que os acompanham.",
+    "tipos": ["Lembranças para convidados", "Convites a padrinhos", "Caixas de presente", "Placas com nome e data", "Velas e porta-velas", "Sinalética do batizado"],
+    "ordem": 20,
+    "publicado": true
+  },
+  {
+    "slug": "comunhao",
+    "nome": "Comunhão",
+    "resumo": "Para o dia da primeira comunhão, e para o que fica dele.",
+    "texto": "Lembranças para os convidados, peças com o nome e a data, e decoração para a mesa. Em madeira ou acrílico, ao gosto de quem escolhe.",
+    "tipos": ["Lembranças para convidados", "Marcadores de livro", "Placas comemorativas", "Decoração de mesa", "Porta-chaves"],
+    "ordem": 30,
+    "publicado": true
+  },
+  {
+    "slug": "nascimento",
+    "nome": "Nascimento",
+    "resumo": "O peso, a hora, o nome. Gravados para não se esquecerem.",
+    "texto": "As peças de nascimento são das que mais fazemos: o disco com o nome, a data, a hora, o peso e a altura; o coração que se pendura; a moldura com a primeira fotografia.\n\nSão presentes de quem visita, e ficam no quarto muito depois de a criança ter crescido.",
+    "tipos": ["Discos de nascimento", "Corações com o peso", "Molduras com fotografia", "Caixas de recordações", "Anúncios de gravidez", "Convites a avós e padrinhos"],
+    "ordem": 40,
+    "publicado": true
+  },
+  {
+    "slug": "aniversario",
+    "nome": "Aniversário",
+    "resumo": "Topos de bolo, cenários e lembranças com o nome de quem faz anos.",
+    "texto": "Do primeiro ano aos cinquenta. Fazemos o topo do bolo, o painel de fundo para as fotografias, as lembranças para levar e os números que marcam a idade.",
+    "tipos": ["Topos de bolo", "Cenários e painéis", "Números e letras", "Lembranças para convidados", "Convites"],
+    "ordem": 50,
+    "publicado": true
+  },
+  {
+    "slug": "quarto-de-crianca",
+    "nome": "Quarto de criança",
+    "resumo": "Nomes para a parede, réguas de crescimento e o que faz de um quarto aquele quarto.",
+    "texto": "O nome recortado em madeira, pintado à cor do quarto. A régua que mede os centímetros todos de uma infância. As nuvens, as estrelas, os animais.\n\nÉ aqui que a cathelier e a ithos se encontram: o nome na parede e o candeeiro na mesa de cabeceira saem do mesmo ateliê.",
+    "tipos": ["Nomes em madeira", "Réguas de crescimento", "Letras e iniciais", "Placas de porta", "Móbiles e decoração de parede", "Caixas de brinquedos"],
+    "ordem": 60,
+    "publicado": true
+  },
+  {
+    "slug": "trofeus",
+    "nome": "Troféus e brindes",
+    "resumo": "Para clubes, escolas, empresas e câmaras. Com o vosso símbolo gravado.",
+    "texto": "Troféus e placas comemorativas em madeira e acrílico, com o símbolo da entidade gravado a laser. Fazemos séries para torneios, entregas de prémios e aniversários de instituições.\n\nPeça um orçamento com a quantidade e o prazo: respondemos com a proposta e uma maqueta antes de cortar.",
+    "tipos": ["Troféus desportivos", "Placas comemorativas", "Prémios de empresa", "Brindes personalizados", "Sinalética institucional"],
+    "ordem": 70,
+    "publicado": true
+  },
+  {
+    "slug": "sinaletica",
+    "nome": "Sinalética e cenários",
+    "resumo": "As placas que indicam o caminho e os fundos que aparecem nas fotografias.",
+    "texto": "Placas de casa de banho, de entrada, de mesa, de bar. Painéis e cenários para festas e para montras. Em madeira gravada ou em acrílico recortado.",
+    "tipos": ["Placas de sinalização", "Painéis e cenários", "Placas de porta", "Sinalética para eventos", "Decoração de montra"],
+    "ordem": 80,
+    "publicado": true
+  },
+  {
+    "slug": "datas",
+    "nome": "Datas especiais",
+    "resumo": "Natal, Dia do Pai, Dia da Mãe, Namorados, Páscoa.",
+    "texto": "As datas que voltam todos os anos, com peças novas de cada vez. Enfeites de Natal com o nome de cada um, presentes de Dia do Pai e de Dia da Mãe, lembranças de Páscoa.\n\nSão peças de época: encomende com antecedência, porque em dezembro o ateliê fecha cedo.",
+    "tipos": ["Enfeites de Natal", "Dia do Pai e Dia da Mãe", "Dia dos Namorados", "Páscoa", "Presentes com fotografia"],
+    "ordem": 90,
+    "publicado": true
+  }
+]

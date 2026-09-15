@@ -1,0 +1,21 @@
+{
+  "_nota": "As cinco zonas nascem feitas. Só os países em `ativos` aparecem no carrinho e são aceites no pagamento. Vender para fora da UE faz perder a isenção do art. 53.º do CIVA na primeira venda — por isso Inglaterra e Suíça começam desligadas.",
+  "transportadora": "MRW",
+  "ativos": ["PT"],
+  "zonas": [
+    { "id": "pt", "nome": "Portugal continental", "preco": 5, "dias_min": 1, "dias_max": 5, "paises": ["PT"] },
+    { "id": "ilhas", "nome": "Açores e Madeira", "preco": 5, "dias_min": 3, "dias_max": 7, "paises": ["PT-20", "PT-30"] },
+    { "id": "es", "nome": "Espanha", "preco": 10, "dias_min": 2, "dias_max": 7, "paises": ["ES"] },
+    { "id": "fr-uk", "nome": "França e Reino Unido", "preco": 15, "dias_min": 2, "dias_max": 7, "paises": ["FR", "GB"] },
+    { "id": "europa", "nome": "Resto da Europa", "preco": 20, "dias_min": 3, "dias_max": 10,
+      "paises": ["DE", "CH", "AT", "BE", "NL", "LU", "IT", "IE", "DK", "SE", "FI", "PL", "CZ", "SK", "HU", "SI", "HR", "RO", "BG", "GR", "EE", "LV", "LT", "MT", "CY", "NO"] }
+  ],
+  "campanha": {
+    "ativa": false,
+    "titulo": "",
+    "portes_gratis_acima": 0,
+    "paises": [],
+    "inicio": "",
+    "fim": ""
+  }
+}

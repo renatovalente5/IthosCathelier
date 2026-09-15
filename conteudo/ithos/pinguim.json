@@ -1,0 +1,64 @@
+{
+  "nome": "Pinguim",
+  "preco": 120,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 130,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 39,
+    "largura": 27
+  },
+  "resumo": "Barriga branca, costas escuras, cheio de estrelas.",
+  "texto": "O pinguim tem as costas azul-escuras salpicadas de pontos de luz, como um céu de noite, e a barriga clara. Em pé, de pés amarelos.\n\nA luz sai sobretudo pelas costas escuras — é o ithos que mais parece um céu estrelado.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-PIN",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "nome": "Rato",
+  "preco": 130,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 20,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 35,
+    "largura": 28,
+    "profundidade": 7
+  },
+  "resumo": "Orelhas grandes, cauda comprida e uma barriga cheia de luz.",
+  "texto": "O rato tem as orelhas redondas cheias de pontos de luz e uma cauda que sai do corpo em curva. Fica bem numa prateleira ou na mesa de cabeceira, e a cauda dá-lhe um ar de quem vai a passar.\n\nA madeira fica à vista no corpo — é pinho lixado à mão, sem tinta por cima.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-RAT",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

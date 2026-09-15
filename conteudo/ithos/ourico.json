@@ -1,0 +1,67 @@
+{
+  "nome": "Ouriço",
+  "preco": 130,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 30,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 28,
+    "largura": 36
+  },
+  "resumo": "Os espinhos escuros, a barriga clara e um sorriso adormecido.",
+  "texto": "O ouriço tem os espinhos pintados de castanho escuro, salpicados de luz, e o corpo em madeira clara. É baixo e largo — assenta bem numa prateleira larga ou no chão, ao lado da cama.\n\nÉ dos ithos mais pedidos para quartos de bebé: a forma é redonda, sem pontas, e a luz sai baixa.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-OUR",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

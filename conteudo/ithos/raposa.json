@@ -1,0 +1,67 @@
+{
+  "nome": "Raposa",
+  "preco": 130,
+  "publicado": true,
+  "destaque": true,
+  "ordem": 10,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 35,
+    "largura": 28
+  },
+  "resumo": "A raposa dorme enroscada, com a cauda a fazer de almofada.",
+  "texto": "Uma raposa a dormir, de cauda enroscada e olhos fechados. É das peças que mais luz dá — a barriga e a cauda ficam cheias de pontos de luz quente, e o quarto fica cor de lume.\n\nPintada à mão em laranja-terra, com os detalhes do focinho e das patas feitos a pincel fino.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-RAP",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

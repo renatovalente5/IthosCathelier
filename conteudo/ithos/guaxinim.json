@@ -1,0 +1,64 @@
+{
+  "nome": "Guaxinim",
+  "preco": 120,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 70,
+  "estado": "por_encomenda",
+  "medidas": {
+    "altura": 35,
+    "largura": 36
+  },
+  "resumo": "A máscara no rosto, a cauda às riscas.",
+  "texto": "O guaxinim tem a máscara escura à volta dos olhos e a cauda às riscas, pintadas à mão. Sentado, de patas juntas, com a barriga cheia de luz.\n\nUma peça com muito carácter, para quartos de crianças que já escolhem o que querem na parede.",
+  "opcoes": [
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-GUA",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "nome": "Cogumelo",
+  "preco": 98,
+  "publicado": true,
+  "destaque": false,
+  "ordem": 220,
+  "estado": "por_encomenda",
+  "medidas": {},
+  "resumo": "Chapéu às pintas e pé de madeira. Há três cores.",
+  "texto": "O cogumelo tem o pé em madeira clara e o chapéu pintado — vermelho às pintas brancas, bege claro ou castanho escuro. A luz sai pelas pintas do chapéu.\n\nÉ dos ithos mais pequenos e dos mais bonitos em grupo: três cogumelos juntos numa prateleira fazem um bosque.",
+  "opcoes": [
+    {
+      "id": "variante",
+      "nome": "Modelo",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "valores": [
+        {
+          "id": "1",
+          "nome": "Castanho (25×20 cm)",
+          "suplemento": 0
+        },
+        {
+          "id": "2",
+          "nome": "Bege (25×24 cm)",
+          "suplemento": 0
+        },
+        {
+          "id": "3",
+          "nome": "Vermelho (25×22 cm)",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "alimentacao",
+      "nome": "Alimentação",
+      "tipo": "escolha",
+      "obrigatoria": true,
+      "personaliza": false,
+      "ajuda": "As pilhas não vão incluídas. A versão com cabo traz comando: liga, desliga, regula a intensidade, tem temporizador e luz ritmada.",
+      "valores": [
+        {
+          "id": "pilhas",
+          "nome": "2 pilhas AA (3V)",
+          "suplemento": 0
+        },
+        {
+          "id": "cabo",
+          "nome": "Cabo elétrico com comando",
+          "suplemento": 0
+        }
+      ]
+    },
+    {
+      "id": "gravacao",
+      "nome": "Gravação a laser",
+      "tipo": "texto",
+      "obrigatoria": false,
+      "personaliza": true,
+      "max": 22,
+      "suplemento": 0,
+      "ajuda": "Um nome, uma data ou uma frase curta, gravada na madeira. Deixe em branco se não quiser."
+    }
+  ],
+  "fotos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06"
+  ],
+  "durabilidade": "",
+  "reparabilidade": "",
+  "gpsr": {
+    "tipo": "ITH-COG",
+    "lote": "",
+    "avisos": []
+  },
+  "conformidade": {
+    "ce": false,
+    "declaracao": ""
+  },
+  "seo": {
+    "titulo": "",
+    "descricao": ""
+  }
+}
