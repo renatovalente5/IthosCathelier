@@ -1,0 +1,90 @@
+# ============================================================================
+# Constrói e publica a loja ithos · cathelier no GitHub Pages.
+#
+# Corre sempre que algo muda em `main` — incluindo o que a cliente grava no
+# backoffice, que escreve directamente neste repositório.
+#
+# Em Settings → Pages, a origem tem de estar em «GitHub Actions». Se ficar na
+# opção antiga, o GitHub processa o repositório com Jekyll e publica o
+# código-fonte em vez do site gerado.
+# ============================================================================
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'PLANO.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write        # para gravar as fotografias derivadas
+  pages: write
+  id-token: write
+
+# Uma publicação de cada vez. Se ela gravar três vezes seguidas, só a última
+# interessa — as anteriores são canceladas em vez de ficarem em fila.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Instalar o Pillow
+        run: pip install --quiet 'Pillow>=11.3'
+
+      # As derivadas são VERSIONADAS. Um passo que gera e não guarda refaz tudo
+      # a cada publicação — noutro projeto isso custou 197 s por gravação e a
+      # cliente achou que o site estava avariado. Aqui só se geram as que faltam,
+      # e o que se gerar volta para o repositório.
+      - name: Preparar as fotografias
+        run: python3 scripts/imagens.py
+
+      - name: Guardar as fotografias novas
+        run: |
+          if [ -n "$(git status --porcelain media/)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add media/
+            git commit -m "Fotografias preparadas [skip ci]"
+            git push
+            echo "derivadas novas guardadas"
+          else
+            echo "nada de novo"
+          fi
+
+      - name: Confirmar que o backoffice e os dados se entendem
+        run: node scripts/guardas.mjs
+
+      - name: Construir
+        run: node _fonte/build.mjs
+
+      - name: Confirmar o que vai para o ar
+        run: node scripts/verificar-saida.mjs
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: publico
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
