@@ -37,7 +37,12 @@ const cname = existsSync(join(RAIZ, 'CNAME'))
 const BASE = process.env.BASE ?? (cname ? '' : '/IthosCathelier');
 const SITE = process.env.SITE ?? (cname ? `https://${cname}` : 'https://renatovalente5.github.io');
 
-const d = carregar(RAIZ, { permitirIncompleto: process.env.PERMITIR_INCOMPLETO === 'sim' });
+/* Pré-visualização: deixa construir sem os dados que ainda faltam à cliente,
+   em troca de o site sair fora do índice, com tarja em todas as páginas e sem
+   forma de comprar. É a única maneira honesta de ver o site antes de a loja
+   poder abrir a sério. */
+const PREVIA = process.env.PREVISUALIZACAO === 'sim';
+const d = carregar(RAIZ, { permitirIncompleto: PREVIA || process.env.PERMITIR_INCOMPLETO === 'sim' });
 const l = (p) => `${BASE}${p}`;
 const ctx = { l, raiz: RAIZ, base: BASE, site: SITE };
 
@@ -54,6 +59,8 @@ function montar(o) {
     ...o,
     site: SITE, base: BASE,
     identidade: d.identidade, marcas: d.marcas,
+    previa: PREVIA,
+    naoIndexar: o.naoIndexar || PREVIA,
   });
 }
 
@@ -97,6 +104,7 @@ const catalogo = {
   fiscal: { regime: d.fiscal.regime, mencao: d.fiscal.mencao_fatura },
   portes: { ativos: d.portes.ativos, zonas: d.portes.zonas, campanha: d.portes.campanha },
   prazos: d.loja.prazos,
+  previa: PREVIA,
   produtos: Object.fromEntries(
     d.ithos.filter((p) => p.publicado).map((p) => [p.slug, {
       nome: p.nome, marca: 'ithos', preco: p.preco, estado: p.estado,
@@ -369,6 +377,7 @@ writeFileSync(join(SAIDA, '.nojekyll'), '');
 /* -------------------------------------------------------------- fim ------- */
 
 console.log(`\n${escrito.length} páginas em publico/`);
+if (PREVIA) console.log('  MODO DE PRÉ-VISUALIZAÇÃO: fora do índice, com tarja, sem checkout');
 console.log(`  BASE=${BASE || '(raiz)'}  SITE=${SITE}`);
 console.log(`  catálogo: dados/catalogo.${hash}.json (${d.ithos.filter((p) => p.publicado).length} produtos)`);
 if (d.erros.length) {

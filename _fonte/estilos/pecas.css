@@ -182,3 +182,18 @@
   flex: none; cursor: pointer;
 }
 .aceitar a { color: var(--realce); }
+
+/* --- tarja de pré-visualização --------------------------------------------
+   Existe para que ninguém confunda o que está no ar com uma loja aberta. */
+
+.tarja-previa {
+  margin: 0;
+  background: #8A6A1F; color: #fff;
+  text-align: center; padding: var(--e2) var(--gaveta);
+  font-size: .85rem; line-height: 1.4;
+}
+body:has(.tarja-previa) [data-juntar],
+body:has(.tarja-previa) [data-pagar],
+body:has(.tarja-previa) [data-ir-encomenda] {
+  pointer-events: none; opacity: .45;
+}

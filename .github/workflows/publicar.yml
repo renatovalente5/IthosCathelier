@@ -17,6 +17,11 @@ on:
       - 'README.md'
       - 'PLANO.md'
   workflow_dispatch:
+    inputs:
+      previsualizacao:
+        description: 'Pré-visualizar mesmo sem os dados da cliente (fora do índice, sem checkout)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write        # para gravar as fotografias derivadas
@@ -66,14 +71,35 @@ jobs:
             echo "nada de novo"
           fi
 
+      # PRÉ-VISUALIZAÇÃO: enquanto a cliente não der a morada e os dados que
+      # faltam, a loja não pode abrir — e a guarda recusa publicar. Este
+      # interruptor deixa ver o site na mesma, em troca de ele sair fora do
+      # índice da Google, com tarja em todas as páginas e sem forma de comprar.
+      # Fica ligado enquanto o ficheiro PREVISUALIZACAO existir na raiz.
+      - name: Decidir o modo
+        id: modo
+        run: |
+          if [ -f PREVISUALIZACAO ] || [ "${{ inputs.previsualizacao }}" = "true" ]; then
+            echo "previa=sim" >> "$GITHUB_OUTPUT"
+            echo "::warning::A publicar em PRÉ-VISUALIZAÇÃO — fora do índice, sem checkout."
+          else
+            echo "previa=nao" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Confirmar que o backoffice e os dados se entendem
         run: node scripts/guardas.mjs
+        env:
+          PREVISUALIZACAO: ${{ steps.modo.outputs.previa }}
 
       - name: Construir
         run: node _fonte/build.mjs
+        env:
+          PREVISUALIZACAO: ${{ steps.modo.outputs.previa }}
 
       - name: Confirmar o que vai para o ar
         run: node scripts/verificar-saida.mjs
+        env:
+          PREVISUALIZACAO: ${{ steps.modo.outputs.previa }}
 
       - uses: actions/upload-pages-artifact@v4
         with:

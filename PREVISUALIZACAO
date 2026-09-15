@@ -1,0 +1,11 @@
+Enquanto este ficheiro existir, o site publica em PRÉ-VISUALIZAÇÃO:
+
+  · fora do índice da Google (noindex em todas as páginas)
+  · com uma tarja a dizer que a loja ainda não abriu
+  · sem forma de juntar ao carrinho nem de pagar
+
+Serve para se poder ver o site antes de a cliente dar os dados obrigatórios por
+lei (morada e código postal, sem os quais a loja não pode abrir).
+
+APAGAR ESTE FICHEIRO quando os dados estiverem preenchidos. A partir daí, a
+construção volta a morrer se faltar algum — que é como deve ser.

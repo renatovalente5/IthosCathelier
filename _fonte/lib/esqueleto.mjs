@@ -49,7 +49,7 @@ export function pagina(o) {
   const {
     marca = 'casa', titulo, descricao, caminho, conteudo,
     site, base = '', identidade, marcas, imagem, schema = [],
-    classeCorpo = '', naoIndexar = false, migalhas = null, estilosExtra = '',
+    classeCorpo = '', naoIndexar = false, migalhas = null, estilosExtra = '', previa = false,
   } = o;
 
   const abs = (p) => `${site}${base}${p}`;
@@ -101,6 +101,7 @@ ${ld}
 </head>
 <body class="${esc(classeCorpo)}">
 <a class="saltar" href="#conteudo">Saltar para o conteúdo</a>
+${previa ? `<p class="tarja-previa" role="status">Pré-visualização — o site ainda não abriu. Não é possível comprar, e alguns dados estão por preencher.</p>` : ''}
 
 <header class="topo" id="topo">
   <div class="envolvente topo__barra">

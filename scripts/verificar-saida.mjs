@@ -26,6 +26,11 @@ const cname = existsSync(join(RAIZ, 'CNAME'))
   : '';
 const BASE = process.env.BASE ?? (cname ? '' : '/IthosCathelier');
 
+// Em pré-visualização, um «por preencher» numa página legal é esperado — é o
+// que estamos à espera que a cliente dê. Continua a ser contado e mostrado, mas
+// não impede de ver o site. Tudo o resto continua a matar.
+const PREVIA = process.env.PREVISUALIZACAO === 'sim';
+
 const erros = [];
 const avisos = [];
 
@@ -101,7 +106,8 @@ for (const f of paginas) {
   const marcador = /\{\{[A-Z_]+\}\}/.exec(html);
   if (marcador) erros.push(`${onde}: marcador por resolver ${marcador[0]}`);
   if (html.includes('⟨por preencher⟩')) {
-    erros.push(`${onde}: ficou um «⟨por preencher⟩» — a construção correu com PERMITIR_INCOMPLETO`);
+    (PREVIA ? avisos : erros).push(
+      `${onde}: ficou um «⟨por preencher⟩» numa página legal — falta um dado da cliente`);
   }
 
   // Migalhas de pão: o `item` é obrigatório em todos os degraus menos o último.

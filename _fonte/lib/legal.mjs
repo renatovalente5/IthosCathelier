@@ -8,8 +8,16 @@
 
 const MARCADORES = (d) => {
   const i = d.identidade;
-  const morada = [i.morada, [i.codigo_postal, i.localidade].filter(Boolean).join(' '), i.pais]
-    .filter(Boolean).join(', ');
+  // A morada é tudo ou nada. Juntar só as partes que existem daria «Castelo
+  // Branco, Portugal» numa página legal que diz ser a sede — uma morada
+  // incompleta apresentada como completa é pior do que um espaço em branco,
+  // porque ninguém dá por ela.
+  const moradaCompleta = !!(String(i.morada ?? '').trim()
+    && String(i.codigo_postal ?? '').trim()
+    && String(i.localidade ?? '').trim());
+  const morada = moradaCompleta
+    ? `${i.morada}, ${i.codigo_postal} ${i.localidade}, ${i.pais}`
+    : '';
   return {
     NOME: i.nome,
     DESIGNACAO: i.designacao,
@@ -62,7 +70,7 @@ export function aplicar(texto, d, ondeEstou) {
     const lista = [...desconhecidos].map((k) => `{{${k}}}`).join(', ');
     // Em desenvolvimento deixa-se passar com aviso, para se poder ver o site
     // antes de a cliente dar a morada. Na publicação, morre.
-    if (process.env.PERMITIR_INCOMPLETO === 'sim') {
+    if (process.env.PERMITIR_INCOMPLETO === 'sim' || process.env.PREVISUALIZACAO === 'sim') {
       console.warn(`aviso: marcadores por resolver em ${ondeEstou}: ${lista}`);
       return saida.replace(/\{\{[A-Z_]+\}\}/g, '⟨por preencher⟩');
     }

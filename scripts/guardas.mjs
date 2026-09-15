@@ -16,8 +16,25 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
+
+/* Modo de pré-visualização.
+ *
+ * Há duas famílias de problemas: os que são ERROS NOSSOS (uma fotografia
+ * anunciada que não existe, uma ligação morta, uma palavra proibida) e os que
+ * são DADOS QUE FALTAM À CLIENTE (a morada, o código postal). Os primeiros
+ * matam sempre a construção. Os segundos também — mas enquanto a loja não
+ * abrir, convém poder ver o site.
+ *
+ * Com PREVISUALIZACAO=sim, e SÓ com ela, os que esperam pela cliente passam a
+ * avisos. Em troca, o site sai fora do índice da Google, com uma tarja em todas
+ * as páginas e sem forma de comprar. Não há como publicar uma loja a sério sem
+ * os dados obrigatórios por engano. */
+const PREVIA = process.env.PREVISUALIZACAO === 'sim';
+
 const erros = [];
 const avisos = [];
+/** Falta um dado que só a cliente pode dar. Bloqueia, excepto em pré-visualização. */
+const faltaDaCliente = (m) => (PREVIA ? avisos.push(`POR PREENCHER: ${m}`) : erros.push(m));
 const ler = (p) => JSON.parse(readFileSync(join(RAIZ, p), 'utf8'));
 
 /* --- 1. dados legais ------------------------------------------------------
@@ -26,7 +43,7 @@ const ler = (p) => JSON.parse(readFileSync(join(RAIZ, p), 'utf8'));
 const identidade = ler('conteudo/definicoes/identidade.json');
 for (const campo of ['nome', 'nif', 'email', 'telefone', 'telefone_texto', 'morada', 'codigo_postal', 'localidade']) {
   if (!String(identidade[campo] ?? '').trim()) {
-    erros.push(`identidade.json: «${campo}» está vazio — obrigatório pelo art. 10.º do DL 7/2004`);
+    faltaDaCliente(`identidade.json: «${campo}» está vazio — obrigatório pelo art. 10.º do DL 7/2004`);
   }
 }
 if (!/^\d{9}$/.test(String(identidade.nif ?? ''))) {
@@ -99,7 +116,7 @@ for (const f of produtos) {
   }
   if (!p.publicado) continue;
 
-  if (!(p.preco > 0)) erros.push(`${onde}: publicado sem preço`);
+  if (!(p.preco > 0)) faltaDaCliente(`${onde}: publicado sem preço`);
   if (!p.resumo?.trim()) erros.push(`${onde}: publicado sem resumo`);
   if (!p.texto?.trim()) erros.push(`${onde}: publicado sem descrição`);
   if (!['em_stock', 'por_encomenda', 'esgotado'].includes(p.estado)) {
@@ -135,7 +152,7 @@ for (const f of produtos) {
     }
   }
 
-  if (!p.gpsr?.tipo) erros.push(`${onde}: falta a referência do modelo (art. 19.º do Reg. (UE) 2023/988)`);
+  if (!p.gpsr?.tipo) faltaDaCliente(`${onde}: falta a referência do modelo (art. 19.º do Reg. (UE) 2023/988)`);
 }
 
 /* --- 4. o que o site NÃO pode dizer ---------------------------------------
@@ -280,5 +297,6 @@ if (erros.length) {
   process.exit(1);
 }
 
+if (PREVIA) console.log('\n>>> PRÉ-VISUALIZAÇÃO: o site sai fora do índice, com tarja e sem checkout.\n');
 console.log(`guardas: ${produtos.length} produtos, ${categorias.length} ocasiões, `
   + `${LEGAIS.length} páginas legais — tudo coerente${avisos.length ? ` (${avisos.length} aviso(s))` : ''}`);
