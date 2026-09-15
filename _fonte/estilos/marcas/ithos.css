@@ -1,0 +1,138 @@
+/* ==========================================================================
+   ithos — os enfeites da marca
+
+   Três coisas fazem esta marca reconhecível, e as três saem do portefólio
+   impresso da cliente: o ARCO que emoldura a fotografia, as BOLAS de rosa-velho
+   a flutuar à volta, e a LUZ âmbar que sai da peça.
+   ========================================================================== */
+
+/* --- herói ---------------------------------------------------------------- */
+
+.heroi {
+  position: relative;
+  padding-block: clamp(var(--e5), 6vw, var(--e7)) clamp(var(--e6), 8vw, var(--e8));
+  overflow: hidden;
+}
+.heroi__grelha {
+  display: grid;
+  gap: clamp(var(--e5), 5vw, var(--e7));
+  align-items: center;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 52rem) {
+  .heroi__grelha { grid-template-columns: 1fr 1.05fr; }
+}
+.heroi h1 { color: var(--realce); }
+.heroi__texto p { max-width: 34ch; font-size: 1.1rem; color: var(--tinta-suave); }
+.heroi__accoes { display: flex; flex-wrap: wrap; gap: var(--e2); margin-top: var(--e4); }
+
+/* O arco. É a forma do portefólio: topo redondo, base reta. */
+.arco {
+  border-radius: 999px 999px var(--e3) var(--e3) / 46% 46% var(--e3) var(--e3);
+  overflow: hidden;
+}
+
+/* A luz. Um halo âmbar por trás da peça, como o que ela faz na parede.
+   Fica ATRÁS da fotografia e nunca por cima de texto. */
+.heroi__peca { position: relative; }
+.heroi__peca::before {
+  content: '';
+  position: absolute;
+  inset: 12% -18% -8%;
+  background: radial-gradient(closest-side, var(--brilho), transparent 72%);
+  opacity: .85;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* As bolas. Decoração pura: `aria-hidden`, nunca por baixo de texto, e em
+   rosa-velho, que contra o creme dá 1,9:1 — decorativo, nunca informação. */
+.bolas { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.bola { position: absolute; border-radius: 50%; background: var(--enfeite); opacity: .55; }
+.bola--1 { width: 7rem; height: 7rem; left: -2.5rem; top: 22%; }
+.bola--2 { width: 2.6rem; height: 2.6rem; left: 18%; top: 8%; opacity: .4; }
+.bola--3 { width: 4rem;  height: 4rem;  right: 6%; bottom: 8%; background: var(--verde-claro); opacity: .18; }
+.bola--4 { width: 1.4rem; height: 1.4rem; left: 8%; bottom: 16%; opacity: .5; }
+@media (max-width: 52rem) { .bola--1 { width: 4.5rem; height: 4.5rem; } .bola--2, .bola--4 { display: none; } }
+
+/* --- montra de destaques -------------------------------------------------- */
+
+.montra { position: relative; }
+.montra .peca__foto { border-radius: var(--raio-img); }
+
+/* --- faixa de argumentos -------------------------------------------------- */
+
+.argumentos {
+  display: grid;
+  gap: var(--e4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+}
+.argumento { display: flex; flex-direction: column; gap: var(--e1); }
+.argumento h3 {
+  font-family: var(--fonte-corpo);
+  font-size: .95rem; font-weight: 600;
+  letter-spacing: 0; text-transform: none;
+  margin: 0;
+}
+.argumento p { font-size: .9rem; color: var(--tinta-suave); margin: 0; }
+.argumento__icone { color: var(--realce); height: 26px; width: 26px; }
+
+/* --- tira de fotografias -------------------------------------------------- */
+
+.tira {
+  display: grid;
+  gap: var(--e3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+.tira .foto { aspect-ratio: 1; border-radius: var(--raio-cartao); }
+.tira .foto:nth-child(odd) { border-radius: var(--raio-img); }
+
+/* --- ficha de produto ----------------------------------------------------- */
+
+.ficha {
+  display: grid;
+  gap: clamp(var(--e5), 4vw, var(--e6));
+  grid-template-columns: 1fr;
+  padding-block: var(--e5) var(--e7);
+}
+@media (min-width: 56rem) {
+  .ficha { grid-template-columns: 1.15fr 1fr; align-items: start; }
+  .ficha__lado { position: sticky; top: 92px; }
+}
+
+.galeria { display: flex; flex-direction: column; gap: var(--e2); }
+.galeria__principal { border-radius: var(--raio-img); overflow: hidden; background: var(--fundo-alt); aspect-ratio: 4/5; }
+.galeria__principal img { width: 100%; height: 100%; object-fit: cover; }
+.galeria__tiras { display: flex; gap: var(--e2); flex-wrap: wrap; }
+.galeria__tira {
+  width: 4.5rem; aspect-ratio: 1; padding: 0; border: 1px solid var(--linha);
+  border-radius: var(--e1); overflow: hidden; background: none; cursor: pointer;
+  transition: border-color var(--transicao);
+}
+.galeria__tira img { width: 100%; height: 100%; object-fit: cover; }
+.galeria__tira[aria-current='true'] { border-color: var(--realce); border-width: 2px; }
+
+.preco { font-family: var(--fonte-display); font-size: 2rem; color: var(--realce); letter-spacing: .02em; }
+.preco small { font-family: var(--fonte-corpo); font-size: .8rem; letter-spacing: 0; color: var(--tinta-suave); display: block; text-transform: none; }
+
+.medidas { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e4); font-size: .9rem; color: var(--tinta-suave); }
+.medidas b { color: var(--tinta); font-weight: 500; }
+
+.estado { display: inline-flex; align-items: center; gap: var(--e1); font-size: .88rem; }
+.estado::before { content: ''; width: .55rem; height: .55rem; border-radius: 50%; background: var(--verde-claro); }
+.estado[data-estado='em_stock']::before { background: #4F7A3D; }
+.estado[data-estado='esgotado']::before { background: #8C2F1E; }
+
+/* O bloco de segurança e de conformidade. Não é decoração: é o art. 19.º do
+   Regulamento (UE) 2023/988, e a ASAE lê-o. */
+.seguranca { font-size: .86rem; }
+.seguranca summary { cursor: pointer; font-weight: 500; padding-block: var(--e2); }
+.seguranca ul { margin: var(--e2) 0 0; padding-left: var(--e4); color: var(--tinta-suave); }
+.seguranca li + li { margin-top: var(--e0); }
+
+/* --- formulário de opções -------------------------------------------------
+   Sem isto os grupos colam-se uns aos outros e a ajuda de uma opção parece o
+   rótulo da seguinte. */
+.opcoes { display: flex; flex-direction: column; gap: var(--e4); margin-block: var(--e2); }
+.ficha__lado.pilha > * + * { margin-top: var(--e4); }
+.ficha__texto { border-top: 1px solid var(--linha); padding-top: var(--e4); color: var(--tinta-suave); }

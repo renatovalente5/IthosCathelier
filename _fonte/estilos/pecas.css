@@ -1,0 +1,184 @@
+/* ==========================================================================
+   Peças que vivem em mais do que uma marca: o portal, os filtros do catálogo,
+   o carrinho, a prosa das páginas de texto.
+   ========================================================================== */
+
+/* --- portal: as duas portas ----------------------------------------------- */
+
+.portas {
+  display: grid;
+  gap: clamp(var(--e4), 3vw, var(--e5));
+  grid-template-columns: 1fr;
+  padding-block: clamp(var(--e5), 5vw, var(--e6));
+}
+@media (min-width: 46rem) { .portas { grid-template-columns: 1fr 1fr; } }
+
+.porta {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  border-radius: var(--e3);
+  overflow: hidden;
+  transition: transform var(--transicao), box-shadow var(--transicao);
+  isolation: isolate;
+}
+.porta:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgb(40 35 30 / .13); }
+.porta__foto { aspect-ratio: 5 / 4; overflow: hidden; background: #E9DED5; }
+.porta__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms cubic-bezier(.22,.61,.36,1); }
+.porta:hover .porta__foto img { transform: scale(1.04); }
+
+/* A porta da cathelier ainda não tem fotografia. Em vez de uma caixa cinzenta,
+   uma composição com as palavras da marca — honesta e bonita. */
+.porta__foto--tipografica {
+  display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
+  gap: .4em 1.1em; padding: var(--e5) var(--e4);
+  background: #F1EDE5;
+}
+.porta__foto--tipografica span {
+  font-family: 'Poiret One', sans-serif;
+  font-size: clamp(1rem, .8rem + 1.1vw, 1.7rem);
+  letter-spacing: .12em; text-transform: uppercase;
+  color: #6E6E5E;
+}
+.porta__foto--tipografica span:nth-child(3n) { color: var(--verde); }
+
+.porta__corpo { padding: var(--e4); display: flex; flex-direction: column; gap: var(--e2); flex: 1; }
+.porta--ithos .porta__corpo { background: #FBF5EF; }
+.porta--cathelier .porta__corpo { background: #FBFAF7; }
+.porta__logo { height: 42px; width: auto; }
+.porta--cathelier .porta__logo { height: 26px; }
+.porta__linha { color: #56564E; font-size: .95rem; margin: 0; flex: 1; }
+.porta__accao {
+  font-size: .82rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--verde); display: inline-flex; align-items: center; gap: .4em;
+}
+.porta__accao::after { content: '→'; transition: transform var(--transicao); }
+.porta:hover .porta__accao::after { transform: translateX(4px); }
+
+/* --- filtros do catálogo -------------------------------------------------- */
+
+.filtros { display: flex; flex-wrap: wrap; gap: var(--e2); }
+.filtro {
+  border: 1px solid color-mix(in srgb, var(--tinta) 22%, var(--fundo));
+  background: transparent; color: var(--tinta-suave);
+  border-radius: var(--raio-btn); padding: .5em 1.1em; min-height: 40px;
+  font-size: .88rem; cursor: pointer;
+  transition: border-color var(--transicao), color var(--transicao), background var(--transicao);
+}
+.filtro:hover { border-color: var(--realce); color: var(--realce); }
+.filtro[aria-pressed='true'] { background: var(--realce); border-color: var(--realce); color: var(--realce-tinta); }
+
+/* --- carrinho ------------------------------------------------------------- */
+
+.carrinho { display: grid; gap: clamp(var(--e4), 3vw, var(--e5)); grid-template-columns: 1fr; margin-top: var(--e5); }
+@media (min-width: 52rem) {
+  .carrinho { grid-template-columns: 1fr 20rem; align-items: start; }
+  .carrinho__resumo { position: sticky; top: 92px; }
+}
+
+.grupo-marca { margin-bottom: var(--e5); }
+.grupo-marca__cabeca {
+  display: flex; align-items: baseline; gap: var(--e2); flex-wrap: wrap;
+  padding-bottom: var(--e2); margin-bottom: var(--e3); border-bottom: 1px solid var(--linha);
+}
+.grupo-marca__nome { font-size: 1.15rem; letter-spacing: .04em; color: var(--verde); }
+[data-marca-grupo='ithos'] .grupo-marca__nome { font-family: 'Outfit', sans-serif; font-weight: 700; }
+[data-marca-grupo='cathelier'] .grupo-marca__nome { font-family: 'Poiret One', sans-serif; letter-spacing: .14em; }
+.grupo-marca__cabeca .pequeno { margin-left: auto; }
+
+.linha {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--e3);
+  padding-block: var(--e3);
+  border-bottom: 1px solid var(--linha);
+}
+@media (min-width: 40rem) { .linha { grid-template-columns: 5.5rem 1fr auto; align-items: start; } }
+.linha__foto { border-radius: var(--e1); overflow: hidden; aspect-ratio: 1; background: var(--fundo-alt); }
+.linha__foto img { width: 100%; height: 100%; object-fit: cover; }
+.linha__nome { font-weight: 500; margin: 0 0 var(--e0); }
+.linha__nome a { text-decoration: none; }
+.linha__nome a:hover { text-decoration: underline; }
+.linha__opcoes { font-size: .85rem; color: var(--tinta-suave); margin: 0; }
+.linha__fim { display: flex; align-items: center; gap: var(--e3); margin-top: var(--e2); }
+@media (min-width: 40rem) { .linha__fim { flex-direction: column; align-items: flex-end; margin-top: 0; } }
+.linha__preco { font-weight: 500; white-space: nowrap; }
+
+.qtd { display: inline-flex; align-items: center; border: 1px solid var(--linha); border-radius: var(--raio-btn); }
+.qtd button {
+  width: 2.2rem; height: 2.2rem; border: 0; background: none; cursor: pointer;
+  font-size: 1.1rem; line-height: 1; color: var(--tinta-suave);
+}
+.qtd button:hover { color: var(--realce); }
+.qtd span { min-width: 2rem; text-align: center; font-size: .92rem; }
+
+.tirar { background: none; border: 0; padding: var(--e1); cursor: pointer;
+         font-size: .82rem; color: var(--tinta-suave); text-decoration: underline; }
+.tirar:hover { color: #8C2F1E; }
+
+.contas { margin: var(--e3) 0 0; display: flex; flex-direction: column; gap: var(--e2); }
+.contas > div { display: flex; justify-content: space-between; gap: var(--e3); font-size: .95rem; }
+.contas dt, .contas dd { margin: 0; }
+.contas dt { color: var(--tinta-suave); }
+.contas__total { padding-top: var(--e2); border-top: 1px solid var(--linha); font-size: 1.1rem; font-weight: 500; }
+.contas__total dt { color: var(--tinta); }
+
+/* --- prosa das páginas de texto ------------------------------------------- */
+
+.prosa { max-width: var(--medida); }
+.prosa h2 { margin-top: var(--e6); font-size: calc(1.15rem * var(--escala)); }
+.prosa h2:first-child { margin-top: 0; }
+.prosa h3 { margin-top: var(--e5); font-size: 1.05rem; }
+.prosa ul, .prosa ol { padding-left: var(--e4); margin-bottom: var(--e3); }
+.prosa li + li { margin-top: var(--e1); }
+.prosa a { color: var(--realce); }
+.prosa table { margin-bottom: var(--e4); }
+.prosa hr { border: 0; border-top: 1px solid var(--linha); margin-block: var(--e5); }
+
+/* --- perguntas frequentes ------------------------------------------------- */
+
+.pergunta { border-bottom: 1px solid var(--linha); }
+.pergunta summary {
+  cursor: pointer; padding-block: var(--e3); font-weight: 500;
+  list-style: none; display: flex; justify-content: space-between; gap: var(--e3);
+}
+.pergunta summary::-webkit-details-marker { display: none; }
+.pergunta summary::after { content: '+'; color: var(--realce); font-size: 1.3rem; line-height: 1; flex: none; }
+.pergunta[open] summary::after { content: '−'; }
+.pergunta > div { padding-bottom: var(--e3); color: var(--tinta-suave); max-width: var(--medida); }
+
+/* --- avisos que aparecem sozinhos ----------------------------------------- */
+
+.aviso-loja {
+  background: var(--verde); color: #fff;
+  text-align: center; padding: var(--e2) var(--gaveta); font-size: .88rem;
+}
+.aviso-loja a { color: inherit; }
+
+/* --- caixas de aceitação --------------------------------------------------
+   Estas NÃO podem usar a pastilha das opções, que esconde o input: o artigo 5.º
+   do DL 24/2014 exige aceitação expressa, e uma aceitação que não se vê não é
+   aceitação nenhuma. */
+
+.aceitar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--e2) var(--e3);
+  align-items: start;
+  padding: var(--e3);
+  margin-top: var(--e3);
+  border: 1px solid color-mix(in srgb, var(--tinta) 26%, var(--fundo));
+  border-radius: var(--raio-cartao);
+  cursor: pointer;
+  font-size: .92rem;
+  transition: border-color var(--transicao), background var(--transicao);
+}
+.aceitar:hover { border-color: var(--realce); }
+.aceitar:has(input:checked) { border-color: var(--realce); background: color-mix(in srgb, var(--realce) 7%, var(--fundo)); }
+.aceitar:has(input:focus-visible) { outline: 2px solid var(--realce); outline-offset: 3px; }
+.aceitar input[type='checkbox'] {
+  width: 1.25rem; height: 1.25rem; margin: .12rem 0 0;
+  accent-color: var(--realce);
+  flex: none; cursor: pointer;
+}
+.aceitar a { color: var(--realce); }

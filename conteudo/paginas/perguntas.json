@@ -1,0 +1,50 @@
+[
+  {
+    "pergunta": "Os candeeiros ithos são brinquedos?",
+    "resposta": "Não. São candeeiros decorativos de presença, para o quarto. Devem ser usados sob vigilância de um adulto e não se destinam a brincar."
+  },
+  {
+    "pergunta": "Funcionam a pilhas ou a corrente?",
+    "resposta": "Pode escolher. A versão a pilhas leva duas pilhas AA (3V) e um interruptor, e pode ficar em qualquer sítio sem depender de uma tomada. A versão com cabo elétrico traz comando à distância, que permite regular a intensidade da luz, pôr temporizador e escolher iluminação ritmada. As pilhas não vão incluídas."
+  },
+  {
+    "pergunta": "Posso mandar gravar um nome?",
+    "resposta": "Pode. Gravamos a laser um nome, uma data ou uma frase curta na madeira. Escolhe-se na própria ficha do candeeiro, antes de juntar ao carrinho."
+  },
+  {
+    "pergunta": "Uma peça com o nome gravado pode ser devolvida?",
+    "resposta": "Não por arrependimento. Uma peça feita com as suas indicações é considerada personalizada e não tem o direito de livre resolução de 14 dias, nos termos do artigo 17.º n.º 1 alínea c) do Decreto-Lei 24/2014. Se a peça tiver defeito, a garantia de 3 anos aplica-se na mesma."
+  },
+  {
+    "pergunta": "Escolher a cor também conta como personalização?",
+    "resposta": "Não. Escolher uma cor de entre as do catálogo não é personalização: essas peças mantêm os 14 dias para devolver sem dar explicações. Só o texto gravado ou um desenho feito de propósito para si é que retira esse direito."
+  },
+  {
+    "pergunta": "Quanto tempo demora a chegar?",
+    "resposta": "As peças em stock saem do ateliê em até 3 dias úteis. As peças feitas por encomenda levam até 20 dias úteis de produção. A esse prazo soma-se o tempo de transporte, que em Portugal continental é de 1 a 5 dias úteis."
+  },
+  {
+    "pergunta": "Quanto custam os portes?",
+    "resposta": "Em Portugal continental e nas ilhas, 5 €. O valor exato é sempre mostrado no carrinho, depois de escolher o destino, antes de concluir a encomenda."
+  },
+  {
+    "pergunta": "Que formas de pagamento aceitam?",
+    "resposta": "Cartão de crédito e de débito e MB WAY, na página de pagamento segura da Stripe. Não vemos nem guardamos os dados do seu cartão, e não cobramos qualquer encargo por usar um meio de pagamento."
+  },
+  {
+    "pergunta": "As peças são todas iguais às fotografias?",
+    "resposta": "São feitas à mão, portanto há pequenas diferenças: o veio da madeira, o tom da tinta, a posição de um pormenor pintado. É isso que distingue uma peça feita à mão de uma peça industrial."
+  },
+  {
+    "pergunta": "Fazem peças que não estão no catálogo?",
+    "resposta": "Fazemos. A cathelier trabalha quase toda por encomenda, e a ithos já fez muitos animais que não estavam no catálogo. Peça um orçamento e dizemos se é possível, quanto custa e quanto demora."
+  },
+  {
+    "pergunta": "Posso encomendar para uma data certa?",
+    "resposta": "Escreva-nos antes de encomendar e diga a data. Fazemos o possível para corresponder, e dizemos-lhe com honestidade se não der."
+  },
+  {
+    "pergunta": "Enviam para fora de Portugal?",
+    "resposta": "De momento enviamos para Portugal continental, Açores e Madeira. Estamos a preparar o envio para o resto da Europa. Se precisar de um envio para fora, escreva-nos e vemos caso a caso."
+  }
+]

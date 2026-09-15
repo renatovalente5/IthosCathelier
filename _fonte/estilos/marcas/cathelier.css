@@ -1,0 +1,131 @@
+/* ==========================================================================
+   cathelier — os enfeites da marca
+
+   Aqui não há arcos nem bolas. Há fios de 1 px, retângulos puros, maiúsculas
+   muito espaçadas e muito branco. A marca partilha o verde com a ithos, por
+   isso a separação tem de vir do RITMO: medida estreita, espaço largo, nenhuma
+   sombra.
+
+   E tem de aguentar pouca fotografia — a cliente ainda não tem as fotografias
+   desta marca, e um desenho editorial vive de tipografia.
+   ========================================================================== */
+
+/* --- herói ---------------------------------------------------------------- */
+
+.heroi-c {
+  padding-block: clamp(var(--e6), 9vw, calc(var(--e8) * 1.2)) clamp(var(--e6), 7vw, var(--e8));
+  border-bottom: 1px solid var(--linha);
+}
+.heroi-c h1 {
+  font-size: clamp(2.4rem, 1.2rem + 5.2vw, 5rem);
+  letter-spacing: .06em;
+  line-height: 1.02;
+  max-width: 16ch;
+}
+.heroi-c p { max-width: 42ch; color: var(--tinta-suave); margin-top: var(--e4); }
+.heroi-c__accoes { display: flex; flex-wrap: wrap; gap: var(--e3); margin-top: var(--e5); }
+
+/* --- fio ------------------------------------------------------------------ */
+
+.fio { height: 1px; background: var(--linha); border: 0; margin: 0; }
+.fio--curto { width: 4rem; background: var(--realce); height: 1px; margin-bottom: var(--e4); }
+
+/* --- índice de categorias -------------------------------------------------
+   Uma lista, não uma grelha de cartões: sem fotografias, uma grelha de caixas
+   vazias parece um site por acabar. Uma lista tipográfica parece um índice. */
+
+.indice { border-top: 1px solid var(--linha); }
+.indice__linha {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--e1) var(--e5);
+  padding-block: clamp(var(--e4), 3.5vw, var(--e5));
+  border-bottom: 1px solid var(--linha);
+  text-decoration: none;
+  position: relative;
+  transition: padding-inline var(--transicao);
+}
+@media (min-width: 46rem) {
+  .indice__linha { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto; align-items: baseline; }
+}
+.indice__linha:hover { padding-inline: var(--e2); background: var(--fundo-alt); }
+.indice__nome {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  margin: 0;
+}
+.indice__linha:hover .indice__nome { color: var(--realce); }
+.indice__resumo { color: var(--tinta-suave); font-size: .95rem; margin: 0; }
+.indice__seta { color: var(--realce); font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+
+/* --- tipos de peça: fichas sem fotografia -------------------------------- */
+
+.tipos { display: flex; flex-wrap: wrap; gap: var(--e2); list-style: none; margin: 0; padding: 0; }
+.tipos li {
+  border: 1px solid var(--linha);
+  padding: .6em 1.1em;
+  font-size: .85rem;
+  letter-spacing: .04em;
+  color: var(--tinta-suave);
+}
+
+/* --- passos --------------------------------------------------------------- */
+
+.passos { display: grid; gap: var(--e5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); counter-reset: passo; }
+.passo { border-top: 1px solid var(--realce); padding-top: var(--e3); }
+.passo::before {
+  counter-increment: passo;
+  content: counter(passo, decimal-leading-zero);
+  display: block;
+  font-family: var(--fonte-display);
+  font-size: 1.6rem;
+  color: var(--realce);
+  letter-spacing: .1em;
+  margin-bottom: var(--e2);
+}
+.passo h3 { font-size: 1rem; letter-spacing: .12em; margin-bottom: var(--e1); }
+.passo p { font-size: .9rem; color: var(--tinta-suave); margin: 0; }
+
+/* --- ficha de categoria --------------------------------------------------- */
+
+.categoria { padding-block: var(--e6) var(--e7); }
+.categoria__cabeca { max-width: 46ch; margin-bottom: clamp(var(--e5), 5vw, var(--e7)); }
+.categoria__cabeca h1 { font-size: clamp(2rem, 1.2rem + 3.6vw, 3.6rem); }
+
+/* --- pedido de orçamento -------------------------------------------------- */
+
+.orcamento { display: grid; gap: clamp(var(--e5), 4vw, var(--e6)); grid-template-columns: 1fr; padding-block: var(--e6) var(--e7); }
+@media (min-width: 52rem) { .orcamento { grid-template-columns: 1fr 1.2fr; } }
+.orcamento form { display: flex; flex-direction: column; gap: var(--e4); }
+.orcamento__par { display: grid; gap: var(--e4); grid-template-columns: 1fr; }
+@media (min-width: 34rem) { .orcamento__par { grid-template-columns: 1fr 1fr; } }
+
+/* --- montra de trabalhos -------------------------------------------------- */
+
+.trabalhos { display: grid; gap: var(--e4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
+.trabalho { border: 1px solid var(--linha); }
+.trabalho .foto { border-radius: 0; aspect-ratio: 1; }
+.trabalho figcaption { padding: var(--e3); font-size: .85rem; color: var(--tinta-suave); }
+.trabalho figcaption b { display: block; color: var(--tinta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; font-size: .78rem; margin-bottom: var(--e0); }
+
+/* --- quando ainda não há fotografias --------------------------------------
+   Em vez de caixas cinzentas com um ícone, uma composição tipográfica com o
+   nome da peça. Fica honesto e fica bonito. */
+.sem-foto {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--fundo-alt);
+  padding: var(--e4);
+  text-align: center;
+}
+.sem-foto span {
+  font-family: var(--fonte-display);
+  font-size: clamp(1.1rem, .9rem + .8vw, 1.5rem);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--tinta) 45%, var(--fundo-alt));
+}
