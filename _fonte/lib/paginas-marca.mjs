@@ -20,11 +20,25 @@ export function paginaInicial(d, ctx) {
     ...publicados.filter((p) => p.destaque),
     ...publicados.filter((p) => !p.destaque),
   ].slice(0, 12);
-  // A fotografia da capa é a do tigre na parede: das 90 que existem, é a única
-  // que sobrevive a um corte panorâmico — o candeeiro à direita, parede limpa à
-  // esquerda para o texto, e a planta a dar profundidade. As outras são
-  // retratos apertados e, cortadas a 1,55:1, ficam uma tira sem contexto.
-  const capa = publicados.find((p) => p.slug === 'tigre') ?? publicados[0];
+  /* A fotografia da capa é a do pinguim na oficina, e a escolha tem razões
+   * que se medem:
+   *
+   * É a ÚNICA das 90 que é quadrada (2000×2000). Todas as outras de ambiente
+   * são retratos de 2:3, e um retrato cortado a 1,55:1 perde metade da altura:
+   * fica sempre meio candeeiro debaixo da faixa do texto. Sendo quadrada,
+   * aguenta o corte de 1,55:1 do computador E o de 4:5 do telemóvel com a peça
+   * inteira — cabeça, barriga acesa, asas e pés — em ambos.
+   *
+   * É também a de maior resolução do lote, e a única com derivada de 1600 px:
+   * a capa declara `sizes: 100vw` e as outras param nos 1200, o que num ecrã
+   * de 1440 px ou num retina dá uma capa esticada.
+   *
+   * E conta a história certa sem legenda: os pincéis, o desenho no cavalete e
+   * a palete de tintas dizem «feito à mão em madeira» num relance. O que fica
+   * debaixo da faixa é bancada, não produto.
+   *
+   * O que se perde: é oficina e não quarto de criança. Fica dito. */
+  const capa = publicados.find((p) => p.slug === 'pinguim') ?? publicados[0];
   const zonaPt = d.portes.zonas.find((z) => z.id === 'pt');
   const cats = d.categorias.filter((c) => c.publicado && c.pecas.length).slice(0, 4);
 
@@ -39,7 +53,7 @@ export function paginaInicial(d, ctx) {
 <section class="capa">
   <div class="capa__foto">
     ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[capa.fotos.length - 1] ?? capa.fotos[0],
-      alt: `Candeeiro ${capa.nome} aceso na parede de um quarto`,
+      alt: `Candeeiro ${capa.nome} aceso, na bancada do ateliê, ao lado do desenho que lhe deu origem`,
       sizes: '100vw', prioridade: true }) : ''}
   </div>
   <!-- O véu acompanha o TEXTO e não o quadro.
@@ -62,17 +76,11 @@ export function paginaInicial(d, ctx) {
   </div>
 </section>
 
-<!-- Quatro factos, todos lidos dos dados. Sem estrelas nem «54 opiniões»: não
-     há sistema de avaliações, e inventá-las é prática comercial desleal. -->
-<section class="confianca">
-  <div class="envolvente confianca__tira">
-    <span>Feito à mão em ${esc(d.identidade.localidade)}</span>
-    <span>Até ${d.loja.prazos.producao_dias} dias úteis de produção</span>
-    <span>Portes ${euros(zonaPt?.preco ?? 5)} para todo o país</span>
-    <span>Garantia legal de ${d.loja.devolucoes.garantia_anos} anos</span>
-  </div>
-</section>
-
+<!-- A tira dos quatro factos saiu daqui a pedido do dono da loja.
+     O que ela dizia não se perdeu: o prazo de produção e os portes estão na
+     ficha de cada peça e no carrinho (onde a lei os exige, antes do botão de
+     pagar), a garantia está no rodapé e em /legal/garantia/, e o «feito à mão
+     em Castelo Branco» está na página do ateliê. -->
 <section class="seccao" id="candeeiros">
   <div class="envolvente">
     <div class="cabeca-seccao">

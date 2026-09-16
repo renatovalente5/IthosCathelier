@@ -263,10 +263,19 @@
 /* O enquadramento sobe para o candeeiro ficar na parte de cima, que é a que
    não leva véu. Com 34% ele caía a meio e o véu, que tem de ser forte para o
    texto branco se ler, apagava-o. */
-.capa__foto img { object-fit: cover; object-position: 50% 30%; }
+/* A fotografia da capa é QUADRADA, e isso inverte qual dos dois números conta
+   em cada corte — foi verificado com renders, não presumido:
+
+   · Telemóvel (caixa 4:5 = 0,80): a fonte é mais LARGA do que a caixa
+     (1,00 > 0,80), logo o corte é pelos lados e a percentagem VERTICAL não faz
+     absolutamente nada. Os 62% horizontais encostam o pinguim ao centro-direita
+     e deixam o desenho no cavalete a equilibrar à esquerda; a 80% a asa já
+     tocava a margem.
+   · Computador (caixa 1,55): a fonte é mais ALTA, o corte é em cima e em
+     baixo, e manda a percentagem vertical. A 52% a coroa preta toca o topo;
+     42% deixa uma folga acima da cabeça e mantém os pés dentro do quadro. */
+.capa__foto img { object-fit: cover; object-position: 62% 50%; }
 @media (width >= 48rem) {
-  /* Ao largo o corte é panorâmico e o véu é lateral: o enquadramento pode
-     voltar ao centro, que é onde a cena está composta. */
   .capa__foto img { object-position: 50% 42%; }
 }
 
@@ -291,7 +300,10 @@
   z-index: 1;
   width: 100%;
   color: #fff;
-  padding-block: clamp(var(--e5), 5vw, var(--e6)) clamp(var(--e4), 4vw, var(--e6));
+  /* A faixa encolheu. É o maior ganho isolado para se ver a fotografia, e não
+     custa contraste nenhum: o véu é uniforme a 78% e o mínimo legal depende do
+     que está debaixo das letras, não da altura da caixa. */
+  padding-block: clamp(var(--e4), 3.5vw, var(--e5)) clamp(var(--e4), 3vw, var(--e5));
 
   /* Véu UNIFORME e não em gradiente, com o desvanecimento numa faixa própria
      por cima. Duas razões, e as duas importam:
@@ -321,8 +333,11 @@
   color: #fff;
   margin-bottom: var(--e3);
   font-size: clamp(1.9rem, 1.45rem + 2.2vw, 3.1rem);
+  /* 26ch ao largo põe o título em duas linhas em vez de três, e poupa uma
+     altura de linha inteira à faixa. */
   max-width: 18ch;
 }
+@media (width >= 48rem) { .capa__texto h1 { max-width: 26ch; } }
 .capa__texto p { color: rgb(255 255 255 / .94); max-width: 40ch; margin: 0; }
 
 .botao--capa {
