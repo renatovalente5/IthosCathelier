@@ -22,6 +22,27 @@ const LOGO = {
   cathelier: '/assets/img/marca/cathelier.svg',
 };
 
+/* O logótipo que sobrevive a ser pequeno.
+ *
+ * O da ithos é uma composição vertical — símbolo, «ithos», e «handmade in
+ * Portugal» em letra miudinha por baixo. A 26 px de altura mede 24 px de
+ * largura e a linha de baixo vira uma mancha cinzenta. O SÍMBOLO sozinho tem
+ * 1,08 de proporção e lê-se. O da cathelier é uma palavra deitada (2,19) que
+ * continua legível em pequeno, por isso não muda. */
+const LOGO_PEQUENO = {
+  ithos: '/assets/img/marca/ithos-simbolo.svg',
+  cathelier: '/assets/img/marca/cathelier.svg',
+};
+
+/* As proporções, medidas no viewBox de cada ficheiro. Vão para `width`/`height`
+   no HTML para o browser reservar o espaço certo antes de o SVG chegar. */
+const MEDIDA = {
+  'ithos.svg': [130, 140],
+  'ithos-simbolo.svg': [138, 128],
+  'cathelier.svg': [117, 54],
+};
+const medidaDe = (caminho) => MEDIDA[caminho.split('/').pop()] ?? [100, 100];
+
 /** O menu é CURTO de propósito: categorias primeiro, institucional depois, e
  *  nada que não sirva para comprar ou para falar connosco. «Cuidados e
  *  segurança» sai da barra e vive no rodapé e em cada ficha — continua público
@@ -145,27 +166,53 @@ function cabecalho({ marca, l, caminho }) {
   const irma = IRMA[marca];
   const casa = marca === 'cathelier' ? '/cathelier/' : '/';
 
+  const alt = { ithos: 'ithos — handmade in Portugal', cathelier: 'cathelier' };
+  const img = (src, classe, alternativo) => {
+    const [w, h] = medidaDe(src);
+    return `<img class="${classe}" src="${l(src)}" alt="${esc(alternativo)}" width="${w}" height="${h}">`;
+  };
+
+  /* O PAR.
+   *
+   * A ideia de que isto veio: dois logótipos lado a lado, o da página maior, e
+   * um clique no pequeno trocava-os de sítio e de tamanho.
+   *
+   * O que ficou dessa ideia: os dois lado a lado, com tamanhos diferentes, e a
+   * troca a acontecer mesmo — logótipos a deslizar um para o lugar do outro.
+   *
+   * O que mudou, e porquê: a troca **não** é um botão que mexe no cabeçalho.
+   * É o resultado de se MUDAR DE PÁGINA. Um logótipo de cabeçalho é a promessa
+   * «estás aqui, e daqui vais a casa»; se trocasse de sítio sem a página mudar,
+   * passava a apontar para um sítio onde não estamos, e o alvo debaixo do rato
+   * mudava de identidade entre uma visita e a seguinte. Assim a animação é a
+   * mesma e a promessa mantém-se: clica-se no pequeno, navega-se a sério, e os
+   * dois logótipos deslizam e trocam de tamanho durante a navegação — feito
+   * pelo browser com `view-transition-name`, sem uma linha de JavaScript.
+   *
+   * Passar o rato pelo pequeno mostra a troca ANTES de a fazer: ele cresce e
+   * acende, o outro recua. É reversível, e nada se desloca debaixo do cursor —
+   * a caixa do pequeno já tem o tamanho da versão crescida. */
   return `<header class="topo" data-compacto="nao">
   <div class="envolvente topo__barra">
     <button class="abrir-menu" type="button" aria-expanded="false" aria-controls="menu"
             aria-label="Abrir o menu">${icone('menu', 26)}</button>
 
-    <a class="topo__marca" href="${l(casa)}" aria-label="${esc(marca)} — página inicial">
-      ${marca === 'ithos'
-        ? `<img src="${l(LOGO.ithos)}" alt="ithos — handmade in Portugal" width="130" height="140">`
-        : `<img src="${l(LOGO.cathelier)}" alt="cathelier" width="117" height="54">`}
-    </a>
+    <div class="par">
+      <a class="topo__marca par__activa" href="${l(casa)}" aria-label="${esc(marca)} — página inicial">
+        ${img(LOGO[marca], `marca-${marca}`, alt[marca])}
+      </a>
+      ${irma ? `<a class="par__outra" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}"
+         data-outra-marca aria-label="Ir para a ${esc(irma.nome)} — ${esc(irma.nota)}"
+         title="${esc(irma.nome)} — ${esc(irma.nota)}">
+        ${img(LOGO_PEQUENO[irma.nome], `marca-${irma.nome}`, '')}
+      </a>` : ''}
+    </div>
 
     <nav class="topo__menu" aria-label="Menu principal">
       ${menu.map(([h, t]) => `<a href="${l(h)}"${caminho === h ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('\n      ')}
     </nav>
 
     <div class="topo__accoes">
-      ${irma ? `<a class="topo__irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca
-           aria-label="Ir para a ${esc(irma.nome)}, ${esc(irma.nota)}">
-        <span class="topo__irma-nome">${esc(irma.nome)}</span>
-        <span aria-hidden="true">↗</span>
-      </a>` : ''}
       <a class="cesto" href="${l('/carrinho/')}" aria-label="Carrinho de compras">
         ${icone('carrinho', 22)}<span class="cesto__conta" data-cesto-conta data-vazio="sim"></span>
       </a>
@@ -206,8 +253,10 @@ function menuTelemovel({ marca, l, identidade, contagens }) {
 
   ${irma ? `<div class="gaveta__irma">
     <p class="rotulo">A outra marca do mesmo ateliê</p>
-    <a class="porta-irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca>
-      <span class="porta-irma__nome">${esc(irma.nome)}</span>
+    <a class="porta-irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca
+       aria-label="Ir para a ${esc(irma.nome)} — ${esc(irma.nota)}">
+      <img class="porta-irma__logo" src="${l(LOGO_PEQUENO[irma.nome])}" alt=""
+           width="${medidaDe(LOGO_PEQUENO[irma.nome])[0]}" height="${medidaDe(LOGO_PEQUENO[irma.nome])[1]}">
       <span class="porta-irma__nota">${esc(irma.nota)}</span>
       <span class="porta-irma__seta" aria-hidden="true">↗</span>
     </a>

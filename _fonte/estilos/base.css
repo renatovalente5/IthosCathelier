@@ -370,7 +370,7 @@ p:last-child { margin-bottom: 0; }
    âncoras se moverem todos juntos. */
 
 :root { --altura-topo: 88px; --topo-encolhido: 56px; }
-@media (min-width: 60rem) { :root { --altura-topo: 112px; --topo-encolhido: 64px; } }
+@media (width >= 60rem) { :root { --altura-topo: 112px; --topo-encolhido: 64px; } }
 .topo[data-compacto='sim'] { --altura-topo: var(--topo-encolhido); }
 
 /* Quem salta para uma âncora chega com a página já rolada, logo com o cabeçalho
@@ -400,23 +400,66 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
   transition: min-height 180ms ease-out;
 }
 
-/* Anima-se a ALTURA do logótipo, nunca `transform: scale()` — o `scale` deixa a
-   área de clique do tamanho antigo e cria uma zona invisível a roubar cliques
-   ao menu que está ao lado. */
-.topo__marca { display: flex; align-items: center; text-decoration: none; flex: none; }
-.topo__marca img { width: auto; transition: height 180ms ease-out; }
+/* --- o par de logótipos ----------------------------------------------------
+   O logótipo da marca em que se está, grande e à esquerda, é a casa. Ao lado,
+   separado por um fio, o da outra marca, pequeno e esbatido.
 
-[data-marca='ithos'] .topo__marca img { height: 48px; }
-[data-marca='cathelier'] .topo__marca img { height: 34px; }
-.topo[data-compacto='sim'] .topo__marca img { height: 30px; }
-[data-marca='cathelier'] .topo[data-compacto='sim'] .topo__marca img { height: 24px; }
+   As alturas são DIFERENTES por marca de propósito. A ithos é uma composição
+   quase quadrada (0,93 de proporção) e a cathelier é uma palavra deitada
+   (2,19): à mesma altura, a cathelier parecia ter metade do tamanho. Iguala-se
+   o peso óptico, não o número.
 
-@media (min-width: 60rem) {
-  [data-marca='ithos'] .topo__marca img { height: 72px; }
-  [data-marca='cathelier'] .topo__marca img { height: 50px; }
-  .topo[data-compacto='sim'] .topo__marca img { height: 40px; }
-  [data-marca='cathelier'] .topo[data-compacto='sim'] .topo__marca img { height: 30px; }
+   Anima-se a ALTURA, nunca `transform: scale()` — o `scale` deixa a área de
+   clique do tamanho antigo e cria uma zona invisível a roubar cliques ao que
+   está ao lado. */
+
+:root {
+  --logo-activa: 48px;         /* ithos: o bloco inteiro */
+  --irma: 20px;                /* cathelier: palavra deitada */
+  --irma-acesa: 26px;
 }
+[data-marca='cathelier'] {
+  --logo-activa: 34px;         /* cathelier: palavra deitada */
+  --irma: 22px;                /* ithos: só o símbolo */
+  --irma-acesa: 28px;
+}
+.topo[data-compacto='sim'] { --logo-activa: 30px; --irma: 16px; --irma-acesa: 20px; }
+[data-marca='cathelier'] .topo[data-compacto='sim'] { --logo-activa: 24px; --irma: 18px; --irma-acesa: 22px; }
+
+@media (width >= 60rem) {
+  :root { --logo-activa: 72px; --irma: 26px; --irma-acesa: 34px; }
+  [data-marca='cathelier'] { --logo-activa: 50px; --irma: 30px; --irma-acesa: 38px; }
+  .topo[data-compacto='sim'] { --logo-activa: 40px; --irma: 20px; --irma-acesa: 26px; }
+  [data-marca='cathelier'] .topo[data-compacto='sim'] { --logo-activa: 30px; --irma: 24px; --irma-acesa: 30px; }
+}
+
+.par { display: flex; align-items: center; gap: var(--e2); flex: none; }
+.topo__marca, .par__activa { display: flex; align-items: center; text-decoration: none; flex: none; }
+.par__activa img {
+  width: auto; height: var(--logo-activa);
+  transition: height 180ms ease-out, opacity 220ms ease;
+}
+
+/* A caixa da irmã tem SEMPRE o tamanho da versão acesa. O logótipo cresce lá
+   dentro, e por isso nada se desloca debaixo do cursor e não há meio logótipo
+   fora da área de clique. */
+.par__outra {
+  display: grid; place-items: center;
+  height: max(44px, calc(var(--irma-acesa) + 14px));
+  padding-inline: var(--e3);
+  border-left: 1px solid var(--linha);
+  text-decoration: none;
+}
+.par__outra img {
+  width: auto; height: var(--irma); opacity: .5;
+  transition: height 220ms cubic-bezier(.22, .61, .36, 1), opacity 220ms ease;
+}
+.par__outra:hover img, .par__outra:focus-visible img { height: var(--irma-acesa); opacity: 1; }
+
+/* O activo recua um pouco: é o que completa a leitura de «estão prestes a
+   trocar de lugar». Sem isto, a irmã só cresce e não se percebe porquê. */
+.par:has(.par__outra:hover) .par__activa img,
+.par:has(.par__outra:focus-visible) .par__activa img { opacity: .4; }
 
 @media (prefers-reduced-motion: reduce) {
   .topo__barra, .topo__marca img { transition-duration: 0s; }
@@ -441,28 +484,9 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
    (0,1,0) e o cesto ficava colado ao botão do menu, à esquerda. */
 .topo__accoes { display: flex; align-items: center; gap: var(--e3); }
 
-/* A outra marca aparece com a LETRA dela, a COR dela e uma seta para fora,
-   separada do menu por um fio. Uma etiqueta não muda de tipo de letra nem
-   aponta para fora: é assim que se lê «caminho» e não «rótulo». */
-.topo__irma {
-  display: none;
-  align-items: baseline;
-  gap: .4em;
-  text-decoration: none;
-  padding: .45em .9em;
-  border-left: 1px solid var(--linha);
-  white-space: nowrap;
-  font-size: .95rem;
-}
-@media (min-width: 60rem) { .topo__irma { display: inline-flex; } }
-.topo__irma[data-marca-irma='cathelier'] {
-  font-family: 'Marcellus', serif; text-transform: uppercase; letter-spacing: .12em;
-  font-size: .82rem; color: #4A4A3E;
-}
-.topo__irma[data-marca-irma='ithos'] {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #3E4527;
-}
-.topo__irma:hover { color: var(--realce); }
+/* A outra marca deixou de ser uma PALAVRA ao lado do menu e passou a ser o
+   logótipo dela, no par. Uma palavra dizia o nome; o logótipo diz o nome e o
+   mundo a que se vai — e é a mesma coisa que se vê depois de lá chegar. */
 
 .cesto {
   position: relative; display: inline-flex; align-items: center; gap: var(--e1);
@@ -483,13 +507,20 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
   color: var(--tinta); padding: 0;
 }
 
-@media (max-width: 60rem) {
+/* `width < 60rem` e `width >= 60rem`, não `max-width`/`min-width`.
+   A 960 px exactos as duas antigas casavam ao mesmo tempo — e o site mostrava
+   o menu de telemóvel dentro da barra alta do computador. Um pixel de largura
+   com dois desenhos sobrepostos. */
+@media (width < 60rem) {
   .abrir-menu { display: inline-flex; margin-inline-start: calc(var(--gaveta) * -.35); }
   .topo__menu { display: none; }
   .topo__barra { gap: var(--e2); }
-  /* O logótipo fica ao centro por posicionamento absoluto: assim não se
-     desloca quando o contador do cesto passa de um para dois dígitos. */
-  .topo__marca { position: absolute; left: 50%; transform: translateX(-50%); }
+  /* O par fica ao centro por posicionamento absoluto: assim não se desloca
+     quando o contador do cesto passa de um para dois dígitos. E a irmã sai —
+     numa barra de 375 px com botão de menu e cesto não há largura para dois
+     logótipos sem os espremer aos dois. No telemóvel ela vive na gaveta. */
+  .par { position: absolute; left: 50%; transform: translateX(-50%); }
+  .par__outra { display: none; }
   .topo__accoes { margin-left: auto; }
 }
 
@@ -549,14 +580,13 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 .porta-irma[data-marca-irma='ithos'] {
   background: #FBF5EF; border: 1px solid #E3D3C6; border-radius: var(--e3);
 }
-.porta-irma__nome { font-size: 1.3rem; }
-.porta-irma[data-marca-irma='cathelier'] .porta-irma__nome {
-  font-family: 'Marcellus', serif; text-transform: uppercase; letter-spacing: .16em;
-  font-size: 1.05rem; color: #28281E;
-}
-.porta-irma[data-marca-irma='ithos'] .porta-irma__nome {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #231F20;
-}
+/* Na gaveta cabe o logótipo inteiro, e é o mesmo que se vê no par ao largo —
+   quem muda de telemóvel para computador reconhece a mesma porta. Sem
+   `view-transition-name`: dois elementos com o mesmo nome fazem o browser
+   desistir da transição toda. */
+.porta-irma__logo { width: auto; display: block; }
+.porta-irma[data-marca-irma='cathelier'] .porta-irma__logo { height: 26px; }
+.porta-irma[data-marca-irma='ithos'] .porta-irma__logo { height: 34px; }
 .porta-irma__nota { grid-column: 1; font-size: .875rem; color: #5C5C50; }
 /* A COLUNA tem de ser dita. Um item com linha definida e coluna automática é
    colocado ANTES dos itens totalmente automáticos (CSS Grid §8.5, passo 3) —
@@ -572,7 +602,7 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
   text-decoration: none; color: var(--tinta-suave); font-size: .95rem; min-height: 44px;
 }
 
-@media (min-width: 60rem) { .gaveta { display: none; } }
+@media (width >= 60rem) { .gaveta { display: none; } }
 
 /* --- rodapé --------------------------------------------------------------- */
 
@@ -762,8 +792,51 @@ html[data-troca-marca='sim']::view-transition-new(root) { animation: cortina-ent
 @keyframes cortina-sai { to { opacity: 0; transform: scale(.985); } }
 @keyframes cortina-entra { from { opacity: 0; clip-path: inset(0 0 100% 0); } to { opacity: 1; clip-path: inset(0); } }
 
+/* --- a troca dos logótipos -------------------------------------------------
+   É aqui que os dois logótipos trocam de lugar e de tamanho.
+
+   Cada marca tem um nome de transição PRÓPRIO — `marca-ithos` segue a ithos
+   esteja ela no lugar grande ou no pequeno. É isso que faz o browser perceber
+   que o mesmo objecto mudou de sítio e animá-lo entre os dois, em vez de o
+   apagar de um lado e desenhar do outro.
+
+   O nome tem de ser ÚNICO no documento. Dois elementos com o mesmo nome fazem o
+   browser desistir da transição inteira, em silêncio — por isso o logótipo da
+   gaveta não leva nome nenhum, e a irmã, no telemóvel, está em `display:none`,
+   que não entra na transição.
+
+   Ao ficarem com nome próprio, os dois logótipos saem do instantâneo da página
+   e passam a flutuar por cima da cortina: a página muda por baixo e eles
+   atravessam-na. É a leitura certa — o ateliê é o mesmo, mudou a marca.
+
+   Quem não tem transições entre documentos (hoje, o Firefox) navega e pronto:
+   chega à página nova com os logótipos já trocados. Não falta nada, só a
+   animação. */
+.marca-ithos { view-transition-name: marca-ithos; }
+.marca-cathelier { view-transition-name: marca-cathelier; }
+
+::view-transition-group(marca-ithos),
+::view-transition-group(marca-cathelier) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(.22, .61, .36, 1);
+  z-index: 10;
+}
+/* A caixa desliza e muda de tamanho; o conteúdo cruza-se mais depressa, senão
+   vê-se o logótipo antigo esticado durante meio segundo. */
+::view-transition-old(marca-ithos), ::view-transition-new(marca-ithos),
+::view-transition-old(marca-cathelier), ::view-transition-new(marca-cathelier) {
+  animation-duration: 260ms;
+  height: 100%;
+  object-fit: contain;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+  ::view-transition-old(root), ::view-transition-new(root),
+  ::view-transition-group(marca-ithos), ::view-transition-group(marca-cathelier),
+  ::view-transition-old(marca-ithos), ::view-transition-new(marca-ithos),
+  ::view-transition-old(marca-cathelier), ::view-transition-new(marca-cathelier) {
+    animation: none !important;
+  }
 }
 
 /* --- alvos de toque -------------------------------------------------------
