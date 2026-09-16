@@ -585,20 +585,20 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 [data-marca='cathelier'] .gaveta__menu a { font-size: 1.1rem; letter-spacing: .04em; }
 .gaveta__menu a > span:first-child { flex: 1; }
 .gaveta__conta { font-size: .95rem; color: var(--tinta-suave); font-variant-numeric: tabular-nums; }
-.gaveta__seta { color: var(--tinta-suave); }
 
-.gaveta__irma { padding: var(--e5) var(--gaveta) 0; }
+/* --- a porta para a outra marca -------------------------------------------
+   Era um cartão com rótulo por cima, dentro de uma caixa com contorno: 173 px
+   de 812 para UMA ligação. Passou a uma linha com o mesmo ritmo das outras,
+   mas continua a não ser uma delas — tem a LETRA da outra marca, a COR dela,
+   o fundo dela e uma seta para fora. É isso que separa «isto leva a outro
+   sítio» de «isto é mais uma página daqui». */
 .porta-irma {
   display: grid; grid-template-columns: 1fr auto; align-items: center;
-  gap: 0 var(--e3); padding: var(--e4);
-  text-decoration: none; margin-top: var(--e2);
+  gap: 0 var(--e3); padding: var(--e3) var(--gaveta);
+  min-height: 60px; text-decoration: none;
 }
-.porta-irma[data-marca-irma='cathelier'] {
-  background: #FBFAF7; border: 1px solid #DCD6CA; border-radius: 0;
-}
-.porta-irma[data-marca-irma='ithos'] {
-  background: #FBF5EF; border: 1px solid #E3D3C6; border-radius: var(--e3);
-}
+.porta-irma[data-marca-irma='cathelier'] { background: #FBFAF7; }
+.porta-irma[data-marca-irma='ithos'] { background: #FBF5EF; }
 .porta-irma__nome { font-size: 1.3rem; }
 .porta-irma[data-marca-irma='cathelier'] .porta-irma__nome {
   font-family: 'Marcellus', serif; text-transform: uppercase; letter-spacing: .16em;
@@ -607,19 +607,33 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 .porta-irma[data-marca-irma='ithos'] .porta-irma__nome {
   font-family: 'Fraunces', Georgia, serif; font-weight: 600; color: #231F20;
 }
-.porta-irma__nota { grid-column: 1; font-size: .875rem; color: #5C5C50; }
+.porta-irma__nota { grid-column: 1; font-size: .8125rem; color: #5C5C50; }
 /* A COLUNA tem de ser dita. Um item com linha definida e coluna automática é
    colocado ANTES dos itens totalmente automáticos (CSS Grid §8.5, passo 3) —
    ficava na coluna 1 e empurrava o nome para a direita: lia-se «↗ CATHELIER»
    em vez de «CATHELIER ↗». */
 .porta-irma__seta { grid-column: 2; grid-row: 1 / span 2; font-size: 1.1rem; color: var(--verde); }
 
-.gaveta__contactos { margin-top: auto; padding: var(--e5) var(--gaveta) var(--e6); }
-.gaveta__telefone { font-size: 1.5rem; text-decoration: none; color: var(--realce); }
-.gaveta__redes { display: flex; gap: var(--e4); margin-top: var(--e3); }
-.gaveta__redes a {
-  display: inline-flex; align-items: center; gap: .4em;
-  text-decoration: none; color: var(--tinta-suave); font-size: .95rem; min-height: 44px;
+/* --- contactos ------------------------------------------------------------
+   Duas linhas de contacto e o custo da chamada por baixo. O Instagram saiu:
+   está no rodapé de todas as páginas, e aqui competia com o telefone sem
+   acrescentar caminho nenhum. O custo da chamada NÃO sai — é obrigatório
+   sempre que se mostra um número (art. 1.º do DL 59/2021). */
+.gaveta__contactos {
+  margin-top: auto; padding: var(--e4) 0 var(--e5);
+  border-top: 1px solid var(--linha);
+}
+.gaveta__telefone, .gaveta__whatsapp {
+  display: flex; align-items: center; gap: var(--e3);
+  min-height: 48px; padding-inline: var(--gaveta);
+  text-decoration: none; font-size: 1.15rem;
+}
+.gaveta__telefone { color: var(--realce); }
+.gaveta__whatsapp { color: var(--tinta); }
+.gaveta__telefone svg, .gaveta__whatsapp svg { flex: none; }
+.gaveta__custo {
+  margin: var(--e1) 0 0; padding-inline: var(--gaveta);
+  font-size: .75rem; color: var(--tinta-suave);
 }
 
 @media (width >= 60rem) { .gaveta { display: none; } }

@@ -46,3 +46,18 @@ centésimas abaixo do mínimo, coisa que não se vê a olho.
   24 px da norma. Desde então o condutor **semeia o cesto** (uma peça de cada
   marca) e repõe o que lá estava ao sair. A regra generaliza-se: uma página que
   depende de estado tem de ser medida COM esse estado.
+
+- **A gaveta atravessou o projecto inteiro sem ser medida.** O menu de
+  telemóvel é a navegação mais usada do site e nenhuma das 306 verificações
+  lhe tinha tocado, por duas razões independentes e ambas silenciosas. A
+  primeira: a gaveta só era aberta no FIM, para se lhe medir a altura, muito
+  depois de o contraste e os alvos de toque já terem corrido. A segunda é pior
+  — a condição que decidia abri-la era `display !== 'none'`, e o nosso próprio
+  CSS tem `.gaveta:not([open]) { display: none }`. Com a gaveta fechada a
+  resposta era sempre «não»: a condição era **insatisfazível** e até o teste da
+  altura nunca correu. Uma condição que nunca é verdade não imprime ✗ nenhum,
+  desaparece — e o relatório dizia «tudo bem» sobre o que nunca viu. Agora
+  abre-se antes de medir seja o que for (com `show()`, não `showModal()`: o
+  modal punha `inert` no resto e a página por trás deixava de se medir), e a
+  pergunta sobre a largura é feita DEPOIS de abrir. Passou de 306 para 340
+  verificações, e o contraste de 93 para 103 textos numa página só.

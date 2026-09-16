@@ -12,6 +12,29 @@ window.__bateria = function () {
   const gruposFechados = [...document.querySelectorAll('.rodape__grupo:not([open])')];
   for (const g of gruposFechados) g.open = true;
 
+  // --- e a gaveta, pela mesmíssima razão ------------------------------------
+  // A gaveta era aberta no FIM, só para se lhe medir a altura. Resultado: o
+  // contraste, os alvos de toque e o corpo de letra corriam com ela fechada —
+  // e um <dialog> fechado não tem geometria nenhuma. O menu de telemóvel, que
+  // é a navegação mais usada do site, atravessou o projecto inteiro sem nunca
+  // ser medido: 306 verificações e zero sobre ele.
+  //
+  // `show()` e não `showModal()`: o modal põe `inert` em todo o resto e a
+  // página por trás deixava de se medir. Assim medem-se as duas, de uma vez.
+  //
+  // A ORDEM importa, e custou uma verificação que nunca correu. A pergunta
+  // «a gaveta está visível?» era feita ANTES de a abrir — e o nosso próprio
+  // CSS tem `.gaveta:not([open]) { display: none }`. Com a gaveta fechada a
+  // resposta era sempre «não», a condição era insatisfazível, e o teste que
+  // mede se o menu cabe no ecrã nunca chegou a existir. Uma condição que
+  // nunca é verdade não imprime ✗ nenhum: desaparece. Abre-se primeiro, e só
+  // depois se pergunta se esta largura tem gaveta (a partir de 60 rem não tem).
+  const gaveta = document.querySelector('.gaveta');
+  const gavetaEstavaAberta = gaveta?.open;
+  if (gaveta && !gavetaEstavaAberta) gaveta.show();
+  const gavetaVisivel = gaveta && getComputedStyle(gaveta).display !== 'none';
+  if (gaveta && !gavetaVisivel && !gavetaEstavaAberta) gaveta.close();
+
   // --- transbordo lateral --------------------------------------------------
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',
@@ -188,14 +211,13 @@ window.__bateria = function () {
   // A gaveta é `100dvh` e não rola. Se o conteúdo crescer (mais uma entrada,
   // uma contagem mais larga), a última linha sai por baixo sem aviso — e a
   // última linha é o telefone.
-  const gaveta = document.querySelector('.gaveta');
-  if (gaveta && getComputedStyle(gaveta).display !== 'none') {
-    const antes = gaveta.open;
-    if (!antes) gaveta.show();
+  if (gavetaVisivel) {
     const alturaConteudo = [...gaveta.children].reduce((t, e) => t + e.getBoundingClientRect().height, 0);
     nota(alturaConteudo <= innerHeight + 1, 'o menu de telemóvel cabe no ecrã sem rolar',
       `conteúdo ${Math.round(alturaConteudo)}px, ecrã ${innerHeight}px`);
-    if (!antes) gaveta.close();
+    nota(gaveta.querySelectorAll('.gaveta__menu a').length >= 3,
+      'a gaveta foi medida com as entradas lá dentro',
+      `${gaveta.querySelectorAll('.gaveta__menu a').length} entradas`);
   }
 
   // O `summary` é um alvo de toque por direito próprio — mas SÓ enquanto for
@@ -210,6 +232,7 @@ window.__bateria = function () {
   }
 
   for (const g of gruposFechados) g.open = false;
+  if (gavetaVisivel && !gavetaEstavaAberta) gaveta.close();
 
   return { total: R.length, falhas: R.filter((x) => !x.ok), tudo: R };
 };

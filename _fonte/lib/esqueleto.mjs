@@ -103,7 +103,12 @@ ${ld}
 <body class="${esc(classeCorpo)}">
 <a class="saltar" href="#conteudo">Saltar para o conteúdo</a>
 <span id="topo" aria-hidden="true"></span>
-${previa ? '<p class="tarja-previa" role="status">Pré-visualização — o site ainda não abriu. Não é possível comprar, e alguns dados estão por preencher.</p>' : ''}
+<!-- A tarja de pré-visualização foi retirada a pedido do dono.
+     O que ela protegia CONTINUA em vigor, e sem depender de ninguém a ler uma
+     frase: o site sai fora do índice da Google (noindex), o Worker recusa
+     criar sessão de pagamento enquanto o catálogo disser previa, e os botões
+     de comprar ficam desligados com o motivo escrito por baixo de cada um.
+     O que se perde é só o aviso geral no topo. -->
 
 <!-- Sentinela de 1 px. O cabeçalho encolhe quando ela sai do ecrã, com um
      IntersectionObserver — não com um ouvinte de scroll, que corre a cada
@@ -197,7 +202,6 @@ function menuTelemovel({ marca, l, identidade, contagens }) {
   const menu = MENU[marca] ?? MENU.ithos;
   const irma = IRMA[marca];
   const conta = (chave) => (contagens[chave] ? `<span class="gaveta__conta">${contagens[chave]}</span>` : '');
-  const instagram = marca === 'cathelier' ? identidade.instagram_cathelier : identidade.instagram_ithos;
 
   return `<dialog class="gaveta" id="menu" aria-label="Menu">
   <div class="gaveta__topo">
@@ -211,26 +215,25 @@ function menuTelemovel({ marca, l, identidade, contagens }) {
 
   <nav class="gaveta__menu" aria-label="Menu principal">
     ${[...menu, ...MENU_EXTRA].map(([h, t, chave]) => `<a href="${l(h)}">
-      <span>${esc(t)}</span>${conta(chave)}<span class="gaveta__seta" aria-hidden="true">→</span>
+      <span>${esc(t)}</span>${conta(chave)}
     </a>`).join('\n    ')}
   </nav>
 
-  ${irma ? `<div class="gaveta__irma">
-    <p class="rotulo">A outra marca do mesmo ateliê</p>
-    <a class="porta-irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca>
-      <span class="porta-irma__nome">${esc(irma.nome)}</span>
-      <span class="porta-irma__nota">${esc(irma.nota)}</span>
-      <span class="porta-irma__seta" aria-hidden="true">↗</span>
-    </a>
-  </div>` : ''}
+  ${irma ? `<a class="porta-irma" data-marca-irma="${esc(irma.nome)}" href="${l(irma.caminho)}" data-outra-marca
+     aria-label="Ir para a ${esc(irma.nome)}, ${esc(irma.nota)}">
+    <span class="porta-irma__nome">${esc(irma.nome)}</span>
+    <span class="porta-irma__nota">${esc(irma.nota)}</span>
+    <span class="porta-irma__seta" aria-hidden="true">↗</span>
+  </a>` : ''}
 
   <div class="gaveta__contactos">
-    <a class="gaveta__telefone" href="tel:${esc(identidade.telefone)}">${esc(identidade.telefone_texto)}</a>
-    <p class="pequeno discreto">${esc(CUSTO_CHAMADA)}</p>
-    <p class="gaveta__redes">
-      <a href="https://wa.me/${esc(identidade.whatsapp)}" rel="noopener">${icone('whatsapp', 18)} WhatsApp</a>
-      <a href="${esc(instagram)}" rel="noopener">${icone('instagram', 18)} Instagram</a>
-    </p>
+    <a class="gaveta__telefone" href="tel:${esc(identidade.telefone)}">
+      ${icone('telefone', 20)}<span>${esc(identidade.telefone_texto)}</span>
+    </a>
+    <a class="gaveta__whatsapp" href="https://wa.me/${esc(identidade.whatsapp)}" rel="noopener">
+      ${icone('whatsapp', 20)}<span>WhatsApp</span>
+    </a>
+    <p class="gaveta__custo">${esc(CUSTO_CHAMADA)}</p>
   </div>
 </dialog>`;
 }

@@ -338,6 +338,6 @@ if (erros.length) {
   process.exit(1);
 }
 
-if (PREVIA) console.log('\n>>> PRÉ-VISUALIZAÇÃO: o site sai fora do índice, com tarja e sem checkout.\n');
+if (PREVIA) console.log('\n>>> PRÉ-VISUALIZAÇÃO: o site sai fora do índice, sem checkout e com os botões de comprar desligados.\n');
 console.log(`guardas: ${produtos.length} candeeiros, ${pecas.length} peças, ${categorias.length} ocasiões, `
   + `${LEGAIS.length} páginas legais — tudo coerente${avisos.length ? ` (${avisos.length} aviso(s))` : ''}`);

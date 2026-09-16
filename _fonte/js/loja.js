@@ -201,7 +201,7 @@
   {
     catalogo().then((cat) => {
       if (!cat.previa) return;
-      for (const b of $$('[data-juntar], [data-pagar]')) {
+      for (const b of $$('[data-juntar], [data-pagar], [data-ir-encomenda]')) {
         // `aria-disabled` e não `disabled`: um botão desativado perde o foco e
         // quem navega por teclado fica sem saber onde está.
         b.setAttribute('aria-disabled', 'true');
@@ -211,7 +211,7 @@
       // O aviso vai a seguir ao PRÓPRIO botão, e não a um contentor que se
       // presume existir: o `data-produto` vive no `<article>` e não no
       // `<form>`, e a primeira versão disto não escrevia nada em lado nenhum.
-      for (const b of $$('[data-juntar], [data-pagar]')) {
+      for (const b of $$('[data-juntar], [data-pagar], [data-ir-encomenda]')) {
         const depois = b.nextElementSibling;
         if (depois?.dataset?.avisoPrevia) continue;
         const aviso = document.createElement('p');
