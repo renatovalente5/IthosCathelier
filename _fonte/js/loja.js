@@ -242,7 +242,9 @@
       const alvo = b.dataset.filtro;
       let visiveis = 0;
       for (const p of $$('[data-familia]', lista)) {
-        const mostra = alvo === 'todos' || p.dataset.familia === alvo;
+        // Uma peça pode pertencer a várias listas («Nascimento» e «Pendentes»),
+        // e por isso compara-se com a lista e não com uma palavra só.
+        const mostra = alvo === 'todos' || p.dataset.familia.split(' ').includes(alvo);
         // `hidden` não esconde nada se o CSS declarar `display` no elemento — e
         // `.peca` declara `display:flex`. Por isso mexe-se no `display`.
         p.style.display = mostra ? '' : 'none';

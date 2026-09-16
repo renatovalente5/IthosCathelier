@@ -459,9 +459,15 @@ export function imagemDaPeca(p, ctx, { sizes = '(min-width: 48rem) 20rem, 90vw',
   return desenhoDaPeca(p.forma, p.nome);
 }
 
+/* `familias` leva a morada E as listas do «também», separadas por espaço: sem
+ * isso, filtrar por «Pendentes» escondia as peças que só lá estão por
+ * cross-listing. E passa a ser um PARÂMETRO — havia um `.replace()` sobre a
+ * string `class="peca peca--c"` que deixaria de casar à primeira alteração de
+ * classes, em silêncio, levando os filtros com ele. */
 export function cartaoPecaCathelier(p, ctx) {
   const { l } = ctx;
-  return `<a class="peca peca--c" href="${l(p.caminho)}">
+  const familias = [p.categoria, ...(p.tambem ?? [])].join(' ');
+  return `<a class="peca peca--c" data-familia="${esc(familias)}" href="${l(p.caminho)}">
   <div class="peca__foto">${imagemDaPeca(p, ctx)}</div>
   <div class="peca__corpo">
     <span class="peca__ocasiao">${esc(p.categoriaNome ?? '')}</span>
@@ -479,24 +485,19 @@ export function catalogoCathelier(d, ctx) {
   const precos = pecas.map((p) => p.preco).filter(Boolean);
 
   return `
-<section class="seccao seccao--apertada">
-  <div class="envolvente">
-    <hr class="fio--curto">
-    <h1>Todas as peças</h1>
-    <p class="discreto medida">${pecas.length} peças, todas feitas por encomenda.
-      ${precos.length ? `Desde ${euros(Math.min(...precos))}.` : ''}
-      Cada uma leva os nomes, as datas ou a frase que escolher — e mandamos sempre uma
-      maqueta para aprovar antes de cortar.</p>
-  </div>
-</section>
-
-<section class="envolvente" style="padding-bottom:var(--e7)">
+<section class="envolvente catalogo-topo">
+  <hr class="fio--curto">
+  <h1>Todas as peças</h1>
+  <p class="discreto medida">${pecas.length} peças, todas feitas por encomenda.
+    ${precos.length ? `Desde ${euros(Math.min(...precos))}.` : ''}
+    Cada uma leva os nomes, as datas ou a frase que escolher — e mandamos sempre uma
+    maqueta para aprovar antes de cortar.</p>
   <div class="filtros" data-filtros>
     <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todas</button>
     ${cats.map((c) => `<button class="filtro" type="button" data-filtro="${esc(c.slug)}" aria-pressed="false">${esc(c.nome)}</button>`).join('\n    ')}
   </div>
   <div class="grelha grelha--montra-c" data-lista-produtos style="margin-top:var(--e5)">
-    ${pecas.map((p) => cartaoPecaCathelier(p, { ...ctx }).replace('class="peca peca--c"', `class="peca peca--c" data-familia="${esc(p.categoria)}"`)).join('\n    ')}
+    ${pecas.map((p) => cartaoPecaCathelier(p, ctx)).join('\n    ')}
   </div>
   <p class="discreto" data-sem-resultados hidden style="margin-top:var(--e5)">Não há peças nesta ocasião.</p>
 </section>

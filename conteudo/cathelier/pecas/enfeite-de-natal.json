@@ -1,6 +1,6 @@
 {
   "nome": "Enfeite de Natal com nome",
-  "categoria": "datas",
+  "categoria": "natal",
   "preco": 4.5,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "pendentes"
+  ]
 }

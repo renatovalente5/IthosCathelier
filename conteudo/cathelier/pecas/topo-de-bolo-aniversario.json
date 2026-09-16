@@ -1,6 +1,6 @@
 {
   "nome": "Topo de bolo de aniversário",
-  "categoria": "aniversario",
+  "categoria": "decoracao",
   "preco": 18.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,9 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "lembrancas",
+    "dia-da-crianca"
+  ]
 }

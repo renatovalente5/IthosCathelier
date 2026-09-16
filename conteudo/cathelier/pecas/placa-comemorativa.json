@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "decoracao"
+  ]
 }

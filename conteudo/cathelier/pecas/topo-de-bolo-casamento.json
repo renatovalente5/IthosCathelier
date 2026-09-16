@@ -1,6 +1,6 @@
 {
   "nome": "Topo de bolo",
-  "categoria": "casamento",
+  "categoria": "decoracao",
   "preco": 26.0,
   "publicado": true,
   "destaque": true,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "lembrancas"
+  ]
 }

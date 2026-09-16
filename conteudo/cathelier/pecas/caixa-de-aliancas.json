@@ -1,6 +1,6 @@
 {
   "nome": "Caixa de alianças",
-  "categoria": "casamento",
+  "categoria": "lembrancas",
   "preco": 34.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "decoracao"
+  ]
 }

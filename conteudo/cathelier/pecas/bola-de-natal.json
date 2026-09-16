@@ -1,14 +1,14 @@
 {
-  "nome": "Coração com o peso",
-  "categoria": "nascimento",
-  "preco": 12.0,
+  "nome": "Bola de Natal gravada",
+  "categoria": "natal",
+  "preco": 5.5,
   "publicado": true,
   "destaque": false,
-  "ordem": 160,
+  "ordem": 15,
   "estado": "por_encomenda",
-  "resumo": "Pequeno, para pendurar no berço ou na porta.",
-  "texto": "Um coração em madeira com o peso do bebé gravado, e o desenho de uma balança. Pendura-se com cordel.\n\nMuita gente leva dois: um para casa e um para a avó.",
-  "forma": "coracao",
+  "resumo": "Duas metades de madeira que encaixam, com o nome no meio.",
+  "texto": "Uma bola em duas camadas: a de fora recortada com estrelas ou flocos, a de dentro lisa, com o nome gravado. A luz da árvore passa pelos recortes.\n\nVai com fita de algodão. A partir de dez, o preço por unidade desce.",
+  "forma": "bola",
   "opcoes": [
     {
       "id": "material",
@@ -50,7 +50,7 @@
   "durabilidade": "",
   "reparabilidade": "",
   "gpsr": {
-    "tipo": "CAT-COR",
+    "tipo": "CAT-BOL",
     "lote": "",
     "avisos": []
   },

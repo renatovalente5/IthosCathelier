@@ -1,83 +1,152 @@
 [
   {
-    "slug": "casamento",
-    "nome": "Casamento",
-    "resumo": "Lembranças para os convidados, sinalética para o dia e o topo do bolo.",
-    "texto": "Do convite ao agradecimento. Fazemos as peças que ficam nas mãos de quem esteve lá: lembranças com o nome de cada convidado, o plano de mesas, as placas que indicam o caminho, o topo do bolo com os vossos nomes e a data.\n\nTudo desenhado convosco e cortado a laser em madeira de bétula ou em acrílico — transparente, branco ou espelhado dourado.",
-    "tipos": ["Lembranças para convidados", "Topos de bolo", "Plano de mesas", "Marcadores de lugar", "Sinalética do espaço", "Caixas de alianças", "Grinaldas e cenários", "Livro de assinaturas", "Bodas de ouro e de prata"],
+    "slug": "natal",
+    "nome": "Natal",
     "ordem": 10,
-    "publicado": true
+    "publicado": true,
+    "resumo": "Enfeites com o nome de cada pessoa da casa, para pendurar todos os anos.",
+    "texto": "O Natal é a época em que uma peça pequena com um nome gravado vale mais do que um presente grande. Fazemos enfeites para a árvore, lembranças para a mesa e pendentes para oferecer — um por cada pessoa da casa, e mais um para quem chegar.\n\nEncomende com antecedência: dezembro é o mês em que o ateliê está mais cheio.",
+    "tipos": [
+      "Enfeites para a árvore",
+      "Bolas com o nome",
+      "Coroas de porta",
+      "Calendários do advento",
+      "Lembranças para a mesa"
+    ]
   },
   {
-    "slug": "batizado",
-    "nome": "Batizado",
-    "resumo": "Lembranças delicadas para o dia em que se dá um nome.",
-    "texto": "Peças pequenas, em madeira clara, com o nome e a data gravados. Para dar aos convidados, para os padrinhos, para ficar no quarto depois.\n\nFazemos também os convites aos padrinhos e as caixas que os acompanham.",
-    "tipos": ["Lembranças para convidados", "Convites a padrinhos", "Caixas de presente", "Placas com nome e data", "Velas e porta-velas", "Sinalética do batizado"],
+    "slug": "dia-da-mae",
+    "nome": "Dia da mãe",
     "ordem": 20,
-    "publicado": true
+    "publicado": true,
+    "resumo": "Uma peça com os nomes dos filhos, para ficar à vista o ano inteiro.",
+    "texto": "Um presente de Dia da Mãe dura um domingo ou dura anos, conforme o que for. Fazemos peças com os nomes dos filhos, com as datas de nascimento, com a frase que a criança disser — gravadas em madeira, para ficarem numa prateleira e não numa gaveta.",
+    "tipos": [
+      "Quadros com os nomes dos filhos",
+      "Pendentes com as datas",
+      "Molduras gravadas",
+      "Porta-chaves com fotografia"
+    ]
   },
   {
-    "slug": "comunhao",
-    "nome": "Comunhão",
-    "resumo": "Para o dia da primeira comunhão, e para o que fica dele.",
-    "texto": "Lembranças para os convidados, peças com o nome e a data, e decoração para a mesa. Em madeira ou acrílico, ao gosto de quem escolhe.",
-    "tipos": ["Lembranças para convidados", "Marcadores de livro", "Placas comemorativas", "Decoração de mesa", "Porta-chaves"],
+    "slug": "dia-do-pai",
+    "nome": "Dia do pai",
     "ordem": 30,
-    "publicado": true
+    "publicado": true,
+    "resumo": "«És o meu super herói», e outras frases que só ele percebe.",
+    "texto": "O Dia do Pai pede uma peça com graça e com nome. Placas, porta-chaves, molduras — com a frase que a família usa e que mais ninguém percebe.",
+    "tipos": [
+      "Placas com frases",
+      "Porta-chaves com fotografia",
+      "Molduras gravadas",
+      "Vales de oferta"
+    ]
+  },
+  {
+    "slug": "dia-da-crianca",
+    "nome": "Dia da criança",
+    "ordem": 40,
+    "publicado": true,
+    "resumo": "Peças com o nome, feitas para durar mais do que um brinquedo.",
+    "texto": "No Dia da Criança fazemos peças para elas e não sobre elas: o nome para a parede, a régua que mede a infância toda, o cabide com a inicial. Coisas que ficam no quarto depois de a data passar.",
+    "tipos": [
+      "Nomes para a parede",
+      "Réguas de crescimento",
+      "Placas de porta",
+      "Calendários do advento",
+      "Cenários para fotografias"
+    ]
+  },
+  {
+    "slug": "lembrancas",
+    "nome": "Lembranças",
+    "ordem": 50,
+    "publicado": true,
+    "resumo": "Para dar a quem esteve lá: casamento, batizado, comunhão, aniversário.",
+    "texto": "As lembranças são a peça pequena que cada convidado leva para casa. Fazemo-las por dezenas ou por centenas, com o nome de quem recebe ou só com a data.\n\nCasamento, batizado, comunhão, aniversário — o preço por unidade desce a partir de vinte peças.",
+    "tipos": [
+      "Lembranças para os convidados",
+      "Save the date",
+      "Convites a padrinhos",
+      "Marcadores de lugar",
+      "Ímanes com fotografia",
+      "Marcadores de livro",
+      "Velas gravadas",
+      "Caixas de alianças"
+    ]
   },
   {
     "slug": "nascimento",
-    "nome": "Nascimento",
-    "resumo": "O peso, a hora, o nome. Gravados para não se esquecerem.",
-    "texto": "As peças de nascimento são das que mais fazemos: o disco com o nome, a data, a hora, o peso e a altura; o coração que se pendura; a moldura com a primeira fotografia.\n\nSão presentes de quem visita, e ficam no quarto muito depois de a criança ter crescido.",
-    "tipos": ["Discos de nascimento", "Corações com o peso", "Molduras com fotografia", "Caixas de recordações", "Anúncios de gravidez", "Convites a avós e padrinhos"],
-    "ordem": 40,
-    "publicado": true
-  },
-  {
-    "slug": "aniversario",
-    "nome": "Aniversário",
-    "resumo": "Topos de bolo, cenários e lembranças com o nome de quem faz anos.",
-    "texto": "Do primeiro ano aos cinquenta. Fazemos o topo do bolo, o painel de fundo para as fotografias, as lembranças para levar e os números que marcam a idade.",
-    "tipos": ["Topos de bolo", "Cenários e painéis", "Números e letras", "Lembranças para convidados", "Convites"],
-    "ordem": 50,
-    "publicado": true
-  },
-  {
-    "slug": "quarto-de-crianca",
-    "nome": "Quarto de criança",
-    "resumo": "Nomes para a parede, réguas de crescimento e o que faz de um quarto aquele quarto.",
-    "texto": "O nome recortado em madeira, pintado à cor do quarto. A régua que mede os centímetros todos de uma infância. As nuvens, as estrelas, os animais.\n\nÉ aqui que a cathelier e a ithos se encontram: o nome na parede e o candeeiro na mesa de cabeceira saem do mesmo ateliê.",
-    "tipos": ["Nomes em madeira", "Réguas de crescimento", "Letras e iniciais", "Placas de porta", "Móbiles e decoração de parede", "Caixas de brinquedos"],
+    "nome": "Nascimento do bebé",
     "ordem": 60,
-    "publicado": true
+    "publicado": true,
+    "resumo": "O nome, a data, a hora, o peso e a altura. Tudo gravado.",
+    "texto": "Do anúncio da gravidez ao disco com os dados do nascimento, passando pela caixa onde se guarda a primeira madeixa. São as peças que os pais guardam durante trinta anos, e por isso são feitas para durar.",
+    "tipos": [
+      "Anúncios de gravidez",
+      "Discos de nascimento",
+      "Corações com o peso",
+      "Caixas de recordações",
+      "Molduras com a primeira fotografia"
+    ]
+  },
+  {
+    "slug": "nomes",
+    "nome": "Nomes",
+    "ordem": 70,
+    "publicado": true,
+    "resumo": "O nome para a parede do quarto, à porta, ou por cima da cama.",
+    "texto": "Um nome recortado em madeira muda um quarto inteiro. Fazemos em letra corrida ou em letra de imprensa, à cor que escolher, com a inicial grande ou todas do mesmo tamanho.",
+    "tipos": [
+      "Nomes para a parede",
+      "Letras iniciais",
+      "Placas de porta",
+      "Árvores genealógicas"
+    ]
+  },
+  {
+    "slug": "decoracao",
+    "nome": "Decoração",
+    "ordem": 80,
+    "publicado": true,
+    "resumo": "Réguas de crescimento, painéis, placas e sinalética para o dia.",
+    "texto": "As peças maiores: a régua que mede a infância toda, o painel de fundo das fotografias, as placas que indicam o caminho numa festa. Cortadas à medida do sítio onde vão ficar.",
+    "tipos": [
+      "Réguas de crescimento",
+      "Painéis e cenários",
+      "Placas de boas-vindas",
+      "Sinalética de evento",
+      "Placas de casa de banho",
+      "Topos de bolo"
+    ]
+  },
+  {
+    "slug": "pendentes",
+    "nome": "Pendentes",
+    "ordem": 90,
+    "publicado": true,
+    "resumo": "Peças pequenas, com furo e fita, para pendurar em qualquer sítio.",
+    "texto": "Tudo o que se pendura: no berço, na árvore, na maçaneta, na mala. São as peças mais pequenas que fazemos e as que se oferecem mais vezes.",
+    "tipos": [
+      "Enfeites com furo e fita",
+      "Corações",
+      "Discos gravados",
+      "Porta-chaves",
+      "Marcadores"
+    ]
   },
   {
     "slug": "trofeus",
     "nome": "Troféus e brindes",
+    "ordem": 100,
+    "publicado": true,
     "resumo": "Para clubes, escolas, empresas e câmaras. Com o vosso símbolo gravado.",
-    "texto": "Troféus e placas comemorativas em madeira e acrílico, com o símbolo da entidade gravado a laser. Fazemos séries para torneios, entregas de prémios e aniversários de instituições.\n\nPeça um orçamento com a quantidade e o prazo: respondemos com a proposta e uma maqueta antes de cortar.",
-    "tipos": ["Troféus desportivos", "Placas comemorativas", "Prémios de empresa", "Brindes personalizados", "Sinalética institucional"],
-    "ordem": 70,
-    "publicado": true
-  },
-  {
-    "slug": "sinaletica",
-    "nome": "Sinalética e cenários",
-    "resumo": "As placas que indicam o caminho e os fundos que aparecem nas fotografias.",
-    "texto": "Placas de casa de banho, de entrada, de mesa, de bar. Painéis e cenários para festas e para montras. Em madeira gravada ou em acrílico recortado.",
-    "tipos": ["Placas de sinalização", "Painéis e cenários", "Placas de porta", "Sinalética para eventos", "Decoração de montra"],
-    "ordem": 80,
-    "publicado": true
-  },
-  {
-    "slug": "datas",
-    "nome": "Datas especiais",
-    "resumo": "Natal, Dia do Pai, Dia da Mãe, Namorados, Páscoa.",
-    "texto": "As datas que voltam todos os anos, com peças novas de cada vez. Enfeites de Natal com o nome de cada um, presentes de Dia do Pai e de Dia da Mãe, lembranças de Páscoa.\n\nSão peças de época: encomende com antecedência, porque em dezembro o ateliê fecha cedo.",
-    "tipos": ["Enfeites de Natal", "Dia do Pai e Dia da Mãe", "Dia dos Namorados", "Páscoa", "Presentes com fotografia"],
-    "ordem": 90,
-    "publicado": true
+    "texto": "Fora das datas de família há quem precise de trinta troféus para um torneio ou de duzentos brindes para uma feira. Fazemos com o símbolo da instituição gravado, e o preço por unidade desce com a quantidade.",
+    "tipos": [
+      "Troféus de torneio",
+      "Placas comemorativas",
+      "Brindes de feira",
+      "Ofertas de fim de ano"
+    ]
   }
 ]

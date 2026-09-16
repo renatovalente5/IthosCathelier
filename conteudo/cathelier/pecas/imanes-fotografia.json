@@ -1,6 +1,6 @@
 {
   "nome": "Ímanes com fotografia",
-  "categoria": "casamento",
+  "categoria": "lembrancas",
   "preco": 2.5,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "pendentes"
+  ]
 }

@@ -1,14 +1,14 @@
 {
-  "nome": "Coração com o peso",
-  "categoria": "nascimento",
-  "preco": 12.0,
+  "nome": "Quadro com os nomes dos filhos",
+  "categoria": "dia-da-mae",
+  "preco": 34.0,
   "publicado": true,
   "destaque": false,
-  "ordem": 160,
+  "ordem": 25,
   "estado": "por_encomenda",
-  "resumo": "Pequeno, para pendurar no berço ou na porta.",
-  "texto": "Um coração em madeira com o peso do bebé gravado, e o desenho de uma balança. Pendura-se com cordel.\n\nMuita gente leva dois: um para casa e um para a avó.",
-  "forma": "coracao",
+  "resumo": "Os nomes e as datas de nascimento, numa peça só.",
+  "texto": "Uma moldura em madeira com os nomes dos filhos e as datas em que nasceram, gravados por ordem. Cada nome fica numa linha, e há espaço para acrescentar.\n\nÉ o presente de Dia da Mãe que não vai para a gaveta.",
+  "forma": "moldura",
   "opcoes": [
     {
       "id": "material",
@@ -50,7 +50,7 @@
   "durabilidade": "",
   "reparabilidade": "",
   "gpsr": {
-    "tipo": "CAT-COR",
+    "tipo": "CAT-QDF",
     "lote": "",
     "avisos": []
   },
@@ -63,6 +63,7 @@
     "descricao": ""
   },
   "tambem": [
-    "pendentes"
+    "nomes",
+    "decoracao"
   ]
 }

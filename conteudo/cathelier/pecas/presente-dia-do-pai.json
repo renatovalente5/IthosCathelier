@@ -1,6 +1,6 @@
 {
   "nome": "Presente de Dia do Pai",
-  "categoria": "datas",
+  "categoria": "dia-do-pai",
   "preco": 21.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "decoracao"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "nome": "Placa de boas-vindas",
-  "categoria": "casamento",
+  "categoria": "decoracao",
   "preco": 38.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "lembrancas"
+  ]
 }

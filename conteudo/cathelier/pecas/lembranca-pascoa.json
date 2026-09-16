@@ -1,6 +1,6 @@
 {
   "nome": "Lembrança de Páscoa",
-  "categoria": "datas",
+  "categoria": "lembrancas",
   "preco": 3.2,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "pendentes"
+  ]
 }

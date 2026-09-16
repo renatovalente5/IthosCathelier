@@ -1,6 +1,6 @@
 {
   "nome": "Save the date em madeira",
-  "categoria": "casamento",
+  "categoria": "lembrancas",
   "preco": 3.5,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "pendentes"
+  ]
 }

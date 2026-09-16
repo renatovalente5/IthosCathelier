@@ -1,14 +1,14 @@
 {
-  "nome": "Coração com o peso",
-  "categoria": "nascimento",
-  "preco": 12.0,
+  "nome": "Coroa da porta com o apelido",
+  "categoria": "natal",
+  "preco": 38.0,
   "publicado": true,
   "destaque": false,
-  "ordem": 160,
+  "ordem": 16,
   "estado": "por_encomenda",
-  "resumo": "Pequeno, para pendurar no berço ou na porta.",
-  "texto": "Um coração em madeira com o peso do bebé gravado, e o desenho de uma balança. Pendura-se com cordel.\n\nMuita gente leva dois: um para casa e um para a avó.",
-  "forma": "coracao",
+  "resumo": "Para a porta de fora, com o apelido da família no meio.",
+  "texto": "Uma coroa recortada em madeira de bétula, com o apelido da família gravado ao centro e a data em que a casa passou a ser vossa, se quiserem.\n\nFica na porta de fora e aguenta o inverno. Trinta e cinco centímetros de diâmetro.",
+  "forma": "coroa",
   "opcoes": [
     {
       "id": "material",
@@ -63,6 +63,6 @@
     "descricao": ""
   },
   "tambem": [
-    "pendentes"
+    "decoracao"
   ]
 }

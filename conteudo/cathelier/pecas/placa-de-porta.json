@@ -1,6 +1,6 @@
 {
   "nome": "Placa de porta",
-  "categoria": "quarto-de-crianca",
+  "categoria": "nomes",
   "preco": 16.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,9 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "dia-da-crianca",
+    "decoracao"
+  ]
 }

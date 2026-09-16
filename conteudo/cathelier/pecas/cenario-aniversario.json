@@ -1,6 +1,6 @@
 {
   "nome": "Cenário para fotografias",
-  "categoria": "aniversario",
+  "categoria": "decoracao",
   "preco": 65.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "dia-da-crianca"
+  ]
 }

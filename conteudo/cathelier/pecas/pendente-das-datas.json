@@ -1,14 +1,14 @@
 {
-  "nome": "Coração com o peso",
-  "categoria": "nascimento",
-  "preco": 12.0,
+  "nome": "Pendente com as datas",
+  "categoria": "dia-da-mae",
+  "preco": 14.0,
   "publicado": true,
   "destaque": false,
-  "ordem": 160,
+  "ordem": 26,
   "estado": "por_encomenda",
-  "resumo": "Pequeno, para pendurar no berço ou na porta.",
-  "texto": "Um coração em madeira com o peso do bebé gravado, e o desenho de uma balança. Pendura-se com cordel.\n\nMuita gente leva dois: um para casa e um para a avó.",
-  "forma": "coracao",
+  "resumo": "Um disco pequeno com as datas que interessam, para levar na mala.",
+  "texto": "Um disco de madeira ou de acrílico espelhado, com as datas de nascimento dos filhos gravadas à volta. Pequeno, para pendurar na mala ou nas chaves.\n\nCabem até cinco datas.",
+  "forma": "disco",
   "opcoes": [
     {
       "id": "material",
@@ -50,7 +50,7 @@
   "durabilidade": "",
   "reparabilidade": "",
   "gpsr": {
-    "tipo": "CAT-COR",
+    "tipo": "CAT-PDD",
     "lote": "",
     "avisos": []
   },
@@ -63,6 +63,7 @@
     "descricao": ""
   },
   "tambem": [
-    "pendentes"
+    "pendentes",
+    "nascimento"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "nome": "Régua de crescimento",
-  "categoria": "quarto-de-crianca",
+  "categoria": "decoracao",
   "preco": 48.0,
   "publicado": true,
   "destaque": true,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "dia-da-crianca"
+  ]
 }

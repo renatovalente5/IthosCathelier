@@ -1,6 +1,6 @@
 {
   "nome": "Árvore genealógica",
-  "categoria": "quarto-de-crianca",
+  "categoria": "decoracao",
   "preco": 68.0,
   "publicado": true,
   "destaque": true,
@@ -61,5 +61,9 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "nomes",
+    "dia-da-mae"
+  ]
 }

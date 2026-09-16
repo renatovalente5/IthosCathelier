@@ -1,14 +1,14 @@
 {
-  "nome": "Coração com o peso",
-  "categoria": "nascimento",
-  "preco": 12.0,
+  "nome": "Calendário do advento",
+  "categoria": "natal",
+  "preco": 54.0,
   "publicado": true,
   "destaque": false,
-  "ordem": 160,
+  "ordem": 17,
   "estado": "por_encomenda",
-  "resumo": "Pequeno, para pendurar no berço ou na porta.",
-  "texto": "Um coração em madeira com o peso do bebé gravado, e o desenho de uma balança. Pendura-se com cordel.\n\nMuita gente leva dois: um para casa e um para a avó.",
-  "forma": "coracao",
+  "resumo": "Vinte e quatro gavetas numeradas, para encher todos os anos.",
+  "texto": "Um painel com vinte e quatro gavetinhas numeradas, cada uma com espaço para um chocolate ou um bilhete. O nome da criança vai gravado por cima.\n\nÉ para durar muitos dezembros: enche-se outra vez todos os anos.",
+  "forma": "painel",
   "opcoes": [
     {
       "id": "material",
@@ -50,7 +50,7 @@
   "durabilidade": "",
   "reparabilidade": "",
   "gpsr": {
-    "tipo": "CAT-COR",
+    "tipo": "CAT-ADV",
     "lote": "",
     "avisos": []
   },
@@ -63,6 +63,7 @@
     "descricao": ""
   },
   "tambem": [
-    "pendentes"
+    "dia-da-crianca",
+    "decoracao"
   ]
 }

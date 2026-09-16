@@ -1,6 +1,6 @@
 {
   "nome": "Livro de assinaturas em madeira",
-  "categoria": "casamento",
+  "categoria": "decoracao",
   "preco": 45.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "lembrancas"
+  ]
 }

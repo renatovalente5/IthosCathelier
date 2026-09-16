@@ -1,6 +1,6 @@
 {
   "nome": "Caixa de recordações",
-  "categoria": "batizado",
+  "categoria": "nascimento",
   "preco": 42.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,8 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "lembrancas"
+  ]
 }

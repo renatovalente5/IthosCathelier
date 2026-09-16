@@ -85,6 +85,14 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
       p.caminho = `/cathelier/${p.categoria}/${slug}/`;
       p.categoriaNome = cat.nome;
 
+      for (const t of p.tambem ?? []) {
+        if (t === p.categoria) {
+          erros.push(`cathelier/${slug}: «${t}» está na morada E no «também» — escolhe um`);
+        } else if (!categorias.some((c) => c.slug === t)) {
+          erros.push(`cathelier/${slug}: aparece também em «${t}», que não é nenhuma ocasião`);
+        }
+      }
+
       if (p.publicado) {
         if (typeof p.preco !== 'number' || !(p.preco > 0)) {
           erros.push(`cathelier/${slug}: está publicada mas não tem preço`);
@@ -147,7 +155,23 @@ export function carregar(raiz, { permitirIncompleto = false } = {}) {
   }
 
   pecas.sort((a, b) => (a.ordem ?? 999) - (b.ordem ?? 999));
-  for (const c of categorias) c.pecas = pecas.filter((p) => p.categoria === c.slug && p.publicado);
+
+  /* Uma peça tem UMA morada e pode aparecer em VÁRIAS listas.
+   *
+   * A dona da loja organizou a cathelier por épocas, e a lista dela mistura
+   * três coisas: épocas (Natal, Dia da mãe), momentos de vida (Nascimento,
+   * Lembranças) e tipos de peça (Nomes, Decoração, Pendentes). Uma peça cabe
+   * naturalmente em mais do que uma: o coração com o peso do bebé é
+   * «Nascimento» e é «Pendentes».
+   *
+   * O que NÃO se faz é dar-lhe três endereços. `categoria` continua a decidir
+   * a morada — uma só, canónica — e `tambem` só acrescenta a peça a outras
+   * listas. Sem isto, a mesma peça saía em três URL, a Google escolhia um ao
+   * acaso e os outros dois passavam a duplicados. */
+  for (const c of categorias) {
+    c.pecas = pecas.filter((p) => p.publicado
+      && (p.categoria === c.slug || (p.tambem ?? []).includes(c.slug)));
+  }
 
   return { identidade, fiscal, portes, loja, marcas, ithos, categorias, pecas, perguntas, paginas, legais, erros };
 }

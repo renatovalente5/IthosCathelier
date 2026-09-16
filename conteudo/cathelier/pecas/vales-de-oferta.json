@@ -1,6 +1,6 @@
 {
   "nome": "Livro de vales",
-  "categoria": "aniversario",
+  "categoria": "lembrancas",
   "preco": 22.0,
   "publicado": true,
   "destaque": false,
@@ -61,5 +61,9 @@
   "seo": {
     "titulo": "",
     "descricao": ""
-  }
+  },
+  "tambem": [
+    "dia-da-mae",
+    "dia-do-pai"
+  ]
 }
