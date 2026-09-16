@@ -246,51 +246,71 @@ function rodape({ marca, identidade, l }) {
     : [[i.instagram_ithos, 'Instagram', 'instagram'], [i.facebook_ithos, 'Facebook', 'facebook'],
        [i.instagram_cathelier, 'Instagram da cathelier', 'instagram']];
 
+  /* O rodapé em acordeão, que ela pediu para «o final de todas as páginas».
+   *
+   * `<details>` nativo, e não um botão com `aria-expanded` escrito à mão: o
+   * elemento anuncia-se sozinho como divulgação com estado, e o `+`/`−` é o
+   * mesmo controlo que este sítio já desenha nas perguntas frequentes — é o da
+   * captura que ela mandou, não uma imitação.
+   *
+   * NASCE ABERTO, e o JavaScript só FECHA, e só abaixo de 60 rem. A inversão é
+   * de propósito: se o JavaScript não correr, o que sai é o rodapé de sempre,
+   * aberto e inteiro. O modo de falha é o estado actual, não um rodapé mudo.
+   *
+   * Sem `name=`: um acordeão exclusivo fecha um grupo ao abrir outro, e quem
+   * anda à procura do contacto perde o que já tinha aberto. */
+  const grupo = (titulo, dentro) => `<details class="rodape__grupo" open>
+        <summary><h4>${esc(titulo)}</h4></summary>
+        ${dentro}
+      </details>`;
+
+  const lista = (itens) => `<ul>${itens.map(([h, t]) => `<li><a href="${l(h)}">${esc(t)}</a></li>`).join('')}</ul>`;
+
+  // «A loja» põe primeiro a marca da página em que se está.
+  const daIthos = [['/candeeiros/', 'Todos os candeeiros'], ['/sobre/#como-e-feito', 'Como é feito'],
+                   ['/cuidados-e-seguranca/', 'Cuidados e segurança']];
+  const daCathelier = [['/cathelier/', 'Ocasiões'], ['/cathelier/pecas/', 'Todas as peças'],
+                       ['/cathelier/orcamento/', 'Pedir orçamento']];
+
   return `<footer class="rodape">
   <div class="envolvente">
     <div class="rodape__grelha">
-      <div class="rodape__coluna">
-        <h4>Candeeiros</h4>
-        <ul>
-          <li><a href="${l('/candeeiros/')}">Todos os candeeiros</a></li>
-          <li><a href="${l('/sobre/#como-e-feito')}">Como é feito</a></li>
-          <li><a href="${l('/cuidados-e-seguranca/')}">Cuidados e segurança</a></li>
-        </ul>
-      </div>
-      <div class="rodape__coluna">
-        <h4>cathelier</h4>
-        <ul>
-          <li><a href="${l('/cathelier/')}">Ocasiões</a></li>
-          <li><a href="${l('/cathelier/pecas/')}">Todas as peças</a></li>
-          <li><a href="${l('/cathelier/orcamento/')}">Pedir orçamento</a></li>
-        </ul>
-      </div>
-      <div class="rodape__coluna">
-        <h4>A loja</h4>
-        <ul>
-          <li><a href="${l('/sobre/')}">O ateliê</a></li>
-          <li><a href="${l('/contactos/')}">Contactos</a></li>
-          <li><a href="${l('/contactos/#perguntas')}">Perguntas frequentes</a></li>
-          <li><a href="${l('/legal/envios-e-devolucoes/')}">Envios e devoluções</a></li>
-          <li><a href="${l('/legal/garantia/')}">Garantia de 3 anos</a></li>
-          <li><a href="${l('/legal/livre-resolucao/')}">Livre resolução</a></li>
-        </ul>
-      </div>
-      <div class="rodape__coluna">
-        <h4>Falar connosco</h4>
-        <ul class="rodape__contactos">
+      ${grupo('Apoio ao cliente', lista([
+        ['/contactos/#perguntas', 'Perguntas frequentes'],
+        ['/legal/envios-e-devolucoes/', 'Envios e devoluções'],
+        ['/legal/garantia/', 'Garantia legal de 3 anos'],
+        ['/legal/livre-resolucao/', 'Livre resolução'],
+        // Existe, é exigido pela lei e pela guarda de saída, e nunca esteve
+        // ligado a partir do rodapé.
+        ['/legal/livre-resolucao/formulario/', 'Formulário de livre resolução'],
+        ['/cuidados-e-seguranca/', 'Cuidados e segurança'],
+      ]))}
+      ${grupo('A loja', lista([
+        ...(marca === 'cathelier' ? daCathelier : daIthos),
+        ['/sobre/', 'O ateliê'],
+        ...(marca === 'cathelier' ? daIthos.slice(0, 1) : daCathelier.slice(0, 1)),
+      ]))}
+      ${grupo('Condições', lista([
+        ['/legal/termos/', 'Termos e condições'],
+        ['/legal/privacidade/', 'Privacidade'],
+        ['/legal/reclamacoes/', 'Reclamações'],
+        ['/legal/identificacao/', 'Identificação'],
+      ]))}
+      ${grupo('Falar connosco', `<ul class="rodape__contactos">
           <li>${icone('email')}<a href="mailto:${esc(i.email)}">${esc(i.email)}</a></li>
           <li>${icone('telefone')}<span><a href="tel:${esc(i.telefone)}">${esc(i.telefone_texto)}</a>
             <small>${esc(CUSTO_CHAMADA)}</small></span></li>
           <li>${icone('whatsapp')}<a href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">WhatsApp</a></li>
           <li>${icone('local')}<span>${esc(i.localidade)}, ${esc(i.pais)}<br>
             <small>Sem loja aberta ao público</small></span></li>
-        </ul>
-        <div class="rodape__redes">
-          ${redes.filter(([h]) => h).map(([h, t, ic]) =>
-            `<a href="${esc(h)}" rel="noopener" aria-label="${esc(t)}" title="${esc(t)}">${icone(ic, 20)}</a>`).join('\n          ')}
-        </div>
-      </div>
+        </ul>`)}
+    </div>
+
+    <!-- FORA do acordeão, e de propósito: as redes são o que ela mandou na
+         captura sempre à vista, e um grupo fechado não é sítio para elas. -->
+    <div class="rodape__redes">
+      ${redes.filter(([h]) => h).map(([h, t, ic]) =>
+        `<a href="${esc(h)}" rel="noopener" aria-label="${esc(t)}" title="${esc(t)}">${icone(ic, 20)}</a>`).join('\n      ')}
     </div>
 
     <div class="rodape__fim">

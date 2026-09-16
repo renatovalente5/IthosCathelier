@@ -178,8 +178,20 @@ for (const f of paginas) {
 
   // Identificação do vendedor em TODAS as páginas — art. 10.º do DL 7/2004 diz
   // «permanentemente acessível», e é o rodapé que o cumpre.
-  if (!html.includes('NIF ')) erros.push(`${onde}: o rodapé não mostra o NIF`);
-  if (!html.includes('livroreclamacoes.pt')) erros.push(`${onde}: sem o Livro de Reclamações`);
+  /* NÃO basta que apareçam no documento: têm de estar FORA do acordeão.
+   *
+   * O rodapé passou a ter grupos que nascem fechados no telemóvel, e um
+   * `includes()` sobre o HTML inteiro passava na mesma se alguém arrastasse o
+   * NIF ou o Livro de Reclamações para dentro de um `<details>`. A lei pede
+   * «permanentemente acessível» (DL 7/2004, art. 10.º) e «local visível e com
+   * destaque» (DL 156/2005, art. 5.º-B) — atrás de um `+` não é destaque, e no
+   * Firefox e no Safari o Ctrl+F nem sequer o encontra. */
+  const fim = /<div class="rodape__fim">([\s\S]*?)<\/footer>/.exec(html)?.[1] ?? '';
+  if (!fim) erros.push(`${onde}: não encontrei o fim do rodapé`);
+  if (!fim.includes('NIF ')) erros.push(`${onde}: o NIF não está no fim do rodapé, fora do acordeão`);
+  if (!fim.includes('livroreclamacoes.pt')) {
+    erros.push(`${onde}: o Livro de Reclamações não está no fim do rodapé, fora do acordeão`);
+  }
   // A menção é obrigatória JUNTO A CADA número (DL 59/2021), e tem de ser igual
   // em todo o lado — por isso verifica-se o texto exacto, maiúscula incluída.
   if (!html.includes('(Chamada para a rede móvel nacional)')) {

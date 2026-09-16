@@ -3,13 +3,34 @@ window.__bateria = function () {
   const R = [];
   const nota = (ok, o, detalhe = '') => R.push({ ok: !!ok, o, detalhe: String(detalhe).slice(0, 180) });
 
+  // --- abrir o acordeão do rodapé ANTES de medir seja o que for ------------
+  // Três medições desta bateria descartam o que não está pintado: alvos de
+  // toque e contraste por `offsetParent !== null`, e o corpo de letra por
+  // altura zero. Com os grupos do rodapé fechados no telemóvel, as ligações
+  // legais deixavam de ser medidas — e as três imprimiam ✓ sobre conteúdo em
+  // que nunca tinham tocado. Abre-se tudo, mede-se, e repõe-se no fim.
+  const gruposFechados = [...document.querySelectorAll('.rodape__grupo:not([open])')];
+  for (const g of gruposFechados) g.open = true;
+
   // --- transbordo lateral --------------------------------------------------
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',
     `scrollWidth ${de.scrollWidth} > clientWidth ${de.clientWidth}`);
+  // Um filho de um rolador HORIZONTAL passa da margem por desenho — é para isso
+  // que o rolador existe. O que não pode passar é a página, e isso mede-se
+  // acima, no `scrollWidth`. Sem esta excepção, a fila de filtros do catálogo
+  // acusava quatro transbordos que são o funcionamento correcto.
+  const dentroDeRolador = (e) => {
+    for (let a = e.parentElement; a && a !== document.body; a = a.parentElement) {
+      const o = getComputedStyle(a).overflowX;
+      if (o === 'auto' || o === 'scroll') return true;
+    }
+    return false;
+  };
   const transbordam = [...document.querySelectorAll('body *')]
     .filter((e) => e.getBoundingClientRect().right > de.clientWidth + 1
-      && getComputedStyle(e).position !== 'fixed')
+      && getComputedStyle(e).position !== 'fixed'
+      && !dentroDeRolador(e))
     .slice(0, 4).map((e) => `${e.tagName}.${(e.className || '').toString().split(' ')[0]}`);
   nota(transbordam.length === 0, 'nada passa da margem direita', transbordam.join(', '));
 
@@ -176,6 +197,19 @@ window.__bateria = function () {
       `conteúdo ${Math.round(alturaConteudo)}px, ecrã ${innerHeight}px`);
     if (!antes) gaveta.close();
   }
+
+  // O `summary` é um alvo de toque por direito próprio — mas SÓ enquanto for
+  // clicável. A partir de 60 rem o acordeão desaparece: o CSS põe-lhe
+  // `pointer-events: none` e ele volta a ser um cabeçalho de coluna, que não
+  // se mede como alvo. Medir os dois casos com a mesma régua dava 64 falsos.
+  for (const sm of document.querySelectorAll('.rodape__grupo > summary')) {
+    if (getComputedStyle(sm).pointerEvents === 'none') continue;
+    const r = sm.getBoundingClientRect();
+    nota(r.height >= 24 && r.width >= 24, 'o título do grupo do rodapé é um alvo de toque',
+      `${Math.round(r.width)}×${Math.round(r.height)}`);
+  }
+
+  for (const g of gruposFechados) g.open = false;
 
   return { total: R.length, falhas: R.filter((x) => !x.ok), tudo: R };
 };

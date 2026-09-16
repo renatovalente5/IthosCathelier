@@ -57,7 +57,27 @@
 
 /* --- filtros do catálogo -------------------------------------------------- */
 
-.filtros { display: flex; flex-wrap: wrap; gap: var(--e2); }
+/* UMA FILA, que rola de lado. Em duas linhas os filtros mediam 92 px e
+   empurravam o primeiro candeeiro para fora do ecrã — e o pedido era
+   «breve apresentação e LOGO os ithos».
+
+   Rola-se, nunca se anima por `transform`: um contentor animado com transform
+   deixa de entregar cliques aos filhos, e isso já aconteceu neste repositório.
+   O `padding-block` existe para o anel de foco não ser cortado pelo overflow. */
+.filtros {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--e2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-inline: contain;
+  padding-block: 3px;
+  margin-inline: calc(var(--gaveta) * -1);
+  padding-inline: var(--gaveta);
+}
+.filtros::-webkit-scrollbar { display: none; }
+.filtro { flex: none; scroll-snap-align: start; }
 .filtro {
   border: 1px solid color-mix(in srgb, var(--tinta) 22%, var(--fundo));
   background: transparent; color: var(--tinta-suave);
@@ -210,13 +230,18 @@ body:has(.tarja-previa) [data-ir-encomenda] {
 .rodape__contactos li { display: flex; align-items: flex-start; gap: var(--e2); }
 .rodape__contactos .icone { margin-top: .22em; color: var(--realce); }
 .rodape__contactos small { display: block; font-size: .76rem; color: var(--tinta-suave); line-height: 1.4; }
-.rodape__redes { display: flex; gap: var(--e2); margin-top: var(--e3); }
+/* Redondas e cheias, como na captura que ela mandou — e 44 px, que é o alvo
+   de toque da norma. Na cathelier o `--raio-btn: 0` dá quadrados, que é o
+   outro mundo. */
+.rodape__redes { display: flex; gap: var(--e2); margin-top: var(--e5); }
 .rodape__redes a {
-  display: grid; place-items: center; width: 40px; height: 40px;
-  border: 1px solid var(--linha); border-radius: var(--raio-btn);
-  color: var(--tinta-suave); transition: border-color var(--transicao), color var(--transicao);
+  display: grid; place-items: center; width: 44px; height: 44px;
+  background: var(--realce); color: var(--realce-tinta);
+  border-radius: 50%;
+  transition: opacity var(--transicao);
 }
-.rodape__redes a:hover { border-color: var(--realce); color: var(--realce); }
+[data-marca='cathelier'] .rodape__redes a { border-radius: 0; }
+.rodape__redes a:hover { opacity: .8; }
 
 .rodape__identificacao { font-size: .8rem; }
 .rodape__legal { display: flex; flex-wrap: wrap; gap: var(--e1) var(--e3); align-items: center; }
@@ -277,6 +302,17 @@ body:has(.tarja-previa) [data-ir-encomenda] {
   padding: var(--e4); color: var(--realce);
 }
 .corte svg { width: 58%; height: auto; max-width: 180px; }
+
+/* Dentro de um cartão da montra o desenho tem de crescer.
+   A caixa era 4:5 à volta de um `.corte` que é quadrado — sobravam 20% de
+   caixa vazia por baixo de cada desenho — e 58% de largura num cartão de
+   165 px dava uma figura de 68 px: um risco no meio do nada. E o nome
+   desenhado dentro da caixa repetia o `<h3>` seis pixéis abaixo, o que a duas
+   colunas salta à vista. */
+.peca--c .peca__foto { aspect-ratio: 1; }
+.peca .corte { padding: var(--e2); }
+.peca .corte svg { width: 88%; max-width: none; }
+.peca .corte__nome { display: none; }
 .corte__nome {
   font-family: var(--fonte-display); font-size: .78rem; letter-spacing: .16em;
   text-transform: uppercase; color: var(--tinta-suave); text-align: center;
@@ -307,3 +343,15 @@ body:has(.tarja-previa) [data-ir-encomenda] {
   padding-top: clamp(var(--e5), 4vw, var(--e6));
 }
 .perguntas > h2, .mapa > h2 { margin-bottom: var(--e4); }
+
+/* --- topo do catálogo ------------------------------------------------------
+   Compacto de propósito. O pedido foi «breve apresentação e LOGO os ithos»:
+   o que está aqui em cima é o que separa quem chega dos candeeiros, e cada
+   linha que sobra é um candeeiro que ela não vê. */
+
+.catalogo-topo { padding-block: var(--e4) var(--e7); }
+.catalogo-topo h1 {
+  font-size: clamp(1.7rem, 1.35rem + 1.6vw, 2.6rem);
+  margin-bottom: var(--e1);
+}
+.catalogo-topo > p { margin-bottom: var(--e3); }

@@ -190,6 +190,20 @@
     }
   }
 
+  /* ------------------------------------------------ rodapé em acordeão ---- */
+  // Os grupos saem ABERTOS do gerador; aqui só se FECHAM, e só ao estreito.
+  // Se este ficheiro não correr, o rodapé fica como sempre foi — aberto e
+  // inteiro. O modo de falha é o estado antigo, não um rodapé mudo.
+  {
+    const grupos = $$('.rodape__grupo');
+    if (grupos.length) {
+      const estreito = matchMedia('(width < 60rem)');
+      const arrumar = () => { for (const g of grupos) g.open = !estreito.matches; };
+      arrumar();
+      estreito.addEventListener('change', arrumar);
+    }
+  }
+
   /* ------------------------------------------ transição entre as marcas --- */
   // A cortina só entra quando se atravessa de uma marca para a outra. Dentro da
   // mesma marca é um fundido curto.
@@ -200,7 +214,11 @@
   /* ------------------------------------------------------------ surgir ---- */
 
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-    const alvos = $$('.seccao, .peca, .indice__linha, .porta');
+    // A `.peca` e a `.indice__linha` NÃO entram: são a montra, e com quatro
+    // vezes mais cartões no primeiro ecrã, qualquer captura feita antes de o
+    // IntersectionObserver disparar mostra a loja vazia — e o `loading=lazy`
+    // das fotografias fica adiado à espera de uma animação.
+    const alvos = $$('.seccao, .porta');
     const obs = new IntersectionObserver((entradas) => {
       for (const e of entradas) {
         if (e.isIntersecting) { e.target.classList.add('visivel'); obs.unobserve(e.target); }

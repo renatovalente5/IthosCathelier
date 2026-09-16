@@ -24,7 +24,6 @@ export function paginaInicial(d, ctx) {
   const zonaPt = d.portes.zonas.find((z) => z.id === 'pt');
   const cats = d.categorias.filter((c) => c.publicado && c.pecas.length).slice(0, 4);
 
-  const perguntas = (d.perguntas ?? []).slice(0, 3);
 
   return `
 <section class="heroi">
@@ -58,7 +57,7 @@ export function paginaInicial(d, ctx) {
     <span>Feito à mão em ${esc(d.identidade.localidade)}</span>
     <span>Até ${d.loja.prazos.producao_dias} dias úteis de produção</span>
     <span>Portes ${euros(zonaPt?.preco ?? 5)} para todo o país</span>
-    <span>Garantia de ${d.loja.devolucoes.garantia_anos} anos</span>
+    <span>Garantia legal de ${d.loja.devolucoes.garantia_anos} anos</span>
   </div>
 </section>
 
@@ -68,7 +67,7 @@ export function paginaInicial(d, ctx) {
       <span class="sobrescrito">Feitos um a um</span>
       <h2>Os candeeiros</h2>
     </div>
-    <div class="grelha grelha--3">
+    <div class="grelha grelha--montra">
       ${destaques.map((p) => cartaoPeca(p, ctx)).join('\n      ')}
     </div>
     <p style="margin-top:var(--e5)">
@@ -106,16 +105,11 @@ export function paginaInicial(d, ctx) {
   </div>
 </section>
 
-${perguntas.length ? `<section class="seccao">
-  <div class="envolvente" style="max-width:44rem">
-    <div class="cabeca-seccao"><h2>Perguntas que nos fazem</h2></div>
-    ${perguntas.map((q) => `<details class="pergunta">
-      <summary>${esc(q.pergunta)}</summary>
-      <div>${paras(q.resposta)}</div>
-    </details>`).join('\n    ')}
-    <p style="margin-top:var(--e4)"><a class="ligacao" href="${l('/contactos/#perguntas')}">Todas as perguntas →</a></p>
-  </div>
-</section>` : ''}
+<!-- As perguntas frequentes saíram daqui. Viviam em quatro sítios: nesta
+     página, em /contactos/#perguntas, na ficha de cada peça, e agora também no
+     grupo «Apoio ao cliente» do rodapé, que sai nas 93 páginas. Na primeira
+     página estavam a empurrar a montra para baixo — e a montra é o que a dona
+     da loja quer que se veja. -->
 `;
 }
 
@@ -127,15 +121,14 @@ export function catalogoIthos(d, ctx) {
   const precos = publicados.map((p) => p.preco).filter(Boolean);
 
   return `
-<section class="seccao seccao--apertada">
-  <div class="envolvente">
-    <span class="sobrescrito">O catálogo</span>
-    <h1>Candeeiros</h1>
-    <p class="discreto medida">${publicados.length} modelos, todos feitos à mão. ${precos.length ? `De ${euros(Math.min(...precos))} a ${euros(Math.max(...precos))}.` : ''} Todos podem levar um nome gravado e escolher a cor.</p>
-  </div>
-</section>
-
-<section class="envolvente" style="padding-bottom:var(--e7)">
+<!-- «Breve apresentação e LOGO os ithos». Breve é breve: sai o sobrescrito
+     manuscrito, que aqui era decoração a ocupar uma linha inteira, e a
+     apresentação e os filtros passam a viver na mesma secção que a grelha —
+     duas secções com espaçamento próprio somavam um ecrã antes do
+     primeiro candeeiro. -->
+<section class="envolvente catalogo-topo">
+  <h1>Candeeiros</h1>
+  <p class="discreto medida">${publicados.length} modelos, todos feitos à mão. ${precos.length ? `De ${euros(Math.min(...precos))} a ${euros(Math.max(...precos))}.` : ''} Todos podem levar um nome gravado.</p>
   <div class="filtros" data-filtros>
     <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
     <button class="filtro" type="button" data-filtro="animais" aria-pressed="false">Animais</button>
@@ -143,7 +136,7 @@ export function catalogoIthos(d, ctx) {
     <button class="filtro" type="button" data-filtro="natureza" aria-pressed="false">Natureza</button>
     <button class="filtro" type="button" data-filtro="festa" aria-pressed="false">Época festiva</button>
   </div>
-  <div class="grelha grelha--3" data-lista-produtos style="margin-top:var(--e5)">
+  <div class="grelha grelha--montra" data-lista-produtos style="margin-top:var(--e5)">
     ${publicados.map((p) => cartaoPeca(p, ctx, { familia: familia(p.slug) })).join('\n    ')}
   </div>
   <p class="discreto" data-sem-resultados hidden style="margin-top:var(--e5)">Não há candeeiros nesta família.</p>
@@ -164,11 +157,23 @@ function familia(slug) {
   return 'animais';
 }
 
+/* O cartão da montra: fotografia, nome, preço. Mais nada.
+ *
+ * O resumo saiu daqui. A dona escreveu «as frases estão giras MAS é difícil te
+ * dizer itho rato ou itho gato» — a frase poética estava a disputar com o nome
+ * a linha que identifica o animal. E há uma medida por trás: com o resumo, o
+ * cartão mede 318 px de altura e num telemóvel de 667 px cabem DOIS por ecrã;
+ * sem ele mede 271 px e cabem os QUATRO que ela pediu. As frases não se
+ * perderam — vivem na ficha, que é onde vendem, e na Google.
+ *
+ * O `sizes` foi recalculado para as colunas novas. O antigo declarava 90vw no
+ * telemóvel e o browser trazia a imagem de 800 px para uma caixa de 165 px:
+ * numa página com 26 candeeiros eram megabytes a mais, a cada visita. */
 export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
   const { l, raiz, base } = ctx;
   const foto = figura({
     raiz, base, dir: p.dir, nome: p.fotos[0], alt: `Candeeiro ${p.nome}`,
-    sizes: '(min-width: 60rem) 22rem, (min-width: 40rem) 45vw, 90vw',
+    sizes: '(min-width: 71.25rem) 250px, (min-width: 60rem) 23vw, (min-width: 40rem) 30vw, 45vw',
   });
   const etiqueta = p.estado === 'esgotado'
     ? '<span class="etiqueta etiqueta--esgotado">Esgotado</span>'
@@ -177,7 +182,6 @@ export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
   <div class="peca__foto">${etiqueta}${foto}</div>
   <div class="peca__corpo">
     <h3 class="peca__nome">${esc(p.nome)}</h3>
-    <p class="peca__resumo">${esc(p.resumo)}</p>
     <p class="peca__preco">${p.preco ? euros(p.preco) : 'Sob consulta'}</p>
   </div>
 </a>`;
@@ -269,8 +273,8 @@ export function fichaIthos(p, d, ctx) {
 <section class="seccao seccao--alt">
   <div class="envolvente">
     <div class="cabeca-seccao"><h2 style="font-size:clamp(1.2rem,1rem+1vw,1.6rem)">Talvez também goste</h2></div>
-    <div class="grelha grelha--3">
-      ${d.ithos.filter((o) => o.publicado && o.slug !== p.slug).slice(0, 3).map((o) => cartaoPeca(o, ctx)).join('\n      ')}
+    <div class="grelha grelha--montra">
+      ${d.ithos.filter((o) => o.publicado && o.slug !== p.slug).slice(0, 4).map((o) => cartaoPeca(o, ctx)).join('\n      ')}
     </div>
   </div>
 </section>
@@ -394,7 +398,7 @@ export function categoriaCathelier(c, d, ctx) {
   <div class="categoria__pecas">
     <hr class="fio">
     <h2>${pecas.length === 1 ? 'A peça' : `As ${pecas.length} peças`}</h2>
-    <div class="grelha grelha--3">
+    <div class="grelha grelha--montra-c">
       ${pecas.map((p) => cartaoPecaCathelier(p, ctx)).join('\n      ')}
     </div>
   </div>` : ''}
@@ -474,7 +478,7 @@ export function catalogoCathelier(d, ctx) {
     <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todas</button>
     ${cats.map((c) => `<button class="filtro" type="button" data-filtro="${esc(c.slug)}" aria-pressed="false">${esc(c.nome)}</button>`).join('\n    ')}
   </div>
-  <div class="grelha grelha--3" data-lista-produtos style="margin-top:var(--e5)">
+  <div class="grelha grelha--montra-c" data-lista-produtos style="margin-top:var(--e5)">
     ${pecas.map((p) => cartaoPecaCathelier(p, { ...ctx }).replace('class="peca peca--c"', `class="peca peca--c" data-familia="${esc(p.categoria)}"`)).join('\n    ')}
   </div>
   <p class="discreto" data-sem-resultados hidden style="margin-top:var(--e5)">Não há peças nesta ocasião.</p>
@@ -547,7 +551,7 @@ ${outras.length ? `<section class="seccao seccao--alt">
   <div class="envolvente">
     <hr class="fio--curto">
     <h2 style="font-size:1.2rem">Mais para ${esc((p.categoriaNome ?? '').toLowerCase())}</h2>
-    <div class="grelha grelha--3" style="margin-top:var(--e4)">
+    <div class="grelha grelha--montra-c" style="margin-top:var(--e4)">
       ${outras.map((o) => cartaoPecaCathelier(o, ctx)).join('\n      ')}
     </div>
   </div>

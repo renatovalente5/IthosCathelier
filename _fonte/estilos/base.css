@@ -132,6 +132,7 @@
   --largura: 1140px;
   --medida: 62ch;
   --raio-img: 999px 999px var(--e2) var(--e2) / 42% 42% var(--e2) var(--e2);
+  --raio-cartao-img: 999px 999px var(--e2) var(--e2) / 22% 22% var(--e2) var(--e2);
   --raio-cartao: var(--e4);
   --raio-btn: 999px;
   --sombra: 0 2px 4px rgb(90 60 40 / .05), 0 12px 32px rgb(90 60 40 / .09);
@@ -169,6 +170,7 @@
   --largura: 1080px;
   --medida: 58ch;
   --raio-img: 0;
+  --raio-cartao-img: 0;   /* senão herdava o arco da ithos do :root */
   --raio-cartao: 0;
   --raio-btn: 0;
   --sombra: none;
@@ -274,9 +276,18 @@ p:last-child { margin-bottom: 0; }
   text-transform: none;
   margin-bottom: var(--e1);
 }
-[data-marca='cathelier'] .sobrescrito,
+/* Faltava a chaveta desta linha. Sem ela o prelúdio continuava a consumir
+   tokens à procura de um `{` — e encontrou o da regra seguinte, engolindo o
+   `.medida` inteiro. Resultado: `.medida` ficou sem `max-width` em todo o site
+   (o token `--medida: 58ch` existia e não era usado por ninguém) e o
+   sobrescrito da cathelier nunca chegou a ser maiúsculas pequenas: saía em
+   Marcellus a 25,6 px. Dois defeitos de uma chaveta. */
+[data-marca='cathelier'] .sobrescrito {
   font-family: var(--fonte-corpo);
-  font-size: .72rem;
+  /* .78rem e não .72rem: a 11,5 px caía abaixo do piso de 12 px da bateria.
+     Só se viu agora — enquanto o selector esteve partido, esta regra nunca
+     chegou a aplicar-se a nada. */
+  font-size: .78rem;
   letter-spacing: .24em;
   text-transform: uppercase;
   margin-bottom: var(--e3);
@@ -312,8 +323,42 @@ p:last-child { margin-bottom: 0; }
   gap: clamp(var(--e4), 3vw, var(--e5));
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
 }
-.grelha--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
-.grelha--3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
+
+/* --- a montra --------------------------------------------------------------
+   CONTAGEM EXPLÍCITA, não `auto-fill`. A dona da loja pediu «filas de 2 nos
+   telemóveis» e «4 em cada total de ecrã», e um `minmax()` não sabe dizer
+   «exactamente duas»: o valor que dá 2 colunas a 343 px dá 5 a 944 px.
+
+   O `gap` também tinha de mudar. O `clamp(var(--e4), 3vw, var(--e5))` de antes
+   tem um piso de 24 px — a 375 px isso come 7% da linha, que numa grelha de
+   duas colunas é fotografia a menos. Entre colunas fica apertado, entre filas
+   fica largo: é o espaço vertical que separa um cartão do seguinte. */
+.grelha--montra {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--e2);
+  row-gap: var(--e4);
+}
+@media (width >= 40rem) {
+  .grelha--montra { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--e3); row-gap: var(--e5); }
+}
+@media (width >= 60rem) {
+  .grelha--montra { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--e4); row-gap: var(--e6); }
+}
+
+/* A cathelier pára nas três. Trinta e seis desenhos de linha iguais em quatro
+   colunas lêem-se como um sítio por acabar — e nenhuma das 36 peças tem ainda
+   uma fotografia que quebre a repetição. */
+.grelha--montra-c {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--e2);
+  row-gap: var(--e4);
+}
+@media (width >= 40rem) {
+  .grelha--montra-c { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--e3); row-gap: var(--e5); }
+}
+@media (width >= 60rem) {
+  .grelha--montra-c { column-gap: var(--e4); row-gap: var(--e6); }
+}
 
 .cabeca-seccao { margin-bottom: clamp(var(--e5), 5vw, var(--e6)); }
 .cabeca-seccao p { max-width: var(--medida); color: var(--tinta-suave); }
@@ -583,6 +628,38 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 
 .rodape { background: var(--fundo-alt); border-top: 1px solid var(--linha); padding-block: var(--e6) var(--e5); }
 .rodape__grelha { display: grid; gap: var(--e5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+
+/* --- o acordeão do rodapé --------------------------------------------------
+   Ao estreito é um acordeão; a partir de 60 rem são quatro colunas abertas,
+   como sempre foram. É a mesma fronteira que a gaveta e a grelha da montra
+   usam — um modelo mental só — e ela pediu isto a propósito do telemóvel.
+
+   O sinal de mais e de menos tem de ser redeclarado: a regra que já existe
+   está escopada a `.pergunta`, e um acordeão sem indicador é o oposto da
+   captura que ela mandou. */
+.rodape__grupo { border-bottom: 1px solid var(--linha); }
+.rodape__grupo summary {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--e3); min-height: 44px; cursor: pointer; list-style: none;
+}
+.rodape__grupo summary::-webkit-details-marker { display: none; }
+.rodape__grupo summary h4 { margin: 0; }
+.rodape__grupo summary::after {
+  content: '+'; color: var(--realce); font-size: 1.3rem; line-height: 1; flex: none;
+}
+.rodape__grupo[open] summary::after { content: '−'; }
+.rodape__grupo > ul { padding-bottom: var(--e3); }
+
+@media (width >= 60rem) {
+  /* Quatro colunas curtas num ecrã grande não se simplificam a colapsar:
+     escondem-se. Acima daqui o acordeão desaparece por completo — e o
+     `summary` deixa de receber cliques, senão quem navega por teclado podia
+     fechar um grupo que o CSS assume aberto e ficar sem indicador nenhum. */
+  .rodape__grupo { border-bottom: 0; }
+  .rodape__grupo summary { cursor: default; pointer-events: none; min-height: 0; }
+  .rodape__grupo summary::after { content: none; }
+  .rodape__grupo > ul { padding-bottom: 0; }
+}
 .rodape h4 { font-family: var(--fonte-corpo); font-size: .8rem; letter-spacing: .2em;
              text-transform: uppercase; color: var(--tinta-suave); margin-bottom: var(--e2); }
 .rodape ul { list-style: none; margin: 0; padding: 0; }
@@ -617,7 +694,14 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 .peca__foto {
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  border-radius: var(--raio-img);
+  /* ARCO PRÓPRIO, mais raso do que o do herói.
+     O `--raio-img` da marca é 999px/42%: num cartão de 165 px de largura isso
+     morde 87 px do topo de uma fotografia de 207 px — exactamente onde está a
+     cabeça do animal. A queixa da dona foi «é difícil te dizer itho rato ou
+     itho gato»: metade da razão estava aqui. Fica a silhueta de arco, que é a
+     marca, e devolve-se a cabeça. O arco cheio continua no herói, no bilhete e
+     na galeria da ficha, onde a fotografia é grande e não corta nada. */
+  border-radius: var(--raio-cartao-img, var(--raio-img));
   background: var(--fundo-alt);
   position: relative;
 }
@@ -633,6 +717,9 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
   color: var(--realce);
   margin: 0;
 }
+/* Continua a servir a cathelier, cujo cartão mantém o resumo: ali o desenho
+   de linha é genérico e a frase é a única coisa que distingue uma placa de
+   outra placa. Na ithos a fotografia já diz qual é o animal. */
 .peca__resumo { font-size: .88rem; color: var(--tinta-suave); margin: 0; }
 .peca__preco { font-size: .98rem; font-weight: 500; margin: 0; }
 .peca__preco s { color: var(--tinta-suave); font-weight: 400; margin-right: var(--e1); }
@@ -641,7 +728,7 @@ html { scroll-padding-block-start: calc(var(--topo-encolhido) + 12px); }
 .etiqueta {
   position: absolute; top: var(--e2); left: var(--e2); z-index: 2;
   background: var(--fundo); color: var(--tinta);
-  font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+  font-size: .78rem; letter-spacing: .08em; text-transform: uppercase;
   padding: .3em .7em; border-radius: var(--raio-btn); border: 1px solid var(--linha);
 }
 .etiqueta--esgotado { background: var(--tinta); color: var(--fundo); border-color: var(--tinta); }
