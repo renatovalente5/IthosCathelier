@@ -102,6 +102,7 @@ ${ld}
 </head>
 <body class="${esc(classeCorpo)}">
 <a class="saltar" href="#conteudo">Saltar para o conteúdo</a>
+<span id="topo" aria-hidden="true"></span>
 ${previa ? '<p class="tarja-previa" role="status">Pré-visualização — o site ainda não abriu. Não é possível comprar, e alguns dados estão por preencher.</p>' : ''}
 
 <!-- Sentinela de 1 px. O cabeçalho encolhe quando ela sai do ecrã, com um
@@ -118,6 +119,16 @@ ${conteudo}
 
 ${menuTelemovel({ marca, l, identidade, contagens })}
 ${rodape({ marca, identidade, l })}
+
+<!-- Subir ao topo. Fica escondido até se descer, e some enquanto o aviso de
+     cookies estiver de pé — no telemóvel o aviso ocupa a largura toda em
+     baixo e os dois ficavam um por cima do outro. -->
+<a class="subir" href="#topo" hidden aria-label="Voltar ao topo da página">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+       stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <path d="M12 19V5M6 11l6-6 6 6"/>
+  </svg>
+</a>
 
 <!-- O aviso só aparece a quem ainda não respondeu. Fica no HTML para existir
      sem depender de JavaScript; o JavaScript só o esconde. -->
@@ -241,10 +252,16 @@ function rodape({ marca, identidade, l }) {
   const morada = [i.morada, [i.codigo_postal, i.localidade].filter(Boolean).join(' '), i.pais]
     .filter(Boolean).join(' · ');
 
+  /* SÓ as redes da marca que se está a ver.
+   *
+   * Mostravam-se as das duas ao mesmo tempo — dois Instagram lado a lado, com
+   * o mesmo ícone, e quem carregasse ia parar à conta da outra marca sem
+   * perceber porquê. São duas marcas que têm de parecer dois sítios: a porta
+   * para a outra é o cabeçalho e a gaveta, não o rodapé. */
   const redes = marca === 'cathelier'
-    ? [[i.instagram_cathelier, 'Instagram', 'instagram'], [i.instagram_ithos, 'Instagram da ithos', 'instagram']]
-    : [[i.instagram_ithos, 'Instagram', 'instagram'], [i.facebook_ithos, 'Facebook', 'facebook'],
-       [i.instagram_cathelier, 'Instagram da cathelier', 'instagram']];
+    ? [[i.instagram_cathelier, 'Instagram da cathelier', 'instagram']]
+    : [[i.instagram_ithos, 'Instagram da ithos', 'instagram'],
+       [i.facebook_ithos, 'Facebook da ithos', 'facebook']];
 
   /* O rodapé em acordeão, que ela pediu para «o final de todas as páginas».
    *

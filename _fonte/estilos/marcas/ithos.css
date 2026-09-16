@@ -233,3 +233,102 @@
 }
 .porta-cathelier__ocasioes a:hover { border-color: var(--realce); color: var(--realce); }
 .porta-cathelier__ocasioes span { font-size: .75rem; color: var(--tinta-suave); }
+
+/* ==========================================================================
+   A CAPA — fotografia de fundo, texto por cima
+   ========================================================================== */
+
+.capa {
+  position: relative;
+  display: grid;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;          /* telemóvel: é a proporção do modelo */
+  min-height: 420px;
+  max-height: 80svh;
+  background: var(--fundo-alt);
+}
+@media (width >= 48rem) {
+  /* 1,55:1 e não os 2,11:1 do modelo. Medi: com 2,11 uma fotografia vertical
+     de 2:3 perde 65% da altura e fica uma tira sem contexto; com 1,55 perde
+     52% e ainda se vê o quarto à volta do candeeiro. A proporção do herói tem
+     de servir as fotografias que existem, não as que o modelo tem. */
+  .capa { aspect-ratio: 1.55; max-height: 82svh; }
+}
+
+.capa > * { grid-area: 1 / 1; }
+.capa__foto { overflow: hidden; }
+.capa__foto,
+.capa__foto picture,
+.capa__foto img { width: 100%; height: 100%; display: block; }
+/* O enquadramento sobe para o candeeiro ficar na parte de cima, que é a que
+   não leva véu. Com 34% ele caía a meio e o véu, que tem de ser forte para o
+   texto branco se ler, apagava-o. */
+.capa__foto img { object-fit: cover; object-position: 50% 30%; }
+@media (width >= 48rem) {
+  /* Ao largo o corte é panorâmico e o véu é lateral: o enquadramento pode
+     voltar ao centro, que é onde a cena está composta. */
+  .capa__foto img { object-position: 50% 42%; }
+}
+
+/* O VÉU. Não é estética: é o que põe texto branco acima de 4,5:1 sobre uma
+   parede clara. Em gradiente e não em bloco, para a fotografia continuar a
+   ver-se em cima, que é onde está o candeeiro. */
+/* Um véu MUITO leve em todo o quadro, só para assentar a fotografia sob o
+   texto e dar unidade. O que garante o contraste é o outro, que vem a seguir. */
+.capa::after {
+  content: '';
+  grid-area: 1 / 1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgb(28 24 20 / .10), rgb(28 24 20 / .18));
+}
+
+/* O VÉU QUE CONTA: acompanha o bloco de texto e não o quadro.
+   Medida: 55% de escuro põe o branco acima de 4,5:1 sobre o pior reflexo
+   desta fotografia (rgb 255 246 219, o LED do candeeiro). Usa-se 78% no fundo
+   e 62% no topo do bloco, o que dá margem e deixa a fotografia limpa acima. */
+.capa__texto {
+  align-self: end;
+  z-index: 1;
+  width: 100%;
+  color: #fff;
+  padding-block: clamp(var(--e5), 5vw, var(--e6)) clamp(var(--e4), 4vw, var(--e6));
+
+  /* Véu UNIFORME e não em gradiente, com o desvanecimento numa faixa própria
+     por cima. Duas razões, e as duas importam:
+
+     1. Um véu de 82% de escuro garante o contraste seja qual for a fotografia
+        que estiver por baixo — mesmo branca, o composto dá rgb(69 65 62), que
+        é 10:1 contra o branco. Deixa de depender da fotografia desta semana.
+     2. A bateria de browser resolve o fundo pela COR dos antepassados, e um
+        `linear-gradient` não tem cor nenhuma: com o véu em gradiente ela subia
+        até à `.capa`, encontrava o creme, e acusava texto branco sobre creme —
+        um falso que ninguém ia conseguir explicar. */
+  position: relative;
+  background-color: rgb(28 24 20 / .78);
+}
+/* A faixa que esbate, logo acima do bloco. É só estética: o contraste já está
+   garantido pelo véu uniforme. */
+.capa__texto::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 100%;
+  height: clamp(60px, 12vw, 120px);
+  background: linear-gradient(to top, rgb(28 24 20 / .78), rgb(28 24 20 / 0));
+  pointer-events: none;
+}
+.capa__texto .envolvente { max-width: min(var(--largura), 100%); }
+.capa__texto h1 {
+  color: #fff;
+  margin-bottom: var(--e3);
+  font-size: clamp(1.9rem, 1.45rem + 2.2vw, 3.1rem);
+  max-width: 18ch;
+}
+.capa__texto p { color: rgb(255 255 255 / .94); max-width: 40ch; margin: 0; }
+
+.botao--capa {
+  background: var(--fundo);
+  color: var(--tinta);
+  border-color: var(--fundo);
+  margin-top: var(--e4);
+}
+.botao--capa:hover { background: #fff; border-color: #fff; color: var(--tinta); }

@@ -355,3 +355,35 @@ body:has(.tarja-previa) [data-ir-encomenda] {
   margin-bottom: var(--e1);
 }
 .catalogo-topo > p { margin-bottom: var(--e3); }
+
+/* --- subir ao topo ---------------------------------------------------------
+   Canto inferior direito, redondo, com a cor da marca. Aparece depois de se
+   ter descido — antes disso não serve para nada e só tapa conteúdo. */
+
+.subir {
+  position: fixed;
+  right: var(--gaveta);
+  bottom: var(--gaveta);
+  z-index: 60;
+  width: 48px; height: 48px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--realce);
+  color: var(--realce-tinta);
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgb(35 30 25 / .28);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 220ms ease, transform 220ms ease, background var(--transicao);
+}
+[data-marca='cathelier'] .subir { border-radius: 0; }
+.subir[data-visivel='sim'] { opacity: 1; transform: none; }
+.subir:hover { background: var(--tinta); }
+
+/* Enquanto o aviso de cookies estiver de pé, o botão sai da frente: ao
+   estreito o aviso ocupa a largura toda em baixo e ficavam sobrepostos. */
+body:has(.cookies:not([hidden])) .subir { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .subir { transition: none; transform: none; }
+}

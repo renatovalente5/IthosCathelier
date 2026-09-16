@@ -190,6 +190,31 @@
     }
   }
 
+  /* -------------------------------------------------- subir ao topo ------- */
+  // Aparece depois de se ter descido uma altura de ecrã. Usa-se um
+  // IntersectionObserver sobre a sentinela que já existe no topo — e não um
+  // ouvinte de `scroll`, que corre a cada pixel.
+  {
+    const botao = $('.subir');
+    const sentinela = $('.sentinela');
+    if (botao && sentinela && 'IntersectionObserver' in window) {
+      botao.hidden = false;
+      new IntersectionObserver(([e]) => {
+        botao.dataset.visivel = e.isIntersecting ? 'nao' : 'sim';
+      }, { rootMargin: '100% 0px 0px 0px' }).observe(sentinela);
+
+      botao.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+        scrollTo({ top: 0, behavior: suave ? 'smooth' : 'auto' });
+        // O foco tem de voltar ao princípio do documento, senão quem navega por
+        // teclado continua onde estava e a página «subiu» só para o rato.
+        const saltar = $('.saltar');
+        if (saltar) { saltar.focus({ preventScroll: true }); }
+      });
+    }
+  }
+
   /* ------------------------------------------------ rodapé em acordeão ---- */
   // Os grupos saem ABERTOS do gerador; aqui só se FECHAM, e só ao estreito.
   // Se este ficheiro não correr, o rodapé fica como sempre foi — aberto e

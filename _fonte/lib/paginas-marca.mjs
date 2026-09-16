@@ -20,32 +20,44 @@ export function paginaInicial(d, ctx) {
     ...publicados.filter((p) => p.destaque),
     ...publicados.filter((p) => !p.destaque),
   ].slice(0, 12);
-  const capa = publicados.find((p) => p.slug === 'raposa') ?? publicados[0];
+  // A fotografia da capa é a do tigre na parede: das 90 que existem, é a única
+  // que sobrevive a um corte panorâmico — o candeeiro à direita, parede limpa à
+  // esquerda para o texto, e a planta a dar profundidade. As outras são
+  // retratos apertados e, cortadas a 1,55:1, ficam uma tira sem contexto.
+  const capa = publicados.find((p) => p.slug === 'tigre') ?? publicados[0];
   const zonaPt = d.portes.zonas.find((z) => z.id === 'pt');
   const cats = d.categorias.filter((c) => c.publicado && c.pecas.length).slice(0, 4);
 
-
   return `
-<section class="heroi">
-  <div class="bolas" aria-hidden="true">
-    <span class="bola bola--1"></span><span class="bola bola--2"></span>
-    <span class="bola bola--3"></span><span class="bola bola--4"></span>
+<!-- A CAPA: fotografia de fundo a toda a largura, texto por cima.
+     Era uma fotografia de um lado e texto do outro; o dono da loja pediu o
+     contrário, e é também o que o site que ela escolheu como modelo faz.
+     Proporção 4:5 no telemóvel e 1,55:1 ao largo — medi o modelo (4:5 e
+     2,11:1) e 2,11 aqui deitava fora 65% de uma fotografia vertical.
+     O véu não é enfeite: é o que põe texto branco acima do mínimo de contraste
+     sobre uma parede clara. -->
+<section class="capa">
+  <div class="capa__foto">
+    ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[capa.fotos.length - 1] ?? capa.fotos[0],
+      alt: `Candeeiro ${capa.nome} aceso na parede de um quarto`,
+      sizes: '100vw', prioridade: true }) : ''}
   </div>
-  <div class="envolvente heroi__grelha">
-    <div class="heroi__texto">
-      <span class="sobrescrito">${esc(m.assinatura)}</span>
+  <!-- O véu acompanha o TEXTO e não o quadro.
+       Medi faixa a faixa: a fotografia tem reflexos dos LED a rgb(255 246 219)
+       em quase toda a altura, e um véu forte que chegue a todos apagava a
+       peça. Assim a fotografia fica limpa onde está o candeeiro e só escurece
+       onde as palavras assentam. E sobrevive a ela trocar a fotografia.
+
+       Sem sobrescrito manuscrito: o logótipo já diz «handmade in Portugal», e
+       sobre a fotografia media 2,45:1 contra os 3,0 da norma. -->
+  <div class="capa__texto">
+    <div class="envolvente">
       <h1>${esc(m.hero_titulo)}</h1>
-      <p>${esc(m.hero_texto)}</p>
-      <div class="heroi__accoes">
-        <a class="botao" href="${l('/candeeiros/')}">Ver os candeeiros</a>
-      </div>
-    </div>
-    <div class="heroi__peca">
-      <div class="arco">
-        ${capa ? figura({ raiz, base, dir: capa.dir, nome: capa.fotos[capa.fotos.length - 1] ?? capa.fotos[0],
-          alt: `Candeeiro ${capa.nome} aceso num quarto`,
-          sizes: '(min-width: 52rem) 46vw, 92vw', prioridade: true }) : ''}
-      </div>
+      <!-- Só o título e o botão, como no modelo. O parágrafo de venda saiu:
+           um bloco de texto alto obriga a um véu alto, e o véu alto tapava a
+           fotografia que ele veio pedir. O que ele dizia está na tira de
+           factos logo por baixo, e essa lê-se sobre fundo de papel. -->
+      <p><a class="botao botao--capa" href="${l('/candeeiros/')}">Ver os candeeiros</a></p>
     </div>
   </div>
 </section>
