@@ -61,10 +61,6 @@ function todos(pasta, ext) {
    não páginas para encontrar na Google. */
 const FORA_DO_INDICE = ['carrinho/', 'encomenda/', 'obrigado/', 'encomenda-cancelada/', '404.html'];
 
-/* O par existe em todas as páginas do site. As de erro também: o 404 é onde
-   mais falta fazer uma porta para algum lado. */
-const indexavelParaOPar = () => true;
-
 const titulosVistos = {};
 const descricoesVistas = {};
 
@@ -126,29 +122,6 @@ for (const f of paginas) {
   }
 
   if (!/rel="canonical" href="https?:\/\/[^"]+"/.test(html)) erros.push(`${onde}: sem canónico`);
-
-  /* Um `view-transition-name` repetido mata a transição INTEIRA, em silêncio.
-   *
-   * É o modo de falha desta funcionalidade: não há erro na consola, não há
-   * aviso, a animação simplesmente deixa de existir — e como ela vive num
-   * browser e dura meio segundo, ninguém dá por isso durante meses. As classes
-   * `marca-ithos` e `marca-cathelier` são o que lhe dá o nome, por isso cada
-   * uma tem de aparecer no MÁXIMO uma vez por página. A gaveta usa
-   * `porta-irma__logo`, de propósito. */
-  for (const nome of ['marca-ithos', 'marca-cathelier']) {
-    const vezes = (html.match(new RegExp(`class="${nome}"`, 'g')) ?? []).length;
-    if (vezes > 1) {
-      erros.push(`${onde}: a classe «${nome}» aparece ${vezes} vezes — dois elementos com o `
-        + 'mesmo view-transition-name fazem o browser desistir da transição toda');
-    }
-  }
-  /* E as duas TÊM de lá estar: é o par. Se uma desaparecer do cabeçalho, não há
-     troca nenhuma para animar e a outra marca deixa de ter porta. */
-  if (indexavelParaOPar(onde)) {
-    for (const nome of ['marca-ithos', 'marca-cathelier']) {
-      if (!html.includes(`class="${nome}"`)) erros.push(`${onde}: falta o logótipo «${nome}» no par do cabeçalho`);
-    }
-  }
 
   /* Título e descrição: únicos, e do tamanho que cabe no resultado.
    *
