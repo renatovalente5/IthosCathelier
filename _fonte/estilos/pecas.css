@@ -64,20 +64,32 @@
    Rola-se, nunca se anima por `transform`: um contentor animado com transform
    deixa de entregar cliques aos filhos, e isso já aconteceu neste repositório.
    O `padding-block` existe para o anel de foco não ser cortado pelo overflow. */
+/* Eram uma fila que rolava de lado, e o que rola de lado num telemóvel não se
+   descobre: escondia 154 px de pastilhas no ithos e 927 px na cathelier, sem
+   nada a dizer que havia mais. O dono viu «Época festiva» cortada a meio e
+   perguntou porquê — tinha razão, e «Todos» também saía de vista assim que se
+   arrastava.
+
+   Agora mudam de linha: nada fica fora do ecrã, e «Todos» está sempre na
+   primeira linha. Mas onze pastilhas em cinco linhas empurravam o primeiro
+   produto da cathelier para os 640 px de 812, por isso ficam limitadas a DUAS
+   linhas, com uma pastilha «+N» que abre o resto. No ithos as cinco cabem nas
+   duas e o «+N» nunca chega a existir.
+
+   Sem JavaScript aparecem todas — mais alto, mas inteiro. O que não pode
+   acontecer é o que acontecia: estarem lá e não se verem. */
 .filtros {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: var(--e2);
-  overflow-x: auto;
-  scrollbar-width: none;
-  scroll-snap-type: x proximity;
-  overscroll-behavior-inline: contain;
   padding-block: 3px;
-  margin-inline: calc(var(--gaveta) * -1);
-  padding-inline: var(--gaveta);
 }
-.filtros::-webkit-scrollbar { display: none; }
-.filtro { flex: none; scroll-snap-align: start; }
+.filtro { flex: none; }
+
+/* A pastilha que abre o resto. Veste-se como as outras — é a mesma fila — mas
+   fala com a cor de realce, para não se confundir com uma família. */
+.filtro--mais { color: var(--realce); border-style: dashed; }
+.filtro--mais:hover { background: color-mix(in srgb, var(--realce) 8%, transparent); }
 .filtro {
   border: 1px solid color-mix(in srgb, var(--tinta) 22%, var(--fundo));
   background: transparent; color: var(--tinta-suave);

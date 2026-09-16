@@ -310,7 +310,76 @@
         if (mostra) visiveis++;
       }
       if (semResultados) semResultados.hidden = visiveis > 0;
+      // Uma pastilha escolhida NUNCA pode ficar escondida atrás do «+N»: se se
+      // escolher uma da quarta linha e a fila voltasse a encolher, a página
+      // ficava filtrada sem se ver por quê. Uma vez aberta, fica aberta.
+      abrirFila();
     });
+
+    /* ---- as pastilhas não cabem todas: encolher para duas linhas --------
+     *
+     * A fila rolava de lado e escondia 927 px de pastilhas na cathelier sem
+     * aviso nenhum. Agora muda de linha — mas onze pastilhas dão cinco linhas,
+     * e isso empurra o primeiro produto para fora do ecrã. Fica em duas, com
+     * uma pastilha «+N» a dizer quantas faltam.
+     *
+     * Mede-se, não se adivinha: quantas cabem em duas linhas depende da
+     * largura do ecrã, do tipo de letra e do comprimento dos nomes, e nenhuma
+     * dessas coisas se sabe daqui. E remede-se quando a janela muda de tamanho
+     * ou quando o tipo de letra acaba de carregar, senão a conta é feita com
+     * as medidas da letra de recurso. */
+    const pastilhas = $$('[data-filtro]', caixaFiltros);
+    let aberta = false;
+
+    const mais = document.createElement('button');
+    mais.type = 'button';
+    mais.className = 'filtro filtro--mais';
+    mais.hidden = true;
+    mais.addEventListener('click', abrirFila);
+    caixaFiltros.appendChild(mais);
+
+    function abrirFila() {
+      aberta = true;
+      for (const b of pastilhas) b.hidden = false;
+      mais.hidden = true;
+    }
+
+    function encolherFila() {
+      if (aberta) return;
+      for (const b of pastilhas) b.hidden = false;
+      mais.hidden = false;
+      mais.textContent = '+0';
+
+      // O topo de cada pastilha diz em que linha está. Duas linhas = os dois
+      // primeiros valores distintos.
+      const topos = [...new Set(pastilhas.map((b) => Math.round(b.offsetTop)))].sort((a, b) => a - b);
+      if (topos.length <= 2) { mais.hidden = true; return; }   // cabem todas
+
+      const limite = topos[1];
+      let escondidas = 0;
+      for (const b of pastilhas) {
+        if (Math.round(b.offsetTop) > limite) { b.hidden = true; escondidas++; }
+      }
+      // O próprio «+N» ocupa lugar. Se depois de o pôr ele for parar à terceira
+      // linha, esconde-se mais uma pastilha até ele caber — senão o remédio
+      // acrescentava a linha que veio tirar.
+      mais.textContent = `+${escondidas}`;
+      let guarda = pastilhas.length;
+      while (Math.round(mais.offsetTop) > limite && guarda-- > 0) {
+        const ultima = pastilhas.filter((b) => !b.hidden).pop();
+        if (!ultima || ultima === pastilhas[0]) break;         // «Todos» fica sempre
+        ultima.hidden = true;
+        escondidas++;
+        mais.textContent = `+${escondidas}`;
+      }
+      mais.setAttribute('aria-label', `Mostrar mais ${escondidas} filtros`);
+    }
+
+    encolherFila();
+    addEventListener('resize', encolherFila, { passive: true });
+    // As pastilhas medem-se com a letra de recurso enquanto a verdadeira não
+    // chegou, e a conta muda quando ela chega.
+    if (document.fonts?.ready) document.fonts.ready.then(encolherFila);
   }
 
   /* ---------------------------------------------------- ficha de produto -- */
