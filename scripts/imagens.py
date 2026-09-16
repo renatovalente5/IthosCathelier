@@ -110,6 +110,36 @@ def cartao_partilha(capa: Path, destino: Path, forcar: bool) -> bool:
         q -= 6
 
 
+
+def marca_de_plataforma(f: Path):
+    """O ícone de som que o Instagram queima nas fotografias tiradas de vídeos.
+
+    Porquê existe: a única fotografia do caracol — a capa dele, a que ia para a
+    montra E para o cartão de partilha do WhatsApp — tinha o altifalante cortado
+    do Instagram queimado no canto. Esteve assim uma publicação inteira. Ninguém
+    olha para o canto inferior direito de 90 fotografias; um computador olha.
+
+    Procura-se a assinatura do ícone e não «um disco escuro»: posição fixa
+    (cerca de 90% da largura, 96% da altura), muitos pixéis escuros juntos, e
+    pixéis brancos no meio — que é o altifalante.
+    """
+    try:
+        im = Image.open(f).convert('RGB')
+    except Exception:
+        return None
+    w, h = im.size
+    cx, cy, r = int(w * 0.90), int(h * 0.96), max(8, int(w * 0.045))
+    caixa = im.crop((max(0, cx - r), max(0, cy - r), min(w, cx + r), min(h, cy + r)))
+    px = list(caixa.getdata())
+    if not px:
+        return None
+    escuros = sum(1 for c in px if sum(c) / 3 < 120) / len(px)
+    claros = sum(1 for c in px if min(c) > 210) / len(px)
+    if escuros > 0.30 and claros > 0.03:
+        return f'{escuros:.0%} escuro com {claros:.0%} branco no meio'
+    return None
+
+
 def varrer(forcar=False):
     if not ORIGINAIS.exists():
         print(f'não há {ORIGINAIS.relative_to(RAIZ)} — nada a fazer')
@@ -155,11 +185,29 @@ def varrer(forcar=False):
             if not (ORIGINAIS / rel).exists() and any(d.iterdir()):
                 orfas.append(str(rel))
 
+    # --- marcas de plataforma -------------------------------------------
+    marcadas = []
+    for pasta in sorted(p for p in ORIGINAIS.rglob('*') if p.is_dir()):
+        for f in sorted(x for x in pasta.iterdir()
+                        if x.is_file() and x.suffix.lower() in EXTENSOES):
+            porque = marca_de_plataforma(f)
+            if porque:
+                marcadas.append((f.relative_to(RAIZ), porque))
+
     print(f'\npastas: {pastas} · originais processados: {novas} · cartões: {cartoes}')
     if orfas:
         print('derivadas sem original (apagar à mão se já não servem):')
         for o in orfas:
             print('  ', o)
+
+    if marcadas:
+        print('\nFOTOGRAFIA(S) COM O ÍCONE DO INSTAGRAM QUEIMADO:')
+        for f, porque in marcadas:
+            print(f'  · {f}  ({porque})')
+        print('\nEstas fotografias vieram de um vídeo e trazem o altifalante '
+              'cortado no canto.\nCorta a parte de baixo ou pede a original. '
+              'A construção não segue assim.')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
