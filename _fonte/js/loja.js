@@ -157,7 +157,15 @@
         // quase ninguém cumpre até ao fim.
         gaveta.showModal();
         abrir.setAttribute('aria-expanded', 'true');
-        $('.gaveta__menu a', gaveta)?.focus();
+        // O foco vai para o BOTÃO DE FECHAR, não para a primeira ligação.
+        //
+        // Ia para a primeira ligação, e o anel de foco desenhava-lhe um
+        // rectângulo verde à volta: num telemóvel isso lê-se como «Candeeiros
+        // está seleccionado», que é falso — o dono viu-o e perguntou porquê.
+        // No botão de fechar o mesmo anel diz a verdade: é ali que se está.
+        // O anel continua lá para quem navega por teclado, que é quem precisa
+        // dele; tirá-lo era trocar um mal-entendido por uma barreira.
+        $('.fechar-menu', gaveta)?.focus();
       });
       $('.fechar-menu', gaveta)?.addEventListener('click', fechar);
       // Seguir uma ligação fecha a gaveta: sem isto, voltar atrás no browser
