@@ -169,6 +169,14 @@ function familia(slug) {
  * O `sizes` foi recalculado para as colunas novas. O antigo declarava 90vw no
  * telemóvel e o browser trazia a imagem de 800 px para uma caixa de 165 px:
  * numa página com 26 candeeiros eram megabytes a mais, a cada visita. */
+/* Alguma escolha ou algum campo pode fazer o preço subir? Se sim, o cartão diz
+ * «desde». Dizer «78 €» quando há uma variante a 89 € não é falso só quando
+ * dá jeito — é o preço de partida, e escreve-se assim. */
+function podeSubir(p) {
+  return (p.opcoes ?? []).some((o) => (o.suplemento ?? 0) > 0
+    || (o.valores ?? []).some((v) => (v.suplemento ?? 0) > 0));
+}
+
 export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
   const { l, raiz, base } = ctx;
   const foto = figura({
@@ -182,7 +190,7 @@ export function cartaoPeca(p, ctx, { familia: fam = '' } = {}) {
   <div class="peca__foto">${etiqueta}${foto}</div>
   <div class="peca__corpo">
     <h3 class="peca__nome">${esc(p.nome)}</h3>
-    <p class="peca__preco">${p.preco ? euros(p.preco) : 'Sob consulta'}</p>
+    <p class="peca__preco">${p.preco ? `${podeSubir(p) ? 'desde ' : ''}${euros(p.preco)}` : 'Sob consulta'}</p>
   </div>
 </a>`;
 }
@@ -283,11 +291,20 @@ export function fichaIthos(p, d, ctx) {
 
 function campoOpcao(o, p) {
   if (o.tipo === 'escolha') {
+    /* Vem marcada a opção MAIS BARATA, não a primeira da lista.
+     *
+     * A bolota anunciava 78 € na montra e a ficha abria em 89 €, porque a
+     * primeira variante — «Grande» — custa +11 €. O preço anunciado não era
+     * obtenível sem mexer num botão, e um preço que se anuncia tem de ser o
+     * preço que se paga (DL 138/90). Empatados, ganha o primeiro da lista, que
+     * é a ordem que ela escolheu. */
+    const maisBarata = o.valores.reduce(
+      (melhor, v, i) => ((v.suplemento ?? 0) < (o.valores[melhor].suplemento ?? 0) ? i : melhor), 0);
     return `<fieldset class="grupo" data-opcao="${esc(o.id)}" data-personaliza="${o.personaliza ? 'sim' : 'nao'}">
   <legend>${esc(o.nome)}</legend>
   <div class="escolhas">
     ${o.valores.map((v, i) => `<label class="escolha">
-      <input type="radio" name="${esc(o.id)}" value="${esc(v.id ?? v)}" data-suplemento="${v.suplemento ?? 0}"${i === 0 ? ' checked' : ''}${o.obrigatoria ? ' required' : ''}>
+      <input type="radio" name="${esc(o.id)}" value="${esc(v.id ?? v)}" data-suplemento="${v.suplemento ?? 0}"${i === maisBarata ? ' checked' : ''}${o.obrigatoria ? ' required' : ''}>
       <span>${esc(v.nome ?? v)}${v.suplemento ? ` · +${euros(v.suplemento)}` : ''}</span>
     </label>`).join('\n    ')}
   </div>

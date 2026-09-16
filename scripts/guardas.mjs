@@ -105,16 +105,20 @@ const dirProdutos = join(RAIZ, 'conteudo', 'ithos');
 const produtos = readdirSync(dirProdutos).filter((f) => f.endsWith('.json'));
 if (!produtos.length) erros.push('conteudo/ithos: não há um único produto');
 
-for (const f of produtos) {
-  const slug = f.slice(0, -5);
-  const p = ler(`conteudo/ithos/${f}`);
-  const onde = `ithos/${slug}`;
+/* As mesmas verificações para as DUAS marcas.
+ *
+ * Isto era um ciclo só sobre `conteudo/ithos`. As 36 peças da cathelier — que
+ * têm opções, têm preço e vendem-se no MESMO carrinho — nunca passaram por
+ * guarda nenhuma: nem a do preço, nem a das fotografias declaradas, nem a que
+ * impede marcar uma escolha como personalizadora e tirar os 14 dias a quem
+ * tem direito a eles. */
+function verificarProduto(p, { onde, slug, originais, exigeFotografia }) {
 
   // Campos que o backoffice pode apagar sem se dar por isso.
   for (const campo of ['nome', 'opcoes', 'fotos', 'estado']) {
     if (p[campo] === undefined) erros.push(`${onde}: o campo «${campo}» desapareceu dos dados`);
   }
-  if (!p.publicado) continue;
+  if (!p.publicado) return;
 
   if (!(p.preco > 0)) faltaDaCliente(`${onde}: publicado sem preço`);
   if (!p.resumo?.trim()) erros.push(`${onde}: publicado sem resumo`);
@@ -125,11 +129,16 @@ for (const f of produtos) {
 
   // As fotografias declaradas TÊM de existir no disco. Anunciar uma que não
   // existe dá um buraco na montra, e ninguém dá por isso até um cliente ligar.
-  if (!(p.fotos ?? []).length) {
+  if (exigeFotografia && !(p.fotos ?? []).length) {
     erros.push(`${onde}: publicado sem uma única fotografia`);
   }
+  // Sem fotografia, uma peça da cathelier tem de ter DESENHO: senão o cartão
+  // fica uma caixa vazia e ninguém dá por isso até alguém abrir a montra.
+  if (!exigeFotografia && !(p.fotos ?? []).length && !p.forma) {
+    erros.push(`${onde}: publicada sem fotografia e sem desenho — não há nada para mostrar`);
+  }
   for (const base of p.fotos ?? []) {
-    const pasta = join(RAIZ, '_fonte', 'originais', 'ithos', slug);
+    const pasta = join(RAIZ, '_fonte', 'originais', originais, slug);
     const existe = existsSync(pasta)
       && readdirSync(pasta).some((x) => x.replace(/\.[^.]+$/, '') === base);
     if (!existe) erros.push(`${onde}: a fotografia «${base}» está na lista mas não existe em _fonte/originais`);
@@ -152,7 +161,39 @@ for (const f of produtos) {
     }
   }
 
+  /* O PREÇO ANUNCIADO TEM DE SER OBTENÍVEL.
+   *
+   * A bolota anunciava 78 € na montra e a ficha abria em 89 €: a única
+   * variante sem suplemento era a segunda, e vinha marcada a primeira. Um
+   * preço que se anuncia é o preço que se pode pagar (DL 138/90) — se todas as
+   * escolhas obrigatórias custarem dinheiro, o número da montra é ficção.
+   * Corrigiu-se marcando a mais barata; esta guarda impede que volte. */
+  for (const o of p.opcoes ?? []) {
+    if (o.tipo !== 'escolha' || !o.obrigatoria) continue;
+    const minimo = Math.min(...(o.valores ?? []).map((v) => v.suplemento ?? 0));
+    if (minimo > 0) {
+      erros.push(`${onde}: a opção obrigatória «${o.nome}» não tem nenhuma escolha sem suplemento — `
+        + `o preço anunciado (${p.preco} €) nunca chega a ser pago, o mais barato são ${p.preco + minimo} €`);
+    }
+  }
+
   if (!p.gpsr?.tipo) faltaDaCliente(`${onde}: falta a referência do modelo (art. 19.º do Reg. (UE) 2023/988)`);
+}
+
+for (const f of produtos) {
+  const slug = f.slice(0, -5);
+  verificarProduto(ler(`conteudo/ithos/${f}`), {
+    onde: `ithos/${slug}`, slug, originais: 'ithos', exigeFotografia: true,
+  });
+}
+
+const dirPecas = join(RAIZ, 'conteudo', 'cathelier', 'pecas');
+const pecas = existsSync(dirPecas) ? readdirSync(dirPecas).filter((f) => f.endsWith('.json')) : [];
+for (const f of pecas) {
+  const slug = f.slice(0, -5);
+  verificarProduto(ler(`conteudo/cathelier/pecas/${f}`), {
+    onde: `cathelier/${slug}`, slug, originais: 'cathelier/pecas', exigeFotografia: false,
+  });
 }
 
 /* --- 4. o que o site NÃO pode dizer ---------------------------------------
@@ -298,5 +339,5 @@ if (erros.length) {
 }
 
 if (PREVIA) console.log('\n>>> PRÉ-VISUALIZAÇÃO: o site sai fora do índice, com tarja e sem checkout.\n');
-console.log(`guardas: ${produtos.length} produtos, ${categorias.length} ocasiões, `
+console.log(`guardas: ${produtos.length} candeeiros, ${pecas.length} peças, ${categorias.length} ocasiões, `
   + `${LEGAIS.length} páginas legais — tudo coerente${avisos.length ? ` (${avisos.length} aviso(s))` : ''}`);
