@@ -387,3 +387,7 @@ body:has(.cookies:not([hidden])) .subir { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .subir { transition: none; transform: none; }
 }
+
+/* Botões desligados enquanto a loja não abriu. `aria-disabled` e não
+   `disabled`, por isso o estilo tem de vir daqui — o browser não o desenha. */
+.botao[aria-disabled='true'] { opacity: .5; cursor: not-allowed; }

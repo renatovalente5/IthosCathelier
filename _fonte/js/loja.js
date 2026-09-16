@@ -190,6 +190,40 @@
     }
   }
 
+  /* ------------------------------------------ a loja ainda não abriu ------ */
+  /* Enquanto o catálogo disser `previa`, os botões que levam dinheiro ficam
+   * desligados e dizem porquê. A tarja no topo prometia isto desde o primeiro
+   * dia — «não é possível comprar» — e o botão continuava a funcionar.
+   *
+   * Isto é a CORTESIA. Quem trava a sério é o Worker, que recusa criar sessão
+   * de pagamento quando o catálogo vem em pré-visualização: o que o browser
+   * manda não se acredita. */
+  {
+    catalogo().then((cat) => {
+      if (!cat.previa) return;
+      for (const b of $$('[data-juntar], [data-pagar]')) {
+        // `aria-disabled` e não `disabled`: um botão desativado perde o foco e
+        // quem navega por teclado fica sem saber onde está.
+        b.setAttribute('aria-disabled', 'true');
+        b.dataset.previa = 'sim';
+        b.title = 'A loja ainda não abriu.';
+      }
+      // O aviso vai a seguir ao PRÓPRIO botão, e não a um contentor que se
+      // presume existir: o `data-produto` vive no `<article>` e não no
+      // `<form>`, e a primeira versão disto não escrevia nada em lado nenhum.
+      for (const b of $$('[data-juntar], [data-pagar]')) {
+        const depois = b.nextElementSibling;
+        if (depois?.dataset?.avisoPrevia) continue;
+        const aviso = document.createElement('p');
+        aviso.className = 'pequeno discreto';
+        aviso.dataset.avisoPrevia = 'sim';
+        aviso.style.marginTop = 'var(--e2)';
+        aviso.textContent = 'A loja ainda não abriu — ainda não é possível comprar.';
+        b.after(aviso);
+      }
+    }).catch(() => { /* sem catálogo não há nada a desligar */ });
+  }
+
   /* -------------------------------------------------- subir ao topo ------- */
   // Aparece depois de se ter descido uma altura de ecrã. Usa-se um
   // IntersectionObserver sobre a sentinela que já existe no topo — e não um
@@ -362,6 +396,9 @@
     form?.addEventListener('submit', (e) => {
       e.preventDefault();
       const botao = $('[data-juntar]', form);
+      // A loja ainda não abriu: não se junta nada ao carrinho. O aviso já está
+      // escrito por baixo do botão; aqui só se impede a acção.
+      if (botao?.dataset.previa === 'sim') return;
       const cesto = lerCesto();
       const nova = { id: slug, marca: 'ithos', qtd: 1, opcoes: lerOpcoes() };
       const existente = cesto.linhas.find((l) => idLinha(l) === idLinha(nova));
@@ -546,6 +583,11 @@
 
     $('[data-pagar]').addEventListener('click', async (e) => {
       const botao = e.currentTarget;            // guardado ANTES do primeiro await
+      if (botao.dataset.previa === 'sim') {
+        erro.hidden = false;
+        erro.textContent = 'A loja ainda não abriu. Ainda não é possível pagar.';
+        return;
+      }
       erro.hidden = true;
 
       const obrigatorias = $$('input[type="checkbox"][required]', cheia)
